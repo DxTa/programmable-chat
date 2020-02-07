@@ -102,17 +102,19 @@ object Mapper {
         )
     }
 
-    inline fun <reified T> paginatorToMap(pageId: String, paginator: Paginator<T>): Map<String, Any> {
-        val itemType = when (T::class) {
-            ChannelDescriptor::class -> "channelDescriptor"
-            Channel::class -> "channel"
-            else -> "unknown"
+    inline fun <reified T> paginatorToMap(pageId: String, paginator: Paginator<T>, realItemType: String? = null): Map<String, Any> {
+        var itemType = realItemType
+        if (itemType == null) {
+            itemType = when (T::class) {
+                ChannelDescriptor::class -> "channelDescriptor"
+                else -> "unknown"
+            }
         }
 
         val itemsListMap = paginator.items.map {
             when (itemType) {
                 "channelDescriptor" -> channelDescriptorToMap(it as ChannelDescriptor)
-                else -> throw Exception("Unknown type received '$itemType'")
+                else -> throw Exception("Unknown item type received '$itemType'")
             }
         }
 
@@ -121,7 +123,7 @@ object Mapper {
                 "pageSize" to paginator.pageSize,
                 "hasNextPage" to paginator.hasNextPage(),
                 "items" to itemsListMap,
-                "type" to itemType
+                "itemType" to itemType
         )
     }
 

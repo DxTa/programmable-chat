@@ -3,6 +3,8 @@ part of twilio_unofficial_programmable_chat;
 class Paginator<T> {
   final Map<String, dynamic> _passOn;
 
+  final String _itemType;
+
   final String _pageId;
 
   final List<T> _items = [];
@@ -23,28 +25,28 @@ class Paginator<T> {
     return _hasNextPage;
   }
 
-  Paginator(this._pageId, this._pageSize, this._hasNextPage, this._passOn)
+  Paginator(this._pageId, this._pageSize, this._hasNextPage, this._itemType, this._passOn)
       : assert(_pageId != null),
         assert(_pageSize != null),
-        assert(_hasNextPage != null);
+        assert(_hasNextPage != null),
+        assert(_itemType != null);
 
   /// Construct from a map.
   factory Paginator._fromMap(Map<String, dynamic> map, {Map<String, dynamic> passOn}) {
-    var paginator = Paginator(map['pageId'], map['pageSize'], map['hasNextPage'], passOn);
+    var paginator = Paginator(map['pageId'], map['pageSize'], map['hasNextPage'], map['itemType'], passOn);
     paginator._updateFromMap(map);
     return paginator;
   }
 
   Future<Paginator<T>> requestNextPage() async {
     try {
-      var methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Paginator#requestNextPage', <String, Object>{'pageId': _pageId});
+      var methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Paginator#requestNextPage', <String, Object>{'pageId': _pageId, 'classType', _});
       final paginatorMap = Map<String, dynamic>.from(methodData);
       return Paginator<T>._fromMap(paginatorMap, passOn: _passOn);
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
+      if (err.code == 'ERROR' || err.code == 'IllegalStateException') {
         rethrow;
       }
-      // TODO it can throw IllegalStateException. Doesn't get handled here
       throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
     }
   }
@@ -52,11 +54,10 @@ class Paginator<T> {
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
     if (map['items'] != null) {
-      final itemType = map['type'];
       final List<Map<String, dynamic>> itemsList = map['items'].map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r)).toList();
       for (final itemMap in itemsList) {
         var item;
-        switch (itemType) {
+        switch (_itemType) {
           case 'channelDescriptor':
             assert(_passOn['channels'] != null);
             item = (_items as List<ChannelDescriptor>).firstWhere(

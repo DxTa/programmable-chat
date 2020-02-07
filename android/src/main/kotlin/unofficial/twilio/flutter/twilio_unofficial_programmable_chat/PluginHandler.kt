@@ -4,17 +4,16 @@ import android.app.Activity
 import android.content.Context
 import androidx.annotation.NonNull
 import com.twilio.chat.CallbackListener
-import com.twilio.chat.Channel
-import com.twilio.chat.ChannelDescriptor
 import com.twilio.chat.ChatClient
 import com.twilio.chat.ErrorInfo
-import com.twilio.chat.Paginator
-import com.twilio.chat.StatusListener
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.ChannelsMethods
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.ChatClientMethods
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.PaginatorMethods
 
 class PluginHandler(private val applicationContext: Context) : MethodCallHandler, ActivityAware {
     private var activity: Activity? = null
@@ -41,90 +40,16 @@ class PluginHandler(private val applicationContext: Context) : MethodCallHandler
             "debug" -> debug(call, result)
             "create" -> create(call, result)
 
-            "ChatClient#updateToken" -> updateToken(call, result)
+            "ChatClient#updateToken" -> ChatClientMethods.updateToken(call, result)
 
-            "Channels#createChannel" -> createChannel(call, result)
-            "Channels#getChannel" -> getChannel(call, result)
-            "Channels#getPublicChannelsList" -> getPublicChannelsList(call, result)
+            "Channels#createChannel" -> ChannelsMethods.createChannel(call, result)
+            "Channels#getChannel" -> ChannelsMethods.getChannel(call, result)
+            "Channels#getPublicChannelsList" -> ChannelsMethods.getPublicChannelsList(call, result)
 
-            "Paginator#requestNextPage" -> result.notImplemented()
+            "Paginator#requestNextPage" -> PaginatorMethods.requestNextPage(call, result)
+
             else -> result.notImplemented()
         }
-    }
-
-    private fun getPublicChannelsList(call: MethodCall, result: MethodChannel.Result) {
-        TwilioUnofficialProgrammableChatPlugin.chatListener.chatClient?.channels?.getPublicChannelsList(object : CallbackListener<Paginator<ChannelDescriptor>>() {
-            override fun onSuccess(paginator: Paginator<ChannelDescriptor>) {
-                TwilioUnofficialProgrammableChatPlugin.debug("TwilioUnofficialProgrammableChatPlugin.getPublicChannelsList => Channels.getPublicChannelsList onSuccess")
-                val pageId = PaginatorManager.setPaginator(paginator)
-                result.success(Mapper.paginatorToMap(pageId, paginator))
-            }
-
-            override fun onError(errorInfo: ErrorInfo) {
-                TwilioUnofficialProgrammableChatPlugin.debug("TwilioUnofficialProgrammableChatPlugin.getPublicChannelsList => Channels.getPublicChannelsList onError: $errorInfo")
-                result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
-            }
-        })
-    }
-
-    private fun getChannel(call: MethodCall, result: MethodChannel.Result) {
-        val channelSidOrUniqueName = call.argument<String>("channelSidOrUniqueName")
-                ?: return result.error("ERROR", "Missing 'channelSidOrUniqueName'", null)
-
-        TwilioUnofficialProgrammableChatPlugin.chatListener.chatClient?.channels?.getChannel(channelSidOrUniqueName, object : CallbackListener<Channel>() {
-            override fun onSuccess(newChannel: Channel) {
-                TwilioUnofficialProgrammableChatPlugin.debug("TwilioUnofficialProgrammableChatPlugin.getChannel => Channels.getChannel onSuccess")
-                result.success(Mapper.channelToMap(newChannel))
-            }
-
-            override fun onError(errorInfo: ErrorInfo) {
-                TwilioUnofficialProgrammableChatPlugin.debug("TwilioUnofficialProgrammableChatPlugin.getChannel => Channels.getChannel onError: $errorInfo")
-                result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
-            }
-        })
-    }
-
-    private fun createChannel(call: MethodCall, result: MethodChannel.Result) {
-        val friendlyName = call.argument<String>("friendlyName")
-                ?: return result.error("ERROR", "Missing 'friendlyName'", null)
-
-        val channelTypeValue = call.argument<String>("channelType")
-                ?: return result.error("ERROR", "Missing 'channelType'", null)
-
-        val channelType = when (channelTypeValue) {
-            "PRIVATE" -> Channel.ChannelType.PRIVATE
-            "PUBLIC" -> Channel.ChannelType.PUBLIC
-            else -> null
-        } ?: return result.error("ERROR", "Wrong value for 'channelType'", null)
-
-        TwilioUnofficialProgrammableChatPlugin.chatListener.chatClient?.channels?.createChannel(friendlyName, channelType, object : CallbackListener<Channel>() {
-            override fun onSuccess(newChannel: Channel) {
-                TwilioUnofficialProgrammableChatPlugin.debug("TwilioUnofficialProgrammableChatPlugin.createChannel => Channels.createChannel onSuccess")
-                result.success(Mapper.channelToMap(newChannel))
-            }
-
-            override fun onError(errorInfo: ErrorInfo) {
-                TwilioUnofficialProgrammableChatPlugin.debug("TwilioUnofficialProgrammableChatPlugin.createChannel => Channels.createChannel onError: $errorInfo")
-                result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
-            }
-        })
-    }
-
-    private fun updateToken(call: MethodCall, result: MethodChannel.Result) {
-        val token = call.argument<String>("token")
-                ?: return result.error("ERROR", "Missing 'token'", null)
-
-        TwilioUnofficialProgrammableChatPlugin.chatListener.chatClient?.updateToken(token, object : StatusListener() {
-            override fun onSuccess() {
-                TwilioUnofficialProgrammableChatPlugin.debug("TwilioUnofficialProgrammableChatPlugin.updateToken => ChatClient.updateToken onSuccess")
-                result.success(null)
-            }
-
-            override fun onError(errorInfo: ErrorInfo) {
-                TwilioUnofficialProgrammableChatPlugin.debug("TwilioUnofficialProgrammableChatPlugin.updateToken => ChatClient.updateToken onError: $errorInfo")
-                result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
-            }
-        })
     }
 
     private fun create(call: MethodCall, result: MethodChannel.Result) {
