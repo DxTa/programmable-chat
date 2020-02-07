@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "499945637622",
+    "firebase_url": "https://twilio-chat-flutter-plugin-dev.firebaseio.com",
+    "project_id": "twilio-chat-flutter-plugin-dev",
+    "storage_bucket": "twilio-chat-flutter-plugin-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499945637622:android:62c8075497b0146acd8ed7",
+        "android_client_info": {
+          "package_name": "unofficial.twilio.flutter.twilio_unofficial_programmable_chat_example"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "499945637622-jg3najd9ivb3f3q6ef6h6miscijsskhv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPUTnxMD5g4iB-GcuQYjmyQ2T0GWpCkuI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "499945637622-jg3najd9ivb3f3q6ef6h6miscijsskhv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
