@@ -13,7 +13,10 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.ChannelsMethods
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.ChatClientMethods
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.MembersMethods
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.MessagesMethods
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.PaginatorMethods
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.UsersMethods
 
 class PluginHandler(private val applicationContext: Context) : MethodCallHandler, ActivityAware {
     private var activity: Activity? = null
@@ -41,10 +44,25 @@ class PluginHandler(private val applicationContext: Context) : MethodCallHandler
             "create" -> create(call, result)
 
             "ChatClient#updateToken" -> ChatClientMethods.updateToken(call, result)
+            "ChatClient#shutdown" -> ChatClientMethods.shutdown(call, result)
+
+            "Users#getChannelUserDescriptors" -> UsersMethods.getChannelUserDescriptors(call, result)
+            "Users#getUserDescriptor" -> UsersMethods.getUserDescriptor(call, result)
+            "Users#getAndSubscribeUser" -> UsersMethods.getAndSubscribeUser(call, result)
 
             "Channels#createChannel" -> ChannelsMethods.createChannel(call, result)
             "Channels#getChannel" -> ChannelsMethods.getChannel(call, result)
             "Channels#getPublicChannelsList" -> ChannelsMethods.getPublicChannelsList(call, result)
+            "Channels#getUserChannelsList" -> ChannelsMethods.getUserChannelsList(call, result)
+            "Channels#getMembersByIdentity" -> ChannelsMethods.getMembersByIdentity(call, result)
+
+            "Members#addByIdentity" -> MembersMethods.addByIdentity(call, result)
+            "Members#inviteByIdentity" -> MembersMethods.inviteByIdentity(call, result)
+            "Members#removeByIdentity" -> MembersMethods.removeByIdentity(call, result)
+
+            "Messages#sendMessage" -> MessagesMethods.sendMessage(call, result)
+            "Messages#getMessagesBefore" -> MessagesMethods.getMessagesBefore(call, result)
+            "Messages#getMessagesAfter" -> MessagesMethods.getMessagesBefore(call, result)
 
             "Paginator#requestNextPage" -> PaginatorMethods.requestNextPage(call, result)
 
@@ -65,7 +83,7 @@ class PluginHandler(private val applicationContext: Context) : MethodCallHandler
         }
 
         try {
-            var propertiesBuilder = ChatClient.Properties.Builder()
+            val propertiesBuilder = ChatClient.Properties.Builder()
             if (propertiesObj["region"] != null) {
                 TwilioUnofficialProgrammableChatPlugin.debug("TwilioUnofficialProgrammableChatPlugin.create => setting Properties.region to '${propertiesObj["region"]}'")
                 propertiesBuilder.setRegion(propertiesObj["region"] as String)

@@ -23,4 +23,13 @@ object ChatClientMethods {
             }
         })
     }
+
+    fun shutdown(call: MethodCall, result: MethodChannel.Result) {
+        return try {
+            TwilioUnofficialProgrammableChatPlugin.chatListener.chatClient?.shutdown()
+            result.success(null)
+        } catch (err: Exception) {
+            result.error("ERROR", err.message, null)
+        }
+    }
 }

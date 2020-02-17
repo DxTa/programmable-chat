@@ -48,7 +48,7 @@ class TwilioUnofficialProgrammableChat {
     try {
       final methodData = await _methodChannel.invokeMethod('create', <String, Object>{'token': token, 'properties': properties._toMap()});
       final chatClientMap = Map<String, dynamic>.from(methodData);
-      return ChatClient._fromMap(chatClientMap, _chatChannel);
+      return ChatClient._fromMap(chatClientMap);
     } on PlatformException catch (err) {
       if (err.code == 'ERROR') {
         rethrow;

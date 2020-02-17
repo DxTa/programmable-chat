@@ -43,12 +43,14 @@ Reference table of all the events the plugin supports and their native platform 
 | ChatClient | error                          | onError                          | X           |
 | ChatClient | invitedToChannelNotification   | onInvitedToChannelNotification   |             |
 | ChatClient | newMessageNotification         | onNewMessageNotification         |             |
-| ChatClient | notificationFailed             | onNotificationFailed             | X           |
 | ChatClient | notificationSubscribed         | onNotificationSubscribed         | X           |
+| ChatClient | notificationFailed             | onNotificationFailed             | X           |
 | ChatClient | removedFromChannelNotification | onRemovedFromChannelNotification |             |
-| ChatClient | userSubscribed                 | onUserSubscribed                 |             |
-| ChatClient | userUnsubscribed               | onUserUnsubscribed               |             |
-| ChatClient | userUpdated                    | onUserUpdated                    |             |
+| ChatClient | tokenAboutToExpire             | onTokenAboutToExpire             | X           |
+| ChatClient | onTokenExpired                 | onTokenExpired                   | X           |
+| ChatClient | userSubscribed                 | onUserSubscribed                 | X           |
+| ChatClient | userUnsubscribed               | onUserUnsubscribed               | X           |
+| ChatClient | userUpdated                    | onUserUpdated                    | X           |
 
 # Example
 Check out our comprehensive [example](https://gitlab.com/twilio-flutter-unofficial/programmable-chat/tree/master/example) provided with this plugin.

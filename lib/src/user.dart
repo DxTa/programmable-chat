@@ -13,6 +13,31 @@ class User {
 
   bool _isSubscribed;
 
+  /// Method that returns the friendlyName from the user info.
+  String get friendlyName {
+    return _friendlyName;
+  }
+
+  /// Returns the identity of the user.
+  String get identity {
+    return _identity;
+  }
+
+  /// Return user's online status, if available
+  bool get isOnline {
+    return _isOnline;
+  }
+
+  /// Return user's push reachability.
+  bool get isNotifiable {
+    return _isNotifiable;
+  }
+
+  /// Check if this user receives real-time status updates.
+  bool get isSubscribed {
+    return _isSubscribed;
+  }
+
   User(this._identity) : assert(_identity != null);
 
   /// Construct from a map.

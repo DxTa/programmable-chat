@@ -1,5 +1,11 @@
 part of twilio_unofficial_programmable_chat;
 
+/// Class for paginating over items retrieved using [Channels.getPublicChannelsList], [Channels.getUserChannelsList] or [Users.getChannelUserDescriptors].
+///
+/// [Paginator] represents a single page of results. You can get items in this page using [Paginator.items].
+/// The number if items in page can be retrieved using [Paginator.pageSize].
+/// If all items did not fit into single page [Paginator.hasNextPage] will return true. You could use [Paginator.requestNextPage] to get the next page of results.
+/// If [Paginator.hasNextPage()] returns false, then this is the last page. Calling [Paginator.requestNextPage()] on the last page will throw [PlatformException].
 class Paginator<T> {
   final Map<String, dynamic> _passOn;
 
@@ -13,14 +19,17 @@ class Paginator<T> {
 
   final bool _hasNextPage;
 
+  /// Get items available in the current page.
   List<T> get items {
     return [..._items];
   }
 
+  /// Amount of items in the current page.
   int get pageSize {
     return _pageSize;
   }
 
+  /// If the paginator has more pages, returns true.
   bool get hasNextPage {
     return _hasNextPage;
   }
@@ -33,14 +42,16 @@ class Paginator<T> {
 
   /// Construct from a map.
   factory Paginator._fromMap(Map<String, dynamic> map, {Map<String, dynamic> passOn}) {
-    var paginator = Paginator(map['pageId'], map['pageSize'], map['hasNextPage'], map['itemType'], passOn);
+    print(map);
+    var paginator = Paginator<T>(map['pageId'], map['pageSize'], map['hasNextPage'], map['itemType'], passOn);
     paginator._updateFromMap(map);
     return paginator;
   }
 
+  /// Query the next page.
   Future<Paginator<T>> requestNextPage() async {
     try {
-      var methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Paginator#requestNextPage', <String, Object>{'pageId': _pageId, 'classType', _});
+      var methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Paginator#requestNextPage', <String, Object>{'pageId': _pageId, 'itemType': _itemType});
       final paginatorMap = Map<String, dynamic>.from(methodData);
       return Paginator<T>._fromMap(paginatorMap, passOn: _passOn);
     } on PlatformException catch (err) {
@@ -58,6 +69,13 @@ class Paginator<T> {
       for (final itemMap in itemsList) {
         var item;
         switch (_itemType) {
+          case 'userDescriptor':
+            assert(_passOn['users'] != null);
+            item = (_items as List<UserDescriptor>).firstWhere(
+              (c) => c._identity == itemMap['identity'],
+              orElse: () => UserDescriptor._fromMap(itemMap, _passOn['users']),
+            );
+            break;
           case 'channelDescriptor':
             assert(_passOn['channels'] != null);
             item = (_items as List<ChannelDescriptor>).firstWhere(

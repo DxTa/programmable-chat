@@ -1,9 +1,24 @@
 part of twilio_unofficial_programmable_chat;
 
+/// Provides access to users and allows to manipulate user information.
 class Users {
   final List<User> _subscribedUsers = [];
 
   User _myUser;
+
+  /// Get a list of currently subscribed [User] objects.
+  ///
+  /// These objects receive status updates in real-time. When you subscribe to too many users simultaneously, the oldest subscribed users will be automatically unsubscribed.
+  List<User> get subscribedUsers {
+    return [..._subscribedUsers];
+  }
+
+  /// Get logged in [User] object.
+  ///
+  /// Returns the [User] object for your currently logged in [User]. You can query and update this object at will.
+  User get myUser {
+    return _myUser;
+  }
 
   Users();
 
@@ -14,11 +29,50 @@ class Users {
     return users;
   }
 
-  Future<void> getUserDescriptor(String identity) async {
-
+  /// Get paginated user descriptors from a given channel.
+  ///
+  /// This is a convenience function allowing to query user list in a channel. The returned paginator can be used to iterate full user list in the channel roster.
+  Future<Paginator<UserDescriptor>> getChannelUserDescriptors(String channelSid) async {
+    try {
+      var methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Users#getChannelUserDescriptors', {'channelSid': channelSid});
+      final paginatorMap = Map<String, dynamic>.from(methodData);
+      return Paginator<UserDescriptor>._fromMap(paginatorMap, passOn: {'channels': this});
+    } on PlatformException catch (err) {
+      if (err.code == 'ERROR') {
+        rethrow;
+      }
+      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+    }
   }
 
-  Future<void> getAndSubscribeUser(String identity) async {
+  /// Get user descriptor based on user identity.
+  Future<UserDescriptor> getUserDescriptor(String identity) async {
+    try {
+      var methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Users#getUserDescriptor', {'identity': identity});
+      final userDescriptorMap = Map<String, dynamic>.from(methodData);
+      return UserDescriptor._fromMap(userDescriptorMap, this);
+    } on PlatformException catch (err) {
+      if (err.code == 'ERROR') {
+        rethrow;
+      }
+      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+    }
+  }
+
+  /// Get user based on user identity and subscribe to real-time updates for this user.
+  ///
+  /// There's a limit on the number of simultaneously subscribed objects in the SDK. This is to reduce consumed memory and network traffic.
+  Future<User> getAndSubscribeUser(String identity) async {
+    try {
+      var methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Users#getAndSubscribeUser', {'identity': identity});
+      final userMap = Map<String, dynamic>.from(methodData);
+      return User._fromMap(userMap);
+    } on PlatformException catch (err) {
+      if (err.code == 'ERROR') {
+        rethrow;
+      }
+      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+    }
 
   }
 

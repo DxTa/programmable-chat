@@ -2,19 +2,29 @@ part of twilio_unofficial_programmable_chat;
 
 /// Represents options when connecting to a [ChatClient].
 class Properties {
-  String _region = 'us1';
+  String _region;
 
-  bool _deferCA = false;
+  /// Defer certificate trust decisions to Android OS, overriding the default of certificate pinning for Twilio back-end connections.
+  ///
+  /// Twilio client SDKs utilize certificate pinning to prevent man-in-the-middle attacks against your connections to our services. Customers in certain very specific environments may need to opt-out of this if custom certificate authorities must be allowed to intentionally intercept communications for security or policy reasons.
+  /// Setting this property to true for a Chat Client instance will defer to Android to establish whether or not a given connection is providing valid and trusted TLS certificates.
+  /// Keeping this property at its default value of false allows the Twilio client SDK to determine trust when communicating with our servers.
+  /// The default value is false.
+  bool _deferCA;
 
-  Properties();
-
-  void region(String region) {
-    assert(region != null);
-    _region = region;
+  /// Twilio server region to connect to.
+  ///
+  /// Instances exist in specific regions, so this should only be changed if needed.
+  String get region {
+    return _region;
   }
 
-  void deferCertificateTrustToPlatform(bool defer) {
-    _deferCA = defer;
+  Properties({
+    String region,
+    bool deferCertificateTrustToPlatform,
+  }) {
+    _region = region ?? 'us1';
+    _deferCA = deferCertificateTrustToPlatform ?? false;
   }
 
   /// Construct from a map.

@@ -5,7 +5,7 @@ import java.util.UUID
 import kotlin.collections.HashMap
 
 object PaginatorManager {
-    val paginators: HashMap<String, Paginator<Any>> = hashMapOf()
+    private val paginators: HashMap<String, Paginator<Any>> = hashMapOf()
 
     @Suppress("UNCHECKED_CAST")
     fun <T> setPaginator(paginator: Paginator<T>): String {

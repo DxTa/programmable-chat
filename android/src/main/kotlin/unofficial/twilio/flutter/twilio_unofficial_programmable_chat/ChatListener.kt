@@ -12,46 +12,53 @@ class ChatListener(val token: String, val properties: ChatClient.Properties) : C
 
     var chatClient: ChatClient? = null
 
-    override fun onAddedToChannelNotification(p0: String?) {
-        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onAddedToChannelNotification => NOT IMPLEMENTED")
+    override fun onAddedToChannelNotification(channelSid: String) {
+        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onAddedToChannelNotification => channelSid = $channelSid")
+        sendEvent("addedToChannelNotification", mapOf("channelSid" to channelSid))
     }
 
-    override fun onChannelAdded(channel: Channel?) {
-        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onChannelAdded => sid = ${channel?.sid}")
+    override fun onChannelAdded(channel: Channel) {
+        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onChannelAdded => sid = ${channel.sid}")
         sendEvent("channelAdded", mapOf("channel" to Mapper.channelToMap(channel)))
     }
 
-    override fun onChannelDeleted(channel: Channel?) {
-        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onChannelDeleted => sid = ${channel?.sid}")
+    override fun onChannelDeleted(channel: Channel) {
+        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onChannelDeleted => sid = ${channel.sid}")
         sendEvent("channelDeleted", mapOf("channel" to Mapper.channelToMap(channel)))
     }
 
-    override fun onChannelInvited(channel: Channel?) {
-        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onChannelInvited => sid = ${channel?.sid}")
+    override fun onChannelInvited(channel: Channel) {
+        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onChannelInvited => sid = ${channel.sid}")
         sendEvent("channelInvited", mapOf("channel" to Mapper.channelToMap(channel)))
     }
 
-    override fun onChannelJoined(channel: Channel?) {
-        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onChannelJoined => sid = ${channel?.sid}")
+    override fun onChannelJoined(channel: Channel) {
+        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onChannelJoined => sid = ${channel.sid}")
         sendEvent("channelJoined", mapOf("channel" to Mapper.channelToMap(channel)))
     }
 
-    override fun onChannelSynchronizationChange(channel: Channel?) {
-        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onChannelSynchronizationChange => sid = ${channel?.sid}")
+    override fun onChannelSynchronizationChange(channel: Channel) {
+        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onChannelSynchronizationChange => sid = ${channel.sid}")
         sendEvent("channelSynchronizationChange", mapOf("channel" to Mapper.channelToMap(channel)))
     }
 
-    override fun onChannelUpdated(channel: Channel?, updateReason: Channel.UpdateReason?) {
-        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onChannelUpdated => sid = ${channel?.sid}")
-        sendEvent("channelUpdated", mapOf("channel" to Mapper.channelToMap(channel), "channelUpdateReason" to updateReason.toString()))
+    override fun onChannelUpdated(channel: Channel, reason: Channel.UpdateReason) {
+        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onChannelUpdated => channel '${channel.sid}' updated, $reason")
+        sendEvent("channelUpdated", mapOf(
+                "channel" to Mapper.channelToMap(channel),
+                "reason" to mapOf(
+                    "type" to "channel",
+                    "value" to reason.toString()
+                )
+        ))
     }
 
-    override fun onClientSynchronization(synchronizationStatus: ChatClient.SynchronizationStatus?) {
+    override fun onClientSynchronization(synchronizationStatus: ChatClient.SynchronizationStatus) {
         TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onClientSynchronization => status = $synchronizationStatus")
         sendEvent("clientSynchronization", mapOf("synchronizationStatus" to synchronizationStatus.toString()))
     }
 
-    override fun onConnectionStateChange(connectionState: ChatClient.ConnectionState?) {
+    override fun onConnectionStateChange(connectionState: ChatClient.ConnectionState) {
         TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onConnectionStateChange => status = $connectionState")
         sendEvent("connectionStateChange", mapOf("connectionState" to connectionState.toString()))
     }
@@ -60,16 +67,18 @@ class ChatListener(val token: String, val properties: ChatClient.Properties) : C
         sendEvent("error", null, errorInfo)
     }
 
-    override fun onInvitedToChannelNotification(p0: String?) {
-        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onInvitedToChannelNotification => NOT IMPLEMENTED, received: '$p0'")
+    override fun onInvitedToChannelNotification(channelSid: String) {
+        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onInvitedToChannelNotification => channelSid = $channelSid")
+        sendEvent("invitedToChannelNotification", mapOf("channelSid" to channelSid))
     }
 
-    override fun onNewMessageNotification(p0: String?, p1: String?, p2: Long) {
-        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onNewMessageNotification => NOT IMPLEMENTED, received: $p0, $p1, $p2")
-    }
-
-    override fun onNotificationFailed(errorInfo: ErrorInfo?) {
-        sendEvent("notificationFailed", null, errorInfo)
+    override fun onNewMessageNotification(channelSid: String?, messageSid: String?, messageIndex: Long) {
+        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onNewMessageNotification => channelSid = $channelSid, messageSid = $messageSid, messageIndex = $messageIndex")
+        sendEvent("invitedToChannelNotification", mapOf(
+                "channelSid" to channelSid,
+                "messageSid" to messageSid,
+                "messageIndex" to messageIndex
+        ))
     }
 
     override fun onNotificationSubscribed() {
@@ -77,20 +86,44 @@ class ChatListener(val token: String, val properties: ChatClient.Properties) : C
         sendEvent("notificationSubscribed", null)
     }
 
-    override fun onRemovedFromChannelNotification(p0: String?) {
-        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onRemovedFromChannelNotification => NOT IMPLEMENTED, received: $p0")
+    override fun onNotificationFailed(errorInfo: ErrorInfo) {
+        sendEvent("notificationFailed", null, errorInfo)
     }
 
-    override fun onUserSubscribed(p0: User?) {
-        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onUserSubscribed => NOT IMPLEMENTED")
+    override fun onRemovedFromChannelNotification(channelSid: String) {
+        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onRemovedFromChannelNotification => channelSid = $channelSid")
+        sendEvent("removedFromChannelNotification", mapOf("channelSid" to channelSid))
     }
 
-    override fun onUserUnsubscribed(p0: User?) {
-        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onUserUnsubscribed => NOT IMPLEMENTED")
+    override fun onTokenAboutToExpire() {
+        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onTokenAboutToExpire")
+        sendEvent("tokenAboutToExpire", null)
     }
 
-    override fun onUserUpdated(p0: User?, p1: User.UpdateReason?) {
-        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onUserUpdated => NOT IMPLEMENTED")
+    override fun onTokenExpired() {
+        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onTokenExpired")
+        sendEvent("tokenExpired", null)
+    }
+
+    override fun onUserSubscribed(user: User) {
+        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onUserSubscribed => user '${user.friendlyName}'")
+        sendEvent("userSubscribed", mapOf("user" to Mapper.userToMap(user)))
+    }
+
+    override fun onUserUnsubscribed(user: User) {
+        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onUserUnsubscribed => user '${user.friendlyName}'")
+        sendEvent("userUnsubscribed", mapOf("user" to Mapper.userToMap(user)))
+    }
+
+    override fun onUserUpdated(user: User, reason: User.UpdateReason) {
+        TwilioUnofficialProgrammableChatPlugin.debug("ChatListener.onUserUpdated => user '${user.friendlyName}' updated, $reason")
+        sendEvent("userUpdated", mapOf(
+                "user" to Mapper.userToMap(user),
+                "reason" to mapOf(
+                        "type" to "user",
+                        "value" to reason.toString()
+                )
+        ))
     }
 
     private fun sendEvent(name: String, data: Any?, e: ErrorInfo? = null) {
