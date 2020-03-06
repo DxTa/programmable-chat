@@ -2,6 +2,7 @@ part of twilio_unofficial_programmable_chat;
 
 /// Represents options when connecting to a [ChatClient].
 class Properties {
+  //#region Private API properties
   String _region;
 
   /// Defer certificate trust decisions to Android OS, overriding the default of certificate pinning for Twilio back-end connections.
@@ -11,13 +12,16 @@ class Properties {
   /// Keeping this property at its default value of false allows the Twilio client SDK to determine trust when communicating with our servers.
   /// The default value is false.
   bool _deferCA;
+  //#endregion
 
+  //#region Public API properties
   /// Twilio server region to connect to.
   ///
   /// Instances exist in specific regions, so this should only be changed if needed.
   String get region {
     return _region;
   }
+  //#endregion
 
   Properties({
     String region,

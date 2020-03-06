@@ -1,4 +1,4 @@
-package unofficial.twilio.flutter.twilio_unofficial_programmable_chat
+package unofficial.twilio.flutter.twilio_unofficial_programmable_chat.listeners
 
 import com.twilio.chat.Channel
 import com.twilio.chat.ChatClient
@@ -6,6 +6,8 @@ import com.twilio.chat.ChatClientListener
 import com.twilio.chat.ErrorInfo
 import com.twilio.chat.User
 import io.flutter.plugin.common.EventChannel
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.Mapper
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.TwilioUnofficialProgrammableChatPlugin
 
 class ChatListener(val token: String, val properties: ChatClient.Properties) : ChatClientListener {
     var events: EventChannel.EventSink? = null

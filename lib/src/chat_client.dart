@@ -1,5 +1,6 @@
 part of twilio_unofficial_programmable_chat;
 
+//#region ChatClient events
 class ChannelUpdatedEvent {
   final Channel channel;
 
@@ -32,12 +33,14 @@ class NewMessageNotificationEvent {
         assert(messageSid != null),
         assert(messageIndex != null);
 }
+//#endregion
 
 /// Chat client - main entry point for the Chat SDK.
 class ChatClient {
   /// Stream for the native chat events.
   StreamSubscription<dynamic> _chatStream;
 
+  //#region Private API properties
   Properties _properties;
 
   Channels _channels;
@@ -49,12 +52,41 @@ class ChatClient {
   Users _users;
 
   bool _isReachabilityEnabled;
+  //#endregion
 
-  final StreamController<String> _onAddedToChannelNotificationCtrl = StreamController<String>.broadcast();
+  //#region Public API properties
+  /// Get properties for current client.
+  Properties get properties {
+    return _properties;
+  }
 
-  /// Called when client receives a push notification for added to channel event.
-  Stream<String> onAddedToChannelNotification;
+  /// [Channels] available to the current client.
+  Channels get channels {
+    return _channels;
+  }
 
+  /// Current transport state
+  ConnectionState get connectionState {
+    return _connectionState;
+  }
+
+  /// Get user identity for the current user.
+  String get myIdentity {
+    return _myIdentity;
+  }
+
+  /// Get [Users] interface.
+  Users get users {
+    return _users;
+  }
+
+  /// Get reachability service status.
+  bool get isReachabilityEnabled {
+    return _isReachabilityEnabled;
+  }
+  //#endregion
+
+  //#region Channel events
   final StreamController<Channel> _onChannelAddedCtrl = StreamController<Channel>.broadcast();
 
   /// Called when the current user has a channel added to their channel list, channel status is not specified.
@@ -88,7 +120,9 @@ class ChatClient {
   ///
   /// [Channel] synchronization updates are delivered via different callback.
   Stream<ChannelUpdatedEvent> onChannelUpdated;
+  //#endregion
 
+  //#region ChatClient events
   final StreamController<ChatClientSynchronizationStatus> _onClientSynchronizationCtrl = StreamController<ChatClientSynchronizationStatus>.broadcast();
 
   /// Called when client synchronization status changes.
@@ -103,6 +137,13 @@ class ChatClient {
 
   /// Called when an error condition occurs.
   Stream<ErrorInfo> onError;
+  //#endregion
+
+  //#region Notification events
+  final StreamController<String> _onAddedToChannelNotificationCtrl = StreamController<String>.broadcast();
+
+  /// Called when client receives a push notification for added to channel event.
+  Stream<String> onAddedToChannelNotification;
 
   final StreamController<String> _onInvitedToChannelNotificationCtrl = StreamController<String>.broadcast();
 
@@ -123,7 +164,9 @@ class ChatClient {
 
   /// Called when client receives a push notification for removed from channel event.
   Stream<String> onRemovedFromChannelNotification;
+  //#endregion
 
+  //#region Token events
   final StreamController<void> _onTokenAboutToExpireCtrl = StreamController<void>.broadcast();
 
   /// Called when token is about to expire soon.
@@ -137,7 +180,9 @@ class ChatClient {
   ///
   /// In response, [ChatClient] should generate a new token and call [ChatClient.updateToken] as soon as possible.
   Stream<void> onTokenExpired;
+  //#endregion
 
+  //#region User events
   final StreamController<User> _onUserSubscribedCtrl = StreamController<User>.broadcast();
 
   /// Called when a user is subscribed to and will receive realtime state updates.
@@ -152,41 +197,9 @@ class ChatClient {
 
   /// Called when user info is updated for currently loaded users.
   Stream<UserUpdatedEvent> onUserUpdated;
-
-  /// Get properties for current client.
-  Properties get properties {
-    return _properties;
-  }
-
-  /// [Channels] available to the current client.
-  Channels get channels {
-    return _channels;
-  }
-
-  /// Current transport state
-  ConnectionState get connectionState {
-    return _connectionState;
-  }
-
-  /// Get user identity for the current user.
-  String get myIdentity {
-    return _myIdentity;
-  }
-
-  /// Get [Users] interface.
-  Users get users {
-    return _users;
-  }
-
-  /// Get reachability service status.
-  bool get isReachabilityEnabled {
-    return _isReachabilityEnabled;
-  }
+  //#endregion
 
   ChatClient(this._myIdentity) : assert(_myIdentity != null) {
-    _chatStream = TwilioUnofficialProgrammableChat._chatChannel.receiveBroadcastStream(0).listen(_parseEvents);
-
-    onAddedToChannelNotification = _onAddedToChannelNotificationCtrl.stream;
     onChannelAdded = _onChannelAddedCtrl.stream;
     onChannelDeleted = _onChannelDeletedCtrl.stream;
     onChannelInvited = _onChannelInvitedCtrl.stream;
@@ -196,6 +209,7 @@ class ChatClient {
     onClientSynchronization = _onClientSynchronizationCtrl.stream;
     onConnectionState = _onConnectionStateCtrl.stream;
     onError = _onErrorCtrl.stream;
+    onAddedToChannelNotification = _onAddedToChannelNotificationCtrl.stream;
     onInvitedToChannelNotification = _onInvitedToChannelNotificationCtrl.stream;
     onNewMessageNotification = _onNewMessageNotificationCtrl.stream;
     onNotificationFailed = _onNotificationFailedCtrl.stream;
@@ -205,6 +219,8 @@ class ChatClient {
     onUserSubscribed = _onUserSubscribedCtrl.stream;
     onUserUnsubscribed = _onUserUnsubscribedCtrl.stream;
     onUserUpdated = _onUserUpdatedCtrl.stream;
+
+    _chatStream = TwilioUnofficialProgrammableChat._chatChannel.receiveBroadcastStream(0).listen(_parseEvents);
   }
 
   /// Construct from a map.
@@ -214,6 +230,7 @@ class ChatClient {
     return chatClient;
   }
 
+  //#region Public API methods
   /// Method to update the authentication token for this client.
   Future<void> updateToken(String token) async {
     try {
@@ -239,6 +256,7 @@ class ChatClient {
       throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
     }
   }
+  //#endregion
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {

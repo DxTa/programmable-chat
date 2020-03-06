@@ -7,6 +7,7 @@ part of twilio_unofficial_programmable_chat;
 ///
 /// From the channel descriptor you could obtain full [Channel] object by calling [ChannelDescriptor.getChannel].
 class ChannelDescriptor {
+  //#region Private API properties
   final Channels _channels;
 
   final String _sid;
@@ -30,7 +31,9 @@ class ChannelDescriptor {
   final int _messagesCount;
 
   final int _unconsumedMessagesCount;
+  //#endregion
 
+  //#region Public API properties
   /// Get channel SID.
   String get sid {
     return _sid;
@@ -86,6 +89,7 @@ class ChannelDescriptor {
   int get unconsumedMessagesCount {
     return _unconsumedMessagesCount;
   }
+  //#endregion
 
   ChannelDescriptor(
     this._sid,
@@ -131,8 +135,10 @@ class ChannelDescriptor {
     );
   }
 
+  //#region Public API methods
   /// Retrieve a full [Channel] object.
   Future<Channel> getChannel() async {
     return _channels.getChannel(_sid);
   }
+  //#endregion
 }

@@ -2,6 +2,7 @@ part of twilio_unofficial_programmable_chat;
 
 /// Representation of a Chat Error Object.
 class ErrorInfo implements Exception {
+  //#region Error codes
   /// This status is set if error occurred in the SDK and is not related to network operations.
   static int CLIENT_ERROR = 0;
 
@@ -16,6 +17,7 @@ class ErrorInfo implements Exception {
 
   /// This code is signaled when an attempt is made to query channel members or messages without synchronizing first.
   static int CHANNEL_NOT_SYNCHRONIZED = -6;
+  //#endregion
 
   /// Code indicator, should match any of the [ErrorInfo] static properties.
   final int code;

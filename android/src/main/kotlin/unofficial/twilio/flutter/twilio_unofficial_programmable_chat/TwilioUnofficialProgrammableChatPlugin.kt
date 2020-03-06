@@ -8,6 +8,8 @@ import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.PluginRegistry.Registrar
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.listeners.ChannelListener
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.listeners.ChatListener
 
 /** TwilioUnofficialProgrammableChatPlugin */
 class TwilioUnofficialProgrammableChatPlugin : FlutterPlugin {
@@ -34,6 +36,8 @@ class TwilioUnofficialProgrammableChatPlugin : FlutterPlugin {
             instance.onAttachedToEngine(registrar.context(), registrar.messenger())
         }
 
+        lateinit var messenger: BinaryMessenger
+
         @JvmStatic
         val LOG_TAG = "TwilioUnofficial_PChat"
 
@@ -42,6 +46,9 @@ class TwilioUnofficialProgrammableChatPlugin : FlutterPlugin {
         var nativeDebug: Boolean = false
 
         lateinit var chatListener: ChatListener
+
+        var channelChannels: HashMap<String, EventChannel> = hashMapOf()
+        var channelListeners: HashMap<String, ChannelListener> = hashMapOf()
 
         @JvmStatic
         fun debug(msg: String) {
@@ -57,6 +64,7 @@ class TwilioUnofficialProgrammableChatPlugin : FlutterPlugin {
     }
 
     private fun onAttachedToEngine(applicationContext: Context, messenger: BinaryMessenger) {
+        TwilioUnofficialProgrammableChatPlugin.messenger = messenger
         val pluginHandler = PluginHandler(applicationContext)
         methodChannel = MethodChannel(messenger, "twilio_unofficial_programmable_chat")
         methodChannel.setMethodCallHandler(pluginHandler)

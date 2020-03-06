@@ -2,12 +2,16 @@ part of twilio_unofficial_programmable_chat;
 
 /// Provides access to channels collection, allows to create new channels.
 class Channels {
+  //#region Private API properties
   final List<Channel> _subscribedChannels = [];
+  //#endregion
 
+  //#region Public API properties
   /// Request list of user's joined channels.
   List<Channel> get subscribedChannels {
     return [..._subscribedChannels];
   }
+  //#endregion
 
   Channels();
 
@@ -18,13 +22,14 @@ class Channels {
     return channels;
   }
 
+  //#region Public API methods
   /// Create a [Channel] with friendly name and type.
   ///
   /// This operation creates a new channel entity on the backend.
   Future<Channel> createChannel(String friendlyName, ChannelType channelType) async {
     assert(channelType != null);
     try {
-      var methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channels#createChannel', <String, Object>{'friendlyName': friendlyName, 'channelType': EnumToString.parse(channelType)});
+      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channels#createChannel', <String, Object>{'friendlyName': friendlyName, 'channelType': EnumToString.parse(channelType)});
       final channelMap = Map<String, dynamic>.from(methodData);
       return Channel._fromMap(channelMap);
     } on PlatformException catch (err) {
@@ -38,7 +43,7 @@ class Channels {
   /// Retrieves a [Channel] with the specified SID or unique name.
   Future<Channel> getChannel(String channelSidOrUniqueName) async {
     try {
-      var methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channels#getChannel', <String, Object>{'channelSidOrUniqueName': channelSidOrUniqueName});
+      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channels#getChannel', <String, Object>{'channelSidOrUniqueName': channelSidOrUniqueName});
       final channelMap = Map<String, dynamic>.from(methodData);
       return Channel._fromMap(channelMap);
     } on PlatformException catch (err) {
@@ -57,7 +62,7 @@ class Channels {
   /// Returned list is wrapped in a [Paginator].
   Future<Paginator<ChannelDescriptor>> getPublicChannelsList() async {
     try {
-      var methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channels#getPublicChannelsList');
+      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channels#getPublicChannelsList');
       final paginatorMap = Map<String, dynamic>.from(methodData);
       return Paginator<ChannelDescriptor>._fromMap(paginatorMap, passOn: {'channels': this});
     } on PlatformException catch (err) {
@@ -76,7 +81,7 @@ class Channels {
   /// Returned list is wrapped in a [Paginator].
   Future<Paginator<ChannelDescriptor>> getUserChannelsList() async {
     try {
-      var methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channels#getUserChannelsList');
+      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channels#getUserChannelsList');
       final paginatorMap = Map<String, dynamic>.from(methodData);
       return Paginator<ChannelDescriptor>._fromMap(paginatorMap, passOn: {'channels': this});
     } on PlatformException catch (err) {
@@ -92,7 +97,7 @@ class Channels {
   /// The effect of this function is to find and return all Member instances across multiple channels with the given identity.
   Future<List<Member>> getMembersByIdentity(String identity) async {
     try {
-      var methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channels#getMembersByIdentity', {'identity': identity});
+      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channels#getMembersByIdentity', {'identity': identity});
       final List<Map<String, dynamic>> memberMapList = methodData.map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r)).toList();
 
       var memberList = [];
@@ -107,6 +112,7 @@ class Channels {
       throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
     }
   }
+  //#endregion
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {

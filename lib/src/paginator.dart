@@ -51,7 +51,7 @@ class Paginator<T> {
   /// Query the next page.
   Future<Paginator<T>> requestNextPage() async {
     try {
-      var methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Paginator#requestNextPage', <String, Object>{'pageId': _pageId, 'itemType': _itemType});
+      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Paginator#requestNextPage', <String, Object>{'pageId': _pageId, 'itemType': _itemType});
       final paginatorMap = Map<String, dynamic>.from(methodData);
       return Paginator<T>._fromMap(paginatorMap, passOn: _passOn);
     } on PlatformException catch (err) {

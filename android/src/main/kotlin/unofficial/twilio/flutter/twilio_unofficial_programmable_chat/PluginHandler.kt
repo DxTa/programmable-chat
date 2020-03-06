@@ -11,8 +11,11 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.listeners.ChatListener
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.ChannelMethods
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.ChannelsMethods
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.ChatClientMethods
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.MemberMethods
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.MembersMethods
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.MessagesMethods
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.PaginatorMethods
@@ -50,19 +53,34 @@ class PluginHandler(private val applicationContext: Context) : MethodCallHandler
             "Users#getUserDescriptor" -> UsersMethods.getUserDescriptor(call, result)
             "Users#getAndSubscribeUser" -> UsersMethods.getAndSubscribeUser(call, result)
 
+            "Channel#join" -> ChannelMethods.join(call, result)
+            "Channel#leave" -> ChannelMethods.leave(call, result)
+            "Channel#typing" -> ChannelMethods.typing(call, result)
+            "Channel#declineInvitation" -> ChannelMethods.declineInvitation(call, result)
+            "Channel#destroy" -> ChannelMethods.destroy(call, result)
+            "Channel#getMessagesCount" -> ChannelMethods.getMessagesCount(call, result)
+            "Channel#getUnconsumedMessagesCount" -> ChannelMethods.getUnconsumedMessagesCount(call, result)
+            "Channel#getMembersCount" -> ChannelMethods.getMembersCount(call, result)
+
             "Channels#createChannel" -> ChannelsMethods.createChannel(call, result)
             "Channels#getChannel" -> ChannelsMethods.getChannel(call, result)
             "Channels#getPublicChannelsList" -> ChannelsMethods.getPublicChannelsList(call, result)
             "Channels#getUserChannelsList" -> ChannelsMethods.getUserChannelsList(call, result)
             "Channels#getMembersByIdentity" -> ChannelsMethods.getMembersByIdentity(call, result)
 
+            "Member#getUserDescriptor" -> MemberMethods.getUserDescriptor(call, result)
+            "Member# getAndSubscribeUser" -> MemberMethods.getAndSubscribeUser(call, result)
+
             "Members#addByIdentity" -> MembersMethods.addByIdentity(call, result)
             "Members#inviteByIdentity" -> MembersMethods.inviteByIdentity(call, result)
             "Members#removeByIdentity" -> MembersMethods.removeByIdentity(call, result)
 
             "Messages#sendMessage" -> MessagesMethods.sendMessage(call, result)
+            "Messages#removeMessage" -> MessagesMethods.removeMessage(call, result)
             "Messages#getMessagesBefore" -> MessagesMethods.getMessagesBefore(call, result)
-            "Messages#getMessagesAfter" -> MessagesMethods.getMessagesBefore(call, result)
+            "Messages#getMessagesAfter" -> MessagesMethods.getMessagesAfter(call, result)
+            "Messages#getLastMessages" -> MessagesMethods.getLastMessages(call, result)
+            "Messages#getMessageByIndex" -> MessagesMethods.getMessageByIndex(call, result)
 
             "Paginator#requestNextPage" -> PaginatorMethods.requestNextPage(call, result)
 

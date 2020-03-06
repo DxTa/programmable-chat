@@ -13,6 +13,8 @@ import com.twilio.chat.Paginator
 import com.twilio.chat.User
 import com.twilio.chat.UserDescriptor
 import com.twilio.chat.Users
+import io.flutter.plugin.common.EventChannel
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.listeners.ChannelListener
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -47,6 +49,25 @@ object Mapper {
         if (channel == null || compareChannel != null && channel.sid == compareChannel.sid) {
             return null
         }
+
+        // Setting flutter event listener for the given channel if one does not yet exist.
+        if (!TwilioUnofficialProgrammableChatPlugin.channelChannels.containsKey(channel.sid)) {
+            TwilioUnofficialProgrammableChatPlugin.channelChannels[channel.sid] = EventChannel(TwilioUnofficialProgrammableChatPlugin.messenger, "twilio_unofficial_programmable_chat/${channel.sid}")
+            TwilioUnofficialProgrammableChatPlugin.channelChannels[channel.sid]?.setStreamHandler(object : EventChannel.StreamHandler {
+                override fun onListen(arguments: Any?, events: EventChannel.EventSink) {
+                    TwilioUnofficialProgrammableChatPlugin.debug("Mapper.channelToMap => EventChannel for Channel(${channel.sid}) attached")
+                    TwilioUnofficialProgrammableChatPlugin.channelListeners[channel.sid] = ChannelListener(events)
+                    channel.addListener(TwilioUnofficialProgrammableChatPlugin.channelListeners[channel.sid])
+                }
+
+                override fun onCancel(arguments: Any) {
+                    TwilioUnofficialProgrammableChatPlugin.debug("Mapper.channelToMap => EventChannel for Channel(${channel.sid}) detached")
+                    channel.removeListener(TwilioUnofficialProgrammableChatPlugin.channelListeners[channel.sid])
+                    TwilioUnofficialProgrammableChatPlugin.channelListeners.remove(channel.sid)
+                }
+            })
+        }
+
         return mapOf(
                 "sid" to channel.sid,
                 "friendlyName" to channel.friendlyName,
@@ -173,7 +194,7 @@ object Mapper {
                 "dateUpdated" to dateToString(channelDescriptor.dateUpdated),
                 "dateCreated" to dateToString(channelDescriptor.dateCreated),
                 "createdBy" to channelDescriptor.createdBy,
-                "membersCount" to channelDescriptor.membersCount,
+                "getMembersCount" to channelDescriptor.membersCount,
                 "messagesCount" to channelDescriptor.messagesCount,
                 "unconsumedMessagesCount" to channelDescriptor.unconsumedMessagesCount,
                 "status" to channelDescriptor.status.toString()

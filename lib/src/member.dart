@@ -2,6 +2,7 @@ part of twilio_unofficial_programmable_chat;
 
 /// Representation of a [Channel] member object.
 class Member {
+  //#region Private API properties
   final String _sid;
 
   int _lastConsumedMessageIndex;
@@ -16,7 +17,9 @@ class Member {
   Map<String, dynamic> _attributes;
 
   final MemberType _type;
+  //#endregion
 
+  //#region Public API properties
   /// Returns unique identifier of a member on a [Channel].
   String get sid {
     return _sid;
@@ -46,6 +49,7 @@ class Member {
   MemberType get type {
     return _type;
   }
+  //#endregion
 
   Member(this._sid, this._type, this._channel)
       : assert(_sid != null),
@@ -62,9 +66,35 @@ class Member {
     return member;
   }
 
-  Future<UserDescriptor> getUserDescriptor() async {}
+  //#region Public API methods
+  /// Return user descriptor for current member.
+  Future<UserDescriptor> getUserDescriptor() async {
+    try {
+      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Member#getUserDescriptor', {'memberSid': _sid, 'channelSid': _channel.sid});
+      final userDescriptorMap = Map<String, dynamic>.from(methodData);
+      return UserDescriptor._fromMap(userDescriptorMap);
+    } on PlatformException catch (err) {
+      if (err.code == 'ERROR') {
+        rethrow;
+      }
+      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+    }
+  }
 
-  Future<User> getAndSubscribeUser() async {}
+  /// Return subscribed user object for current member.
+  Future<User> getAndSubscribeUser() async {
+    try {
+      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Member#getAndSubscribeUser', {'memberSid': _sid, 'channelSid': _channel.sid});
+      final userMap = Map<String, dynamic>.from(methodData);
+      return User._fromMap(userMap);
+    } on PlatformException catch (err) {
+      if (err.code == 'ERROR') {
+        rethrow;
+      }
+      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+    }
+  }
+  //#endregion
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {

@@ -2,10 +2,13 @@ part of twilio_unofficial_programmable_chat;
 
 /// Provides access to channel members and allows to add/remove members.
 class Members {
+  //#region Private API properties
   final Channel _channel;
 
   final List<Member> _membersList = [];
+  //#endregion
 
+  //#region Public API properties
   /// Return channel this member list belongs to.
   Channel get channel {
     return _channel;
@@ -15,6 +18,7 @@ class Members {
   List<Member> get membersList {
     return [...membersList];
   }
+  //#endregion
 
   Members(this._channel) : assert(_channel != null);
 
@@ -25,6 +29,7 @@ class Members {
     return members;
   }
 
+  //#region Public API methods
   /// Get a channel member by identity.
   Member getMember(String identity) {
     return _membersList.firstWhere((m) => m.identity == identity, orElse: () => null);
@@ -91,6 +96,7 @@ class Members {
       throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
     }
   }
+  //#endregion
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
