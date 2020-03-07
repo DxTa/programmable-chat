@@ -44,7 +44,7 @@ class Messages {
   /// Removes a message from the channel.
   Future<void> removeMessage(Message message) async {
     try {
-      await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Messages#removeMessage', {'channelSid': _channel.sid, 'messageIndex': message.messageIndex.});
+      await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Messages#removeMessage', {'channelSid': _channel.sid, 'messageIndex': message.messageIndex});
     } on PlatformException catch (err) {
       if (err.code == 'ERROR') {
         rethrow;
@@ -121,11 +121,62 @@ class Messages {
     }
   }
 
-  Future<Message> getMessageByIndex(int index) async {
+  /// Get message object by known index.
+  Future<Message> getMessageByIndex(int messageIndex) async {
     try {
-      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Messages#getMessageByIndex', {'channelSid': _channel.sid, 'messageIndex': message.messageIndex});
+          final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Messages#getMessageByIndex', {'channelSid': _channel.sid, 'messageIndex': messageIndex});
       final messageMap = Map<String, dynamic>.from(methodData);
       return Message._fromMap(messageMap, this);
+    } on PlatformException catch (err) {
+      if (err.code == 'ERROR') {
+        rethrow;
+      }
+      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+    }
+  }
+
+  /// Set user last consumed message index for the channel.
+  Future<int> setLastConsumedMessageIndexWithResult(int lastConsumedMessageIndex) async {
+    try {
+      return _lastConsumedMessageIndex = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Messages#setLastConsumedMessageIndexWithResult', {'channelSid': _channel.sid, 'lastConsumedMessageIndex': lastConsumedMessageIndex });
+    } on PlatformException catch (err) {
+      if (err.code == 'ERROR') {
+        rethrow;
+      }
+      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+    }
+  }
+
+  /// Increase user last consumed message index for the channel.
+  ///
+  /// Index is ignored if it is smaller than user current index.
+  Future<int> advanceLastConsumedMessageIndexWithResult(int lastConsumedMessageIndex) async {
+    try {
+      return _lastConsumedMessageIndex = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Messages#advanceLastConsumedMessageIndexWithResult', {'channelSid': _channel.sid, 'lastConsumedMessageIndex': lastConsumedMessageIndex });
+    } on PlatformException catch (err) {
+      if (err.code == 'ERROR') {
+        rethrow;
+      }
+      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+    }
+  }
+
+  /// Set last consumed message index to last message index in channel.
+  Future<int> setAllMessagesConsumedWithResult() async {
+    try {
+      return _lastConsumedMessageIndex = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Messages#setAllMessagesConsumedWithResult', {'channelSid': _channel.sid });
+    } on PlatformException catch (err) {
+      if (err.code == 'ERROR') {
+        rethrow;
+      }
+      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+    }
+  }
+
+  /// Set last consumed message index before the first message index in channel.
+  Future<int> setNoMessagesConsumedWithResult() async {
+    try {
+      return _lastConsumedMessageIndex = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Messages#setNoMessagesConsumedWithResult', {'channelSid': _channel.sid });
     } on PlatformException catch (err) {
       if (err.code == 'ERROR') {
         rethrow;

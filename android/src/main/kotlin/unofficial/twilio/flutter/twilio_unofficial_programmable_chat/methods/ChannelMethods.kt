@@ -2,14 +2,10 @@ package unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods
 
 import com.twilio.chat.CallbackListener
 import com.twilio.chat.Channel
-import com.twilio.chat.ChannelDescriptor
 import com.twilio.chat.ErrorInfo
-import com.twilio.chat.Paginator
 import com.twilio.chat.StatusListener
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.Mapper
-import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.PaginatorManager
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.TwilioUnofficialProgrammableChatPlugin
 
 object ChannelMethods {

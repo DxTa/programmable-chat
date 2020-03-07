@@ -66,7 +66,9 @@ class Users {
     try {
       final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Users#getAndSubscribeUser', {'identity': identity});
       final userMap = Map<String, dynamic>.from(methodData);
-      return User._fromMap(userMap);
+      final user = User._fromMap(userMap);
+      _subscribedUsers.add(user);
+      return user;
     } on PlatformException catch (err) {
       if (err.code == 'ERROR') {
         rethrow;

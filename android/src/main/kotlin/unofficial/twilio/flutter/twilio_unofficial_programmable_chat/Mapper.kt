@@ -16,7 +16,7 @@ import com.twilio.chat.Users
 import io.flutter.plugin.common.EventChannel
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.listeners.ChannelListener
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 
 object Mapper {
     fun chatClientToMap(chatClient: ChatClient): Map<String, Any> {
@@ -120,6 +120,8 @@ object Mapper {
                 "messageBody" to message.messageBody,
                 "channelSid" to message.channelSid,
                 "channel" to channelToMap(message.channel),
+                "memberSid" to message.memberSid,
+                "member" to memberToMap(message.member),
                 "messageIndex" to message.messageIndex,
                 // TODO doesnt work "attributes" to message.attributes,
                 "type" to message.type.toString(),

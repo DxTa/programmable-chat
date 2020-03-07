@@ -1,6 +1,7 @@
 part of twilio_unofficial_programmable_chat;
 
 class Message {
+  //#region Private API properties
   final String _sid;
 
   final String _author;
@@ -13,6 +14,10 @@ class Message {
 
   final Channel _channel;
 
+  final String _memberSid;
+
+  final Member _member;
+
   final Messages _messages;
 
   final int _messageIndex;
@@ -24,6 +29,80 @@ class Message {
   final bool _hasMedia;
 
   final MessageMedia _media;
+  //#endregion
+
+  //#region Public API properties
+  /// Returns the identifier for this message.
+  String get sid {
+    return _sid;
+  }
+
+  /// The global identity of the author of this message.
+  String get author {
+    return _author;
+  }
+
+  /// The creation date for this message.
+  DateTime get dateCreated {
+    return _dateCreated;
+  }
+
+  /// The body for this message.
+  String get messageBody {
+    return _messageBody;
+  }
+
+  /// Returns the channel SID of the channel this message belongs to.
+  String get channelSid {
+    return _channelSid;
+  }
+
+  /// Returns the parent channel this message belongs to.
+  Channel get channel {
+    return _channel;
+  }
+
+  /// Returns the member SID of the member this message sent by.
+  String get memberSid {
+    return _memberSid;
+  }
+
+  /// Returns the member this message sent by.
+  Member get member {
+    return _member;
+  }
+
+  /// Returns the parent messages object this message belongs to.
+  Messages get messages {
+    return _messages;
+  }
+
+  /// Returns the index number for this message.
+  int get messageIndex {
+    return _messageIndex;
+  }
+
+  // attributes
+
+  /// Returns message type.
+  ///
+  /// If message has media type then [Message.getMedia] shall return the descriptor for the attached media.
+  MessageType get type {
+    return _type;
+  }
+
+  /// Helper method to check if message has media type.
+  bool get hasMedia {
+    return _hasMedia;
+  }
+
+  /// Get media descriptor of an associated media attachment, if exists.
+  ///
+  /// If the message type is [MessageType.TEXT] this method will return null.
+  MessageMedia get media {
+    return _media;
+  }
+  //#endregion
 
   Message(
     this._sid,
@@ -31,6 +110,8 @@ class Message {
     this._dateCreated,
     this._channelSid,
     this._channel,
+    this._memberSid,
+    this._member,
     this._messages,
     this._messageIndex,
     this._type,
@@ -41,6 +122,8 @@ class Message {
         assert(_dateCreated != null),
         assert(_channelSid != null),
         assert(_channel != null),
+        assert(_memberSid != null),
+        assert(_member != null),
         assert(_messages != null),
         assert(_messageIndex != null),
         assert(_type != null),
@@ -55,6 +138,8 @@ class Message {
       DateTime.parse(map['dateCreated']),
       map['channelSid'],
       Channel._fromMap(map['channel']),
+      map['memberSid'],
+      Member._fromMap(map['member']),
       messages,
       map['messageIndex'],
       EnumToString.fromString(MessageType.values, map['type']),
@@ -65,7 +150,24 @@ class Message {
     return message;
   }
 
-  Future<void> updateMessageBody(String body) async {}
+  //#region Public API methods
+  /// Updates the body for a message.
+  Future<void> updateMessageBody(String body) async {
+    try {
+      await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Message#updateMessageBody', {
+        'channelSid': _channel.sid,
+        'messageIndex': _messageIndex,
+        'body': body
+      });
+      _messageBody = body;
+    } on PlatformException catch (err) {
+      if (err.code == 'ERROR') {
+        rethrow;
+      }
+      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+    }
+  }
+  //#endregion
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {

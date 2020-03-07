@@ -17,8 +17,10 @@ import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.Cha
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.ChatClientMethods
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.MemberMethods
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.MembersMethods
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.MessageMethods
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.MessagesMethods
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.PaginatorMethods
+import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.UserMethods
 import unofficial.twilio.flutter.twilio_unofficial_programmable_chat.methods.UsersMethods
 
 class PluginHandler(private val applicationContext: Context) : MethodCallHandler, ActivityAware {
@@ -49,6 +51,8 @@ class PluginHandler(private val applicationContext: Context) : MethodCallHandler
             "ChatClient#updateToken" -> ChatClientMethods.updateToken(call, result)
             "ChatClient#shutdown" -> ChatClientMethods.shutdown(call, result)
 
+            "User#unsubscribe" -> UserMethods.unsubscribe(call, result)
+
             "Users#getChannelUserDescriptors" -> UsersMethods.getChannelUserDescriptors(call, result)
             "Users#getUserDescriptor" -> UsersMethods.getUserDescriptor(call, result)
             "Users#getAndSubscribeUser" -> UsersMethods.getAndSubscribeUser(call, result)
@@ -75,12 +79,18 @@ class PluginHandler(private val applicationContext: Context) : MethodCallHandler
             "Members#inviteByIdentity" -> MembersMethods.inviteByIdentity(call, result)
             "Members#removeByIdentity" -> MembersMethods.removeByIdentity(call, result)
 
+            "Message#updateMessageBody" -> MessageMethods.updateMessageBody(call, result)
+
             "Messages#sendMessage" -> MessagesMethods.sendMessage(call, result)
             "Messages#removeMessage" -> MessagesMethods.removeMessage(call, result)
             "Messages#getMessagesBefore" -> MessagesMethods.getMessagesBefore(call, result)
             "Messages#getMessagesAfter" -> MessagesMethods.getMessagesAfter(call, result)
             "Messages#getLastMessages" -> MessagesMethods.getLastMessages(call, result)
             "Messages#getMessageByIndex" -> MessagesMethods.getMessageByIndex(call, result)
+            "Messages#setLastConsumedMessageIndexWithResult" -> MessagesMethods.setLastConsumedMessageIndexWithResult(call, result)
+            "Messages#advanceLastConsumedMessageIndexWithResult" -> MessagesMethods.advanceLastConsumedMessageIndexWithResult(call, result)
+            "Messages#setAllMessagesConsumedWithResult" -> MessagesMethods.setAllMessagesConsumedWithResult(call, result)
+            "Messages#setNoMessagesConsumedWithResult" -> MessagesMethods.setNoMessagesConsumedWithResult(call, result)
 
             "Paginator#requestNextPage" -> PaginatorMethods.requestNextPage(call, result)
 

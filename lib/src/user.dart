@@ -1,6 +1,7 @@
 part of twilio_unofficial_programmable_chat;
 
 class User {
+  //#region Private API properties
   String _friendlyName;
 
   Map<String, dynamic> _attributes;
@@ -12,7 +13,9 @@ class User {
   bool _isNotifiable;
 
   bool _isSubscribed;
+  //#endregion
 
+  //#region Public API properties
   /// Method that returns the friendlyName from the user info.
   String get friendlyName {
     return _friendlyName;
@@ -37,6 +40,7 @@ class User {
   bool get isSubscribed {
     return _isSubscribed;
   }
+  //#endregion
 
   User(this._identity) : assert(_identity != null);
 
@@ -47,7 +51,19 @@ class User {
     return user;
   }
 
-  Future<void> unsubscribe() async {}
+  //#region Public API methods
+  Future<void> unsubscribe() async {
+    try {
+      // TODO: It is still in the [Users.subscribedUsers] list...
+      await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('User#unsubscribe', {'identity': _identity });
+    } on PlatformException catch (err) {
+      if (err.code == 'ERROR') {
+        rethrow;
+      }
+      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+    }
+  }
+  //#endregion
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {

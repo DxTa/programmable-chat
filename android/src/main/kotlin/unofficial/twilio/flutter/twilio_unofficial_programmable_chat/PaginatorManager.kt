@@ -1,8 +1,7 @@
 package unofficial.twilio.flutter.twilio_unofficial_programmable_chat
 
 import com.twilio.chat.Paginator
-import java.util.UUID
-import kotlin.collections.HashMap
+import java.util.*
 
 object PaginatorManager {
     private val paginators: HashMap<String, Paginator<Any>> = hashMapOf()
