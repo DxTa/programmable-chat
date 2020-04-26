@@ -150,31 +150,31 @@ class Message {
   /// Updates the body for a message.
   Future<void> updateMessageBody(String body) async {
     try {
-      _messageBody = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Message#updateMessageBody', {
+      _messageBody = await TwilioProgrammableChat._methodChannel.invokeMethod('Message#updateMessageBody', {
         'channelSid': _channel.sid,
         'messageIndex': _messageIndex,
         'body': body
       });
     } on PlatformException catch (err) {
-      throw throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw throw TwilioProgrammableChat._convertException(err);
     }
   }
 
   /// Retrieve attributes associated with this message.
   Future<Map<String, dynamic>> getAttributes() async {
     try {
-      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Message#getAttributes', {'channelSid': _sid, 'messageIndex': _messageIndex}) as Map<String, dynamic>;
+      return Map<String, dynamic>.from(await TwilioProgrammableChat._methodChannel.invokeMethod('Message#getAttributes', {'channelSid': _sid, 'messageIndex': _messageIndex}));
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
   /// Set attributes associated with this message.
   Future<Map<String, dynamic>> setAttributes(Map<String, dynamic> attributes) async {
     try {
-      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Message#setAttributes', {'channelSid': _sid, 'messageIndex': _messageIndex, 'attributes': attributes}) as Map<String, dynamic>;
+      return Map<String, dynamic>.from(await TwilioProgrammableChat._methodChannel.invokeMethod('Message#setAttributes', {'channelSid': _sid, 'messageIndex': _messageIndex, 'attributes': attributes}));
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
   //#endregion

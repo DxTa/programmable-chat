@@ -27,8 +27,8 @@ class JoinBloc {
         TwilioChatTokenRequest(identity: model.identity),
       );
       var properties = Properties();
-      await TwilioUnofficialProgrammableChat.debug(dart: true, native: true);
-      var chatClient = await TwilioUnofficialProgrammableChat.create(twilioRoomTokenResponse.token, properties);
+      await TwilioProgrammableChat.debug(dart: true, native: true);
+      var chatClient = await TwilioProgrammableChat.create(twilioRoomTokenResponse.token, properties);
       updateWith(
         identity: twilioRoomTokenResponse.identity,
         chatClient: chatClient

@@ -27,13 +27,13 @@ class User {
   }
 
   /// Return user's online status, if available,
-  // TODO: Should probaly be a async method for real time
+  // TODO(WLFN): Should probaly be a async method for real time
   bool get isOnline {
     return _isOnline;
   }
 
   /// Return user's push reachability.
-  // TODO: Should probaly be a async method for real time
+  // TODO(WLFN): Should probaly be a async method for real time
   bool get isNotifiable {
     return _isNotifiable;
   }
@@ -56,10 +56,10 @@ class User {
   //#region Public API methods
   Future<void> unsubscribe() async {
     try {
-      // TODO: It is still in the [Users.subscribedUsers] list...
-      await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('User#unsubscribe', {'identity': _identity });
+      // TODO(WLFN): It is still in the [Users.subscribedUsers] list...
+      await TwilioProgrammableChat._methodChannel.invokeMethod('User#unsubscribe', {'identity': _identity });
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
   //#endregion
@@ -67,7 +67,7 @@ class User {
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
     _friendlyName = map['friendlyName'];
-    _attributes = map['attributes'];
+//    _attributes = Map<String, dynamic>.from(map['attributes']);
     _isOnline = map['isOnline'];
     _isNotifiable = map['isNotifiable'];
     _isSubscribed = map['isSubscribed'];

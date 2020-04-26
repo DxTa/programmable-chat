@@ -12,25 +12,25 @@ class ChannelDescriptor {
 
   final String _sid;
 
-  final String _friendlyName;
+  String _friendlyName;
 
-  final String _uniqueName;
+  String _uniqueName;
 
-  final Map<String, dynamic> _attributes;
+  Map<String, dynamic> _attributes;
 
   final ChannelStatus _status;
 
   final DateTime _dateCreated;
 
-  final DateTime _dateUpdated;
+  DateTime _dateUpdated;
 
   final String _createdBy;
 
-  final int _membersCount;
+  int _membersCount;
 
-  final int _messagesCount;
+  int _messagesCount;
 
-  final int _unconsumedMessagesCount;
+  int _unconsumedMessagesCount;
   //#endregion
 
   //#region Public API properties
@@ -94,46 +94,27 @@ class ChannelDescriptor {
 
   ChannelDescriptor(
     this._sid,
-    this._friendlyName,
-    this._uniqueName,
-    this._attributes,
     this._status,
     this._dateCreated,
-    this._dateUpdated,
     this._createdBy,
-    this._membersCount,
-    this._messagesCount,
-    this._unconsumedMessagesCount,
     this._channels,
   )   : assert(_sid != null),
-        assert(_friendlyName != null),
-        assert(_uniqueName != null),
-        assert(_attributes != null),
         assert(_status != null),
         assert(_dateCreated != null),
-        assert(_dateUpdated != null),
         assert(_createdBy != null),
-        assert(_membersCount != null),
-        assert(_messagesCount != null),
-        assert(_unconsumedMessagesCount != null),
         assert(_channels != null);
 
   /// Construct from a map.
   factory ChannelDescriptor._fromMap(Map<String, dynamic> map, Channels channels) {
-    return ChannelDescriptor(
+    var channelDescriptor = ChannelDescriptor(
       map['sid'],
-      map['friendlyName'],
-      map['uniqueName'],
-      map['attributes'],
       EnumToString.fromString(ChannelStatus.values, map['status']),
       DateTime.parse(map['dateCreated']),
-      DateTime.parse(map['dateUpdated']),
       map['createdBy'],
-      map['membersCount'],
-      map['messagesCount'],
-      map['unconsumedMessagesCount'],
       channels,
     );
+    channelDescriptor._updateFromMap(map);
+    return channelDescriptor;
   }
 
   //#region Public API methods
@@ -142,4 +123,21 @@ class ChannelDescriptor {
     return _channels.getChannel(_sid);
   }
   //#endregion
+
+  /// Update properties from a map.
+  void _updateFromMap(Map<String, dynamic> map) {
+    _uniqueName = map['uniqueName'];
+    assert(_uniqueName != null);
+    _friendlyName = map['friendlyName'];
+    assert(_friendlyName != null);
+    _attributes = Map<String, dynamic>.from(map['attributes']);
+    _dateUpdated = DateTime.parse(map['dateUpdated']);
+    assert(_dateUpdated != null);
+    _membersCount = map['membersCount'];
+    assert(_membersCount != null);
+    _messagesCount = map['messagesCount'];
+    assert(_messagesCount != null);
+    _unconsumedMessagesCount = map['unconsumedMessagesCount'];
+    assert(_unconsumedMessagesCount != null);
+  }
 }

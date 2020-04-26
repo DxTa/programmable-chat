@@ -29,7 +29,7 @@ Create a list of more environment information, like:
 ```
 Enter log information in this code block
 
-You can add this to your app for debug logging: `TwilioUnofficialProgrammableChat.debug(dart: true, native: true);`
+You can add this to your app for debug logging: `TwilioProgrammableChat.debug(dart: true, native: true);`
 ```
 
 # More information

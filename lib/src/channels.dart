@@ -29,7 +29,7 @@ class Channels {
   Future<Channel> createChannel(String friendlyName, ChannelType channelType) async {
     assert(channelType != null);
     try {
-      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channels#createChannel', <String, Object>{'friendlyName': friendlyName, 'channelType': EnumToString.parse(channelType)});
+      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Channels#createChannel', <String, Object>{'friendlyName': friendlyName, 'channelType': EnumToString.parse(channelType)});
       final channelMap = Map<String, dynamic>.from(methodData);
       return Channel._fromMap(channelMap);
     } on PlatformException catch (err) {
@@ -43,11 +43,11 @@ class Channels {
   /// Retrieves a [Channel] with the specified SID or unique name.
   Future<Channel> getChannel(String channelSidOrUniqueName) async {
     try {
-      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channels#getChannel', <String, Object>{'channelSidOrUniqueName': channelSidOrUniqueName});
+      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Channels#getChannel', <String, Object>{'channelSidOrUniqueName': channelSidOrUniqueName});
       final channelMap = Map<String, dynamic>.from(methodData);
       return Channel._fromMap(channelMap);
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -59,11 +59,11 @@ class Channels {
   /// Returned list is wrapped in a [Paginator].
   Future<Paginator<ChannelDescriptor>> getPublicChannelsList() async {
     try {
-      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channels#getPublicChannelsList');
+      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Channels#getPublicChannelsList');
       final paginatorMap = Map<String, dynamic>.from(methodData);
       return Paginator<ChannelDescriptor>._fromMap(paginatorMap, passOn: {'channels': this});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -75,11 +75,11 @@ class Channels {
   /// Returned list is wrapped in a [Paginator].
   Future<Paginator<ChannelDescriptor>> getUserChannelsList() async {
     try {
-      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channels#getUserChannelsList');
+      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Channels#getUserChannelsList');
       final paginatorMap = Map<String, dynamic>.from(methodData);
       return Paginator<ChannelDescriptor>._fromMap(paginatorMap, passOn: {'channels': this});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -88,7 +88,7 @@ class Channels {
   /// The effect of this function is to find and return all Member instances across multiple channels with the given identity.
   Future<List<Member>> getMembersByIdentity(String identity) async {
     try {
-      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channels#getMembersByIdentity', {'identity': identity});
+      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Channels#getMembersByIdentity', {'identity': identity});
       final List<Map<String, dynamic>> memberMapList = methodData.map<Map<String, dynamic>>((r) => Map<String, dynamic>.from(r)).toList();
 
       var memberList = [];
@@ -97,7 +97,7 @@ class Channels {
       }
       return memberList;
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
   //#endregion

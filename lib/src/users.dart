@@ -34,22 +34,22 @@ class Users {
   /// This is a convenience function allowing to query user list in a channel. The returned paginator can be used to iterate full user list in the channel roster.
   Future<Paginator<UserDescriptor>> getChannelUserDescriptors(String channelSid) async {
     try {
-      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Users#getChannelUserDescriptors', {'channelSid': channelSid});
+      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Users#getChannelUserDescriptors', {'channelSid': channelSid});
       final paginatorMap = Map<String, dynamic>.from(methodData);
       return Paginator<UserDescriptor>._fromMap(paginatorMap, passOn: {'channels': this});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
   /// Get user descriptor based on user identity.
   Future<UserDescriptor> getUserDescriptor(String identity) async {
     try {
-      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Users#getUserDescriptor', {'identity': identity});
+      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Users#getUserDescriptor', {'identity': identity});
       final userDescriptorMap = Map<String, dynamic>.from(methodData);
       return UserDescriptor._fromMap(userDescriptorMap, this);
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -58,13 +58,13 @@ class Users {
   /// There's a limit on the number of simultaneously subscribed objects in the SDK. This is to reduce consumed memory and network traffic.
   Future<User> getAndSubscribeUser(String identity) async {
     try {
-      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Users#getAndSubscribeUser', {'identity': identity});
+      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Users#getAndSubscribeUser', {'identity': identity});
       final userMap = Map<String, dynamic>.from(methodData);
       final user = User._fromMap(userMap);
       _subscribedUsers.add(user);
       return user;
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
 
   }

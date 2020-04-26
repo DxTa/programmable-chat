@@ -1,17 +1,30 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:twilio_programmable_chat/twilio_programmable_chat.dart';
 
 class ChatBloc {
   final ChatClient chatClient;
 
-  ChatBloc({@required this.chatClient}) : assert(chatClient != null);
+  StreamController<List<ChannelDescriptor>> _channelDescriptorController;
 
-  Future<void> test() async {
+  StreamSink<List<ChannelDescriptor>> get channelDescriptorSink =>
+      _channelDescriptorController.sink;
+
+  Stream<List<ChannelDescriptor>> get channelDescriptorStream =>
+      _channelDescriptorController.stream;
+
+  ChatBloc({@required this.chatClient}) : assert(chatClient != null) {
+    _channelDescriptorController = StreamController<List<ChannelDescriptor>>();
+  }
+
+  Future<void> retrieve() async {
+    this._channelDescriptorController.add(null);
     var paginator = await chatClient.channels.getPublicChannelsList();
-//    print(await chatClient.channels.createChannel("First channel", ChannelType.PUBLIC));
-    print(paginator.items);
+    this._channelDescriptorController.add(paginator.items);
   }
 
   void dispose() {
+    _channelDescriptorController.close();
   }
 }

@@ -30,6 +30,7 @@ class Paginator<T> {
   }
 
   /// If the paginator has more pages, returns true.
+  // TODO(WLFN): This should be a method because it can update later on.
   bool get hasNextPage {
     return _hasNextPage;
   }
@@ -42,7 +43,6 @@ class Paginator<T> {
 
   /// Construct from a map.
   factory Paginator._fromMap(Map<String, dynamic> map, {Map<String, dynamic> passOn}) {
-    print(map);
     var paginator = Paginator<T>(map['pageId'], map['pageSize'], map['hasNextPage'], map['itemType'], passOn);
     paginator._updateFromMap(map);
     return paginator;
@@ -51,7 +51,7 @@ class Paginator<T> {
   /// Query the next page.
   Future<Paginator<T>> requestNextPage() async {
     try {
-      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Paginator#requestNextPage', <String, Object>{'pageId': _pageId, 'itemType': _itemType});
+      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Paginator#requestNextPage', <String, Object>{'pageId': _pageId, 'itemType': _itemType});
       final paginatorMap = Map<String, dynamic>.from(methodData);
       return Paginator<T>._fromMap(paginatorMap, passOn: _passOn);
     } on PlatformException catch (err) {

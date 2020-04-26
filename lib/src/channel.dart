@@ -234,18 +234,18 @@ class Channel {
   /// You accept the invitation by calling [Channel.join] or decline it by calling [Channel.declineInvitation].
   Future<void> join() async {
     try {
-      await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#join', {'channelSid': _sid});
+      await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#join', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
   /// Leave this channel.
   Future<void> leave() async {
     try {
-      await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#leave', {'channelSid': _sid});
+      await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#leave', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -256,9 +256,9 @@ class Channel {
   /// One common way to implement this indicator is to call [Channel.typing] repeatedly in response to key input events.
   Future<void> typing() async {
     try {
-      await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#typing', {'channelSid': _sid});
+      await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#typing', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -267,9 +267,9 @@ class Channel {
   /// If a user is invited to the channel, they can choose to either [Channel.join] the channel to accept the invitation or [Channel.declineInvitation] to decline.
   Future<void> declineInvitation() async {
     try {
-      await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#declineInvitation', {'channelSid': _sid});
+      await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#declineInvitation', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -279,9 +279,9 @@ class Channel {
   /// There is no undo for this operation!
   Future<void> destroy() async {
     try {
-      await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#destroy', {'channelSid': _sid});
+      await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#destroy', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -296,9 +296,9 @@ class Channel {
   /// The retrieved value is then cached for 5 seconds so there is no reason to call this function more often than once in 5 seconds.
   Future<int> getMessagesCount() async {
     try {
-      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#getMessagesCount', {'channelSid': _sid});
+      return await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#getMessagesCount', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -313,9 +313,9 @@ class Channel {
   /// The retrieved value is then cached for 5 seconds so there is no reason to call this function more often than once in 5 seconds.
   Future<int> getUnconsumedMessagesCount() async {
     try {
-      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#getUnconsumedMessagesCount', {'channelSid': _sid});
+      return await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#getUnconsumedMessagesCount', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -330,9 +330,9 @@ class Channel {
   /// The retrieved value is then cached for 5 seconds so there is no reason to call this function more often than once in 5 seconds.
   Future<int> getMembersCount() async {
     try {
-      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#getMembersCount', {'channelSid': _sid});
+      return await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#getMembersCount', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -341,9 +341,9 @@ class Channel {
   /// Attributes are stored as a JSON format object, of arbitrary internal structure. Channel attributes are limited in size to 32Kb.
   Future<Map<String, dynamic>> getAttributes() async {
     try {
-      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#getAttributes', {'channelSid': _sid}) as Map<String, dynamic>;
+      return Map<String, dynamic>.from(await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#getAttributes', {'channelSid': _sid}));
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -353,9 +353,9 @@ class Channel {
   /// Passing null attributes will reset channel attributes string to empty.
   Future<Map<String, dynamic>> setAttributes(Map<String, dynamic> attributes) async {
     try {
-      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#setAttributes', {'channelSid': _sid, 'attributes': attributes}) as Map<String, dynamic>;
+      return Map<String, dynamic>.from(await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#setAttributes', {'channelSid': _sid, 'attributes': attributes}));
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -364,18 +364,18 @@ class Channel {
   /// Friendly name is a free-form text string, it is not unique and could be used for user-friendly channel name display in the UI.
   Future<String> getFriendlyName() async {
     try {
-      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#getFriendlyName', {'channelSid': _sid});
+      return await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#getFriendlyName', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
   /// Update the friendly name for this channel.
   Future<String> setFriendlyName(String friendlyName) async {
     try {
-      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#setFriendlyName', {'channelSid': _sid, 'friendlyName': friendlyName});
+      return await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#setFriendlyName', {'channelSid': _sid, 'friendlyName': friendlyName});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -384,9 +384,9 @@ class Channel {
   /// This property reflects whether the user will receive push notifications for activity on this channel.
   Future<NotificationLevel> getNotificationLevel() async {
     try {
-      return EnumToString.fromString(NotificationLevel.values, await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#getNotificationLevel', {'channelSid': _sid}));
+      return EnumToString.fromString(NotificationLevel.values, await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#getNotificationLevel', {'channelSid': _sid}));
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -397,13 +397,13 @@ class Channel {
     try {
       return EnumToString.fromString(
         NotificationLevel.values,
-        await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#setNotificationLevel', {
+        await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#setNotificationLevel', {
           'channelSid': _sid,
           'notificationLevel': EnumToString.parse(notificationLevel),
         }),
       );
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -412,9 +412,9 @@ class Channel {
   /// Unique name is similar to SID but can be specified by the user.
   Future<String> getUniqueName() async {
     try {
-      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#getUniqueName', {'channelSid': _sid});
+      return await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#getUniqueName', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -423,9 +423,9 @@ class Channel {
   /// Unique name is unique within Service Instance. You will receive an error if you try to set a name that is not unique.
   Future<String> setUniqueName(String uniqueName) async {
     try {
-      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#setUniqueName', {'channelSid': _sid, 'uniqueName': uniqueName});
+      return await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#setUniqueName', {'channelSid': _sid, 'uniqueName': uniqueName});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
   //#endregion
@@ -452,7 +452,7 @@ class Channel {
   /// Parse native channel events to the right event streams.
   void _parseEvents(dynamic event) {
     final String eventName = event['name'];
-    TwilioUnofficialProgrammableChat._log("Channel => Event '$eventName' => ${event["data"]}, error: ${event["error"]}");
+    TwilioProgrammableChat._log("Channel => Event '$eventName' => ${event["data"]}, error: ${event["error"]}");
     final data = Map<String, dynamic>.from(event['data']);
 
     if (data['channel'] != null) {
@@ -526,7 +526,7 @@ class Channel {
         _onSynchronizationChangedCtrl.add(this);
         break;
       default:
-        TwilioUnofficialProgrammableChat._log("Event '$eventName' not yet implemented");
+        TwilioProgrammableChat._log("Event '$eventName' not yet implemented");
         break;
     }
   }

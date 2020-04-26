@@ -1,10 +1,10 @@
 import Flutter
 import UIKit
 
-public class SwiftTwilioUnofficialProgrammableChatPlugin: NSObject, FlutterPlugin {
+public class SwiftTwilioProgrammableChatPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "twilio_programmable_chat", binaryMessenger: registrar.messenger())
-    let instance = SwiftTwilioUnofficialProgrammableChatPlugin()
+    let instance = SwiftTwilioProgrammableChatPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 

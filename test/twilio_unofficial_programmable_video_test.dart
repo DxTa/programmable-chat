@@ -17,7 +17,7 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    // expect(await TwilioUnofficialProgrammableChat.platformVersion, '42');
+    // expect(await TwilioProgrammableChat.platformVersion, '42');
     expect(true, true);
   });
 }

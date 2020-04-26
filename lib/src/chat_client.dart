@@ -220,7 +220,7 @@ class ChatClient {
     onUserUnsubscribed = _onUserUnsubscribedCtrl.stream;
     onUserUpdated = _onUserUpdatedCtrl.stream;
 
-    _chatStream = TwilioUnofficialProgrammableChat._chatChannel.receiveBroadcastStream(0).listen(_parseEvents);
+    _chatStream = TwilioProgrammableChat._chatChannel.receiveBroadcastStream(0).listen(_parseEvents);
   }
 
   /// Construct from a map.
@@ -234,9 +234,9 @@ class ChatClient {
   /// Method to update the authentication token for this client.
   Future<void> updateToken(String token) async {
     try {
-      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('ChatClient#updateToken', <String, Object>{'token': token});
+      return await TwilioProgrammableChat._methodChannel.invokeMethod('ChatClient#updateToken', <String, Object>{'token': token});
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -245,9 +245,9 @@ class ChatClient {
   /// It will dispose() the client after shutdown, so it could not be reused.
   Future<void> shutdown() async {
     try {
-      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('ChatClient#shutdown', null);
+      return await TwilioProgrammableChat._methodChannel.invokeMethod('ChatClient#shutdown', null);
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
   //#endregion
@@ -279,7 +279,7 @@ class ChatClient {
   /// Parse native chat client events to the right event streams.
   void _parseEvents(dynamic event) {
     final String eventName = event['name'];
-    TwilioUnofficialProgrammableChat._log("ChatClient => Event '$eventName' => ${event["data"]}, error: ${event["error"]}");
+    TwilioProgrammableChat._log("ChatClient => Event '$eventName' => ${event["data"]}, error: ${event["error"]}");
     final data = Map<String, dynamic>.from(event['data']);
 
     if (data['chatClient'] != null) {
@@ -407,7 +407,7 @@ class ChatClient {
         _onUserUpdatedCtrl.add(UserUpdatedEvent(user, reason));
         break;
       default:
-        TwilioUnofficialProgrammableChat._log("Event '$eventName' not yet implemented");
+        TwilioProgrammableChat._log("Event '$eventName' not yet implemented");
         break;
     }
   }

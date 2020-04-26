@@ -6,7 +6,7 @@ class JoinPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Twilio Unofficial Programmable Chat'),
+        title: const Text('Twilio Programmable Chat'),
       ),
       body: Center(
         child: SingleChildScrollView(

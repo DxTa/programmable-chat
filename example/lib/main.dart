@@ -14,16 +14,16 @@ void main() {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(TwilioUnofficialProgrammableChatExample());
+  runApp(TwilioProgrammableChatExample());
 }
 
-class TwilioUnofficialProgrammableChatExample extends StatelessWidget {
+class TwilioProgrammableChatExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider<BackendService>(
       create: (_) => FirebaseFunctions.instance,
       child: MaterialApp(
-        title: 'Twilio Unofficial Programmable Chat',
+        title: 'Twilio Programmable Chat',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           appBarTheme: AppBarTheme(

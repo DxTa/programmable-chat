@@ -1,7 +1,7 @@
 part of twilio_programmable_chat;
 
-/// Entry point for the Twilio Unofficial Programmable Dart.
-class TwilioUnofficialProgrammableChat {
+/// Entry point for the Twilio Programmable Dart.
+class TwilioProgrammableChat {
   static const MethodChannel _methodChannel = MethodChannel('twilio_programmable_chat');
 
   static const EventChannel _chatChannel = EventChannel('twilio_programmable_chat/room');
@@ -66,7 +66,7 @@ class TwilioUnofficialProgrammableChat {
       final chatClientMap = Map<String, dynamic>.from(methodData);
       return ChatClient._fromMap(chatClientMap);
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 }

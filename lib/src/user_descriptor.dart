@@ -54,7 +54,7 @@ class UserDescriptor {
   factory UserDescriptor._fromMap(Map<String, dynamic> map, Users users) {
     return UserDescriptor(
       map['friendlyName'],
-      map['attributes'],
+      Map<String, dynamic>.from(map['attributes']),
       map['identity'],
       map['isOnline'],
       map['isNotifiable'],

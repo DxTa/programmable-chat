@@ -1,5 +1,5 @@
 # twilio_programmable_chat
-Integrate the Twilio Chat SDK with your Flutter app using this Unofficial Twilio Programmable Chat Flutter plugin.
+Integrate the Twilio Chat SDK with your Flutter app using this Twilio Programmable Chat Flutter plugin.
 
 This package is currently work-in-progress and should not be used for production apps. We can't guarantee that the current API implementation will stay the same between versions, until we have reached v1.0.0.
 

@@ -48,11 +48,11 @@ class Members {
   /// If the member is already present in the channel roster an error will be returned.
   Future<void> addByIdentity(String identity) async {
     try {
-      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Members#addByIdentity', {'identity': identity, 'channelSid': _channel.sid});
+      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Members#addByIdentity', {'identity': identity, 'channelSid': _channel.sid});
       final membersMap = Map<String, dynamic>.from(methodData);
       return _updateFromMap(membersMap);
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -64,11 +64,11 @@ class Members {
   /// Invite specified username to this channel.
   Future<void> inviteByIdentity(String identity) async {
     try {
-      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Members#removeByIdentity', {'identity': identity, 'channelSid': _channel.sid});
+      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Members#removeByIdentity', {'identity': identity, 'channelSid': _channel.sid});
       final membersMap = Map<String, dynamic>.from(methodData);
       return _updateFromMap(membersMap);
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
 
@@ -80,11 +80,11 @@ class Members {
   /// Remove specified username from this channel.
   Future<void> removeByIdentity(String identity) async {
     try {
-      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Members#removeByIdentity', {'identity': identity, 'channelSid': _channel.sid});
+      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Members#removeByIdentity', {'identity': identity, 'channelSid': _channel.sid});
       final membersMap = Map<String, dynamic>.from(methodData);
       return _updateFromMap(membersMap);
     } on PlatformException catch (err) {
-      throw TwilioUnofficialProgrammableChat._convertException(err);
+      throw TwilioProgrammableChat._convertException(err);
     }
   }
   //#endregion
