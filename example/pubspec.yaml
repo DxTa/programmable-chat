@@ -1,5 +1,5 @@
-name: twilio_unofficial_programmable_chat_example
-description: Demonstrates how to use the twilio_unofficial_programmable_chat plugin.
+name: twilio_programmable_chat_example
+description: Demonstrates how to use the twilio_programmable_chat plugin.
 publish_to: 'none'
 
 environment:
@@ -21,7 +21,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  twilio_unofficial_programmable_chat:
+  twilio_programmable_chat:
     path: ../
 
 # For information on the generic Dart part of this file, see the

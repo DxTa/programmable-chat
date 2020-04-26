@@ -1,4 +1,4 @@
-part of twilio_unofficial_programmable_chat;
+part of twilio_programmable_chat;
 
 /// Representation of a [Channel] member object.
 class Member {
@@ -13,8 +13,6 @@ class Member {
 
   // TODO: Could be final?
   String _identity;
-
-  Map<String, dynamic> _attributes;
 
   final MemberType _type;
   //#endregion
@@ -69,16 +67,14 @@ class Member {
   //#region Public API methods
   /// Return user descriptor for current member.
   Future<UserDescriptor> getUserDescriptor() async {
-    try {
-      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Member#getUserDescriptor', {'memberSid': _sid, 'channelSid': _channel.sid});
-      final userDescriptorMap = Map<String, dynamic>.from(methodData);
-      return UserDescriptor._fromMap(userDescriptorMap);
-    } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
-    }
+    throw UnimplementedError("getUserDescriptor");
+//    try {
+//      final methodData = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Member#getUserDescriptor', {'memberSid': _sid, 'channelSid': _channel.sid});
+//      final userDescriptorMap = Map<String, dynamic>.from(methodData);
+//      return UserDescriptor._fromMap(userDescriptorMap);
+//    } on PlatformException catch (err) {
+//      throw TwilioUnofficialProgrammableChat._convertException(err);
+//    }
   }
 
   /// Return subscribed user object for current member.
@@ -88,10 +84,25 @@ class Member {
       final userMap = Map<String, dynamic>.from(methodData);
       return User._fromMap(userMap);
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
+    }
+  }
+
+  /// Return custom attributes associated with this member.
+  Future<Map<String, dynamic>> getAttributes() async {
+    try {
+      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Member#getAttributes', {'memberSid': _sid, 'channelSid': _sid}) as Map<String, dynamic>;
+    } on PlatformException catch (err) {
+      throw TwilioUnofficialProgrammableChat._convertException(err);
+    }
+  }
+
+  /// Set attributes associated with this member.
+  Future<Map<String, dynamic>> setAttributes(Map<String, dynamic> attributes) async {
+    try {
+      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Member#setAttributes', {'memberSid': _sid, 'channelSid': _sid, 'attributes': attributes}) as Map<String, dynamic>;
+    } on PlatformException catch (err) {
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
   //#endregion
@@ -101,8 +112,7 @@ class Member {
     _lastConsumedMessageIndex = map['lastConsumedMessageIndex'];
     _lastConsumptionTimestamp = map['lastConsumptionTimestamp'];
     _identity = map['identity'];
-    _attributes = map['attributes'];
-
+    
     if (map['channel'] != null) {
       final channelMap = Map<String, dynamic>.from(map['channel']);
       _channel ??= Channel._fromMap(channelMap);

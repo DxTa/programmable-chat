@@ -1,4 +1,4 @@
-part of twilio_unofficial_programmable_chat;
+part of twilio_programmable_chat;
 
 /// Contains channel information.
 ///
@@ -49,6 +49,7 @@ class ChannelDescriptor {
     return _uniqueName;
   }
 
+  /// Get channel attributes.
   Map<String, dynamic> get attributes {
     return {..._attributes};
   }

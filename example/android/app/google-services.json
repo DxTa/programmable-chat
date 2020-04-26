@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:499945637622:android:62c8075497b0146acd8ed7",
         "android_client_info": {
-          "package_name": "unofficial.twilio.flutter.twilio_unofficial_programmable_chat_example"
+          "package_name": "twilio.flutter.twilio_programmable_chat_example"
         }
       },
       "oauth_client": [

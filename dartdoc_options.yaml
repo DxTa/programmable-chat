@@ -1,5 +1,5 @@
 dartdoc:
-  include: ['twilio_unofficial_programmable_chat']
+  include: ['twilio_programmable_chat']
   errors:
     - ambiguous-doc-reference
     - ambiguous-reexport

@@ -1,4 +1,4 @@
-part of twilio_unofficial_programmable_chat;
+part of twilio_programmable_chat;
 
 /// Provides access to users and allows to manipulate user information.
 class Users {
@@ -38,10 +38,7 @@ class Users {
       final paginatorMap = Map<String, dynamic>.from(methodData);
       return Paginator<UserDescriptor>._fromMap(paginatorMap, passOn: {'channels': this});
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -52,10 +49,7 @@ class Users {
       final userDescriptorMap = Map<String, dynamic>.from(methodData);
       return UserDescriptor._fromMap(userDescriptorMap, this);
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -70,10 +64,7 @@ class Users {
       _subscribedUsers.add(user);
       return user;
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
 
   }

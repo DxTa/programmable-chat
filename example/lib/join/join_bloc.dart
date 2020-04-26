@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:twilio_unofficial_programmable_chat_example/models/twilio_chat_token_request.dart';
-import 'package:twilio_unofficial_programmable_chat_example/join/join_model.dart';
-import 'package:twilio_unofficial_programmable_chat_example/shared/services/backend_service.dart';
-import 'package:twilio_unofficial_programmable_chat/twilio_unofficial_programmable_chat.dart';
+import 'package:twilio_programmable_chat_example/models/twilio_chat_token_request.dart';
+import 'package:twilio_programmable_chat_example/join/join_model.dart';
+import 'package:twilio_programmable_chat_example/shared/services/backend_service.dart';
+import 'package:twilio_programmable_chat/twilio_programmable_chat.dart';
 
 class JoinBloc {
   final BackendService backendService;

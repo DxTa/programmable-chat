@@ -1,9 +1,9 @@
 #
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint twilio_unofficial_programmable_chat.podspec' to validate before publishing.
+# Run `pod lib lint twilio_programmable_chat.podspec' to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'twilio_unofficial_programmable_chat'
+  s.name             = 'twilio_programmable_chat'
   s.version          = '0.0.1'
   s.summary          = 'A new flutter plugin project.'
   s.description      = <<-DESC

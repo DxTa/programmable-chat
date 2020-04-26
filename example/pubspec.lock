@@ -273,7 +273,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.11"
-  twilio_unofficial_programmable_chat:
+  twilio_programmable_chat:
     dependency: "direct dev"
     description:
       path: ".."

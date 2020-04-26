@@ -1,4 +1,4 @@
-part of twilio_unofficial_programmable_chat;
+part of twilio_programmable_chat;
 
 /// Indicates synchronization status for channel.
 enum ChannelSynchronizationStatus {

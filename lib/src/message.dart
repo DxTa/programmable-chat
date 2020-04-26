@@ -1,4 +1,4 @@
-part of twilio_unofficial_programmable_chat;
+part of twilio_programmable_chat;
 
 class Message {
   //#region Private API properties
@@ -21,8 +21,6 @@ class Message {
   final Messages _messages;
 
   final int _messageIndex;
-
-  Map<String, dynamic> _attributes;
 
   final MessageType _type;
 
@@ -82,11 +80,9 @@ class Message {
     return _messageIndex;
   }
 
-  // attributes
-
   /// Returns message type.
   ///
-  /// If message has media type then [Message.getMedia] shall return the descriptor for the attached media.
+  /// If message has media type then [Message.media] shall return the descriptor for the attached media.
   MessageType get type {
     return _type;
   }
@@ -154,17 +150,31 @@ class Message {
   /// Updates the body for a message.
   Future<void> updateMessageBody(String body) async {
     try {
-      await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Message#updateMessageBody', {
+      _messageBody = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Message#updateMessageBody', {
         'channelSid': _channel.sid,
         'messageIndex': _messageIndex,
         'body': body
       });
-      _messageBody = body;
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw throw TwilioUnofficialProgrammableChat._convertException(err);
+    }
+  }
+
+  /// Retrieve attributes associated with this message.
+  Future<Map<String, dynamic>> getAttributes() async {
+    try {
+      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Message#getAttributes', {'channelSid': _sid, 'messageIndex': _messageIndex}) as Map<String, dynamic>;
+    } on PlatformException catch (err) {
+      throw TwilioUnofficialProgrammableChat._convertException(err);
+    }
+  }
+
+  /// Set attributes associated with this message.
+  Future<Map<String, dynamic>> setAttributes(Map<String, dynamic> attributes) async {
+    try {
+      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Message#setAttributes', {'channelSid': _sid, 'messageIndex': _messageIndex, 'attributes': attributes}) as Map<String, dynamic>;
+    } on PlatformException catch (err) {
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
   //#endregion

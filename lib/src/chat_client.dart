@@ -1,4 +1,4 @@
-part of twilio_unofficial_programmable_chat;
+part of twilio_programmable_chat;
 
 //#region ChatClient events
 class ChannelUpdatedEvent {
@@ -111,7 +111,7 @@ class ChatClient {
 
   /// Called when channel synchronization status changed.
   ///
-  /// Use [Channel.getSynchronizationStatus] to obtain new channel status.
+  /// Use [Channel.synchronizationStatus] to obtain new channel status.
   Stream<Channel> onChannelSynchronizationChange;
 
   final StreamController<ChannelUpdatedEvent> _onChannelUpdatedCtrl = StreamController<ChannelUpdatedEvent>.broadcast();
@@ -236,10 +236,7 @@ class ChatClient {
     try {
       return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('ChatClient#updateToken', <String, Object>{'token': token});
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -250,10 +247,7 @@ class ChatClient {
     try {
       return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('ChatClient#shutdown', null);
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
   //#endregion

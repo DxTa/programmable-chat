@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:twilio_unofficial_programmable_chat/twilio_unofficial_programmable_chat.dart';
+import 'package:twilio_programmable_chat/twilio_programmable_chat.dart';
 
 class ChatBloc {
   final ChatClient chatClient;

@@ -1,4 +1,4 @@
-part of twilio_unofficial_programmable_chat;
+part of twilio_programmable_chat;
 
 class User {
   //#region Private API properties
@@ -26,12 +26,14 @@ class User {
     return _identity;
   }
 
-  /// Return user's online status, if available
+  /// Return user's online status, if available,
+  // TODO: Should probaly be a async method for real time
   bool get isOnline {
     return _isOnline;
   }
 
   /// Return user's push reachability.
+  // TODO: Should probaly be a async method for real time
   bool get isNotifiable {
     return _isNotifiable;
   }
@@ -57,10 +59,7 @@ class User {
       // TODO: It is still in the [Users.subscribedUsers] list...
       await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('User#unsubscribe', {'identity': _identity });
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
   //#endregion

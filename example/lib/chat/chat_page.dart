@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:twilio_unofficial_programmable_chat/twilio_unofficial_programmable_chat.dart';
-import 'package:twilio_unofficial_programmable_chat_example/chat/chat_bloc.dart';
-import 'package:twilio_unofficial_programmable_chat_example/join/join_model.dart';
+import 'package:twilio_programmable_chat/twilio_programmable_chat.dart';
+import 'package:twilio_programmable_chat_example/chat/chat_bloc.dart';
+import 'package:twilio_programmable_chat_example/join/join_model.dart';
 
 class ChatPage extends StatefulWidget {
   final ChatBloc chatBloc;
@@ -29,17 +29,21 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  @override
-  void initState() {
-    super.initState();
-    widget.chatBloc.test();
-  }
-
   bool isLoading = false;
 
   List<ChannelDescriptor> items = [];
 
   Paginator<ChannelDescriptor> paginator;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.chatBloc.test();
+    widget.chatBloc.chatClient.channels.getPublicChannelsList().then((paginator) {
+      this.paginator = paginator;
+      items.addAll(paginator.items);
+    });
+  }
 
   Widget _channelList() {
     ScrollController _scrollController = ScrollController();
@@ -53,37 +57,34 @@ class _ChatPageState extends State<ChatPage> {
             items.addAll(paginator.items);
           }
         }
-        print(items);
       }
     });
-    if (paginator == null) {
-      widget.chatBloc.chatClient.channels.getPublicChannelsList().then((paginator) {
-        items.addAll(paginator.items);
-      });
-    }
     return ListView.builder(
-        controller: _scrollController,
-        itemCount: items.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Row(children: [
-            Text(items[index].friendlyName),
-          ]);
-        });
+      controller: _scrollController,
+      itemCount: items.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Row(
+          children: [
+            ListTile(
+              title: Text(items[index].friendlyName),
+              subtitle: Text(items[index].sid),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async => false,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('Chat'),
-          ),
-          body: _channelList(),
-        )
-//          Center(
-//            child: Text('Hello ${widget.chatBloc.chatClient.myIdentity}'),
-//          )),
-        );
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Chat'),
+        ),
+        body: _channelList(),
+      ),
+    );
   }
 }

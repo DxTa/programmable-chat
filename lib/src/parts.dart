@@ -1,6 +1,7 @@
-library twilio_unofficial_programmable_chat;
+library twilio_programmable_chat;
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/services.dart';

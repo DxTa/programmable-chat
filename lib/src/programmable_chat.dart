@@ -1,16 +1,32 @@
-part of twilio_unofficial_programmable_chat;
+part of twilio_programmable_chat;
 
 /// Entry point for the Twilio Unofficial Programmable Dart.
 class TwilioUnofficialProgrammableChat {
-  static const MethodChannel _methodChannel = MethodChannel('twilio_unofficial_programmable_chat');
+  static const MethodChannel _methodChannel = MethodChannel('twilio_programmable_chat');
 
-  static const EventChannel _chatChannel = EventChannel('twilio_unofficial_programmable_chat/room');
+  static const EventChannel _chatChannel = EventChannel('twilio_programmable_chat/room');
 
-  static const EventChannel _loggingChannel = EventChannel('twilio_unofficial_programmable_chat/logging');
+  static const EventChannel _loggingChannel = EventChannel('twilio_programmable_chat/logging');
 
   static StreamSubscription _loggingStream;
 
   static bool _dartDebug = false;
+
+  static Exception _convertException(PlatformException err) {
+    var code = int.tryParse(err.code);
+    // If code is an integer, then it is a Twilio ErrorInfo exception.
+    if (code != null) {
+      return ErrorInfo(int.parse(err.code), err.message, err.details as int);
+    }
+
+    // For now just rethrow the PlatformException. But we could make custom ones based on the code value.
+    // code can be:
+    // - "ERROR" Something went wrong in the custom native code.
+    // - "IllegalArgumentException" Something went wrong calling the twilio SDK.
+    // - "JSONException" Something went wrong parsing a JSON string.
+    // - "MISSING_PARAMS" Missing params, only the native debug method uses this at the moment.
+    return err;
+  }
 
   /// Internal logging method for dart.
   static void _log(dynamic msg) {
@@ -50,11 +66,7 @@ class TwilioUnofficialProgrammableChat {
       final chatClientMap = Map<String, dynamic>.from(methodData);
       return ChatClient._fromMap(chatClientMap);
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
-
   }
 }

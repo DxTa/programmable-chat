@@ -1,4 +1,4 @@
-part of twilio_unofficial_programmable_chat;
+part of twilio_programmable_chat;
 
 /// Provides access to channels collection, allows to create new channels.
 class Channels {
@@ -47,10 +47,7 @@ class Channels {
       final channelMap = Map<String, dynamic>.from(methodData);
       return Channel._fromMap(channelMap);
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -66,10 +63,7 @@ class Channels {
       final paginatorMap = Map<String, dynamic>.from(methodData);
       return Paginator<ChannelDescriptor>._fromMap(paginatorMap, passOn: {'channels': this});
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -85,10 +79,7 @@ class Channels {
       final paginatorMap = Map<String, dynamic>.from(methodData);
       return Paginator<ChannelDescriptor>._fromMap(paginatorMap, passOn: {'channels': this});
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -106,10 +97,7 @@ class Channels {
       }
       return memberList;
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
   //#endregion

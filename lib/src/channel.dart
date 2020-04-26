@@ -1,4 +1,4 @@
-part of twilio_unofficial_programmable_chat;
+part of twilio_programmable_chat;
 
 //#region Channel events
 class MessageUpdatedEvent {
@@ -40,15 +40,7 @@ class Channel {
   //#region Private API properties
   final String _sid;
 
-  String _friendlyName;
-
-  NotificationLevel _notificationLevel;
-
   final ChannelType _type;
-
-  String _uniqueName;
-
-  Map<String, dynamic> _attributes;
 
   Messages _messages;
 
@@ -78,33 +70,10 @@ class Channel {
     return _sid;
   }
 
-  /// Get the friendly name of this channel.
-  //
-  /// Friendly name is a free-form text string, it is not unique and could be used for user-friendly channel name display in the UI.
-  String get friendlyName {
-    return _friendlyName;
-  }
-
-  /// The current user's notification level on this channel.
-  ///
-  /// This property reflects whether the user will receive push notifications for activity on this channel.
-  NotificationLevel get notificationLevel {
-    return _notificationLevel;
-  }
-
   /// The channel type.
   ChannelType get type {
     return _type;
   }
-
-  /// Get unique name of the channel.
-  ///
-  /// Unique name is similar to SID but can be specified by the user.
-  String get uniqueName {
-    return _uniqueName;
-  }
-
-  // attirbutes
 
   /// Get messages object that allows access to messages in the channel.
   Messages get messages {
@@ -161,14 +130,14 @@ class Channel {
 
   /// Called when a [Message] is added to the channel the current user is subscribed to.
   ///
-  /// You could obtain the [Channel] where it was added by using [Message.getChannel] or [Message.channelSid].
+  /// You could obtain the [Channel] where it was added by using [Message.channel] or [Message.channelSid].
   Stream<Message> onMessageAdded;
 
   final StreamController<MessageUpdatedEvent> _onMessageUpdatedCtrl = StreamController<MessageUpdatedEvent>.broadcast();
 
   /// Called when a [Message] is changed in the channel the current user is subscribed to.
   ///
-  /// You could obtain the [Channel] where it was updated by using [Message.getChannel] or [Message.channelSid].
+  /// You could obtain the [Channel] where it was updated by using [Message.channel] or [Message.channelSid].
   /// [Message] change events include body updates and attribute updates.
   Stream<MessageUpdatedEvent> onMessageUpdated;
 
@@ -176,7 +145,7 @@ class Channel {
 
   /// Called when a [Message] is deleted from the channel the current user is subscribed to.
   ///
-  /// You could obtain the [Channel] where it was deleted by using [Message.getChannel] or [Message.channelSid].
+  /// You could obtain the [Channel] where it was deleted by using [Message.channel] or [Message.channelSid].
   Stream<Message> onMessageDeleted;
   //#endregion
 
@@ -185,14 +154,14 @@ class Channel {
 
   /// Called when a [Member] is added to the channel the current user is subscribed to.
   ///
-  /// You could obtain the [Channel] where it was added by using [Member.getChannel].
+  /// You could obtain the [Channel] where it was added by using [Member.channel].
   Stream<Member> onMemberAdded;
 
   final StreamController<MemberUpdatedEvent> _onMemberUpdatedCtrl = StreamController<MemberUpdatedEvent>.broadcast();
 
   /// Called when a [Member] is changed in the channel the current user is subscribed to.
   ///
-  /// You could obtain the [Channel] where it was updated by using [Member.getChannel].
+  /// You could obtain the [Channel] where it was updated by using [Member.channel].
   /// [Member] change events include body updates and attribute updates.
   Stream<MemberUpdatedEvent> onMemberUpdated;
 
@@ -200,7 +169,7 @@ class Channel {
 
   /// Called when a [Member] is deleted from the channel the current user is subscribed to.
   ///
-  /// You could obtain the [Channel] where it was deleted by using [Member.getChannel].
+  /// You could obtain the [Channel] where it was deleted by using [Member.channel].
   Stream<Member> onMemberDeleted;
   //#endregion
 
@@ -240,7 +209,7 @@ class Channel {
     onTypingEnded = _onTypingEndedCtrl.stream;
     onSynchronizationChanged = _onSynchronizationChangedCtrl.stream;
 
-    _channelStreams[_sid] ??= EventChannel('twilio_unofficial_programmable_chat/$_sid').receiveBroadcastStream(0);
+    _channelStreams[_sid] ??= EventChannel('twilio_programmable_chat/$_sid').receiveBroadcastStream(0);
     _channelStreams[_sid].listen(_parseEvents);
   }
 
@@ -267,10 +236,7 @@ class Channel {
     try {
       await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#join', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -279,10 +245,7 @@ class Channel {
     try {
       await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#leave', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -295,10 +258,7 @@ class Channel {
     try {
       await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#typing', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -309,10 +269,7 @@ class Channel {
     try {
       await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#declineInvitation', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -324,10 +281,7 @@ class Channel {
     try {
       await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#destroy', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -344,10 +298,7 @@ class Channel {
     try {
       return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#getMessagesCount', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -364,10 +315,7 @@ class Channel {
     try {
       return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#getUnconsumedMessagesCount', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -384,21 +332,107 @@ class Channel {
     try {
       return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#getMembersCount', {'channelSid': _sid});
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
+    }
+  }
+
+  /// Get custom attributes associated with the [Channel].
+  ///
+  /// Attributes are stored as a JSON format object, of arbitrary internal structure. Channel attributes are limited in size to 32Kb.
+  Future<Map<String, dynamic>> getAttributes() async {
+    try {
+      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#getAttributes', {'channelSid': _sid}) as Map<String, dynamic>;
+    } on PlatformException catch (err) {
+      throw TwilioUnofficialProgrammableChat._convertException(err);
+    }
+  }
+
+  /// Set attributes associated with this channel.
+  ///
+  /// Attributes are stored as a JSON format object, of arbitrary internal structure. Channel attributes are limited in size to 32Kb.
+  /// Passing null attributes will reset channel attributes string to empty.
+  Future<Map<String, dynamic>> setAttributes(Map<String, dynamic> attributes) async {
+    try {
+      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#setAttributes', {'channelSid': _sid, 'attributes': attributes}) as Map<String, dynamic>;
+    } on PlatformException catch (err) {
+      throw TwilioUnofficialProgrammableChat._convertException(err);
+    }
+  }
+
+  /// Get friendly name of the channel.
+  ///
+  /// Friendly name is a free-form text string, it is not unique and could be used for user-friendly channel name display in the UI.
+  Future<String> getFriendlyName() async {
+    try {
+      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#getFriendlyName', {'channelSid': _sid});
+    } on PlatformException catch (err) {
+      throw TwilioUnofficialProgrammableChat._convertException(err);
+    }
+  }
+
+  /// Update the friendly name for this channel.
+  Future<String> setFriendlyName(String friendlyName) async {
+    try {
+      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#setFriendlyName', {'channelSid': _sid, 'friendlyName': friendlyName});
+    } on PlatformException catch (err) {
+      throw TwilioUnofficialProgrammableChat._convertException(err);
+    }
+  }
+
+  /// The current user's notification level on this channel.
+  ///
+  /// This property reflects whether the user will receive push notifications for activity on this channel.
+  Future<NotificationLevel> getNotificationLevel() async {
+    try {
+      return EnumToString.fromString(NotificationLevel.values, await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#getNotificationLevel', {'channelSid': _sid}));
+    } on PlatformException catch (err) {
+      throw TwilioUnofficialProgrammableChat._convertException(err);
+    }
+  }
+
+  /// Set the user's notification level for the channel.
+  ///
+  /// This property determines whether the user will receive push notifications for activity on this channel.
+  Future<NotificationLevel> setNotificationLevel(NotificationLevel notificationLevel) async {
+    try {
+      return EnumToString.fromString(
+        NotificationLevel.values,
+        await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#setNotificationLevel', {
+          'channelSid': _sid,
+          'notificationLevel': EnumToString.parse(notificationLevel),
+        }),
+      );
+    } on PlatformException catch (err) {
+      throw TwilioUnofficialProgrammableChat._convertException(err);
+    }
+  }
+
+  /// Get unique name of the channel.
+  ///
+  /// Unique name is similar to SID but can be specified by the user.
+  Future<String> getUniqueName() async {
+    try {
+      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#getUniqueName', {'channelSid': _sid});
+    } on PlatformException catch (err) {
+      throw TwilioUnofficialProgrammableChat._convertException(err);
+    }
+  }
+
+  /// Update the unique name for this channel.
+  ///
+  /// Unique name is unique within Service Instance. You will receive an error if you try to set a name that is not unique.
+  Future<String> setUniqueName(String uniqueName) async {
+    try {
+      return await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Channel#setUniqueName', {'channelSid': _sid, 'uniqueName': uniqueName});
+    } on PlatformException catch (err) {
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
   //#endregion
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
-    _friendlyName = map['friendlyName'];
-    _uniqueName = map['uniqueName'];
-    _attributes = map['attributes'];
     _synchronizationStatus = EnumToString.fromString(ChannelSynchronizationStatus.values, map['synchronizationStatus']);
-    _notificationLevel = EnumToString.fromString(NotificationLevel.values, map['notificationLevel']);
 
     final messagesMap = Map<String, dynamic>.from(map['messages']);
     _messages ??= Messages._fromMap(messagesMap, this);

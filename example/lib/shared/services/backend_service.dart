@@ -1,7 +1,7 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/services.dart';
-import 'package:twilio_unofficial_programmable_chat_example/models/twilio_chat_token_request.dart';
-import 'package:twilio_unofficial_programmable_chat_example/models/twilio_chat_token_response.dart';
+import 'package:twilio_programmable_chat_example/models/twilio_chat_token_request.dart';
+import 'package:twilio_programmable_chat_example/models/twilio_chat_token_response.dart';
 
 abstract class BackendService {
   Future<TwilioChatTokenResponse> createToken(TwilioChatTokenRequest twilioChatTokenRequest);

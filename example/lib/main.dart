@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:twilio_unofficial_programmable_chat_example/debug.dart';
-import 'package:twilio_unofficial_programmable_chat_example/join/join_page.dart';
-import 'package:twilio_unofficial_programmable_chat_example/shared/services/backend_service.dart';
+import 'package:twilio_programmable_chat_example/debug.dart';
+import 'package:twilio_programmable_chat_example/join/join_page.dart';
+import 'package:twilio_programmable_chat_example/shared/services/backend_service.dart';
 
 void main() {
   Debug.enabled = true;

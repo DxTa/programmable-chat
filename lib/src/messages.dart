@@ -1,4 +1,4 @@
-part of twilio_unofficial_programmable_chat;
+part of twilio_programmable_chat;
 
 class Messages {
   final Channel _channel;
@@ -34,10 +34,7 @@ class Messages {
       final messageMap = Map<String, dynamic>.from(methodData);
       return Message._fromMap(messageMap, this);
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -46,10 +43,7 @@ class Messages {
     try {
       await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Messages#removeMessage', {'channelSid': _channel.sid, 'messageIndex': message.messageIndex});
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -69,10 +63,7 @@ class Messages {
       }
       return messages;
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -92,10 +83,7 @@ class Messages {
       }
       return messages;
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -114,10 +102,7 @@ class Messages {
       }
       return messages;
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -128,10 +113,7 @@ class Messages {
       final messageMap = Map<String, dynamic>.from(methodData);
       return Message._fromMap(messageMap, this);
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -140,10 +122,7 @@ class Messages {
     try {
       return _lastConsumedMessageIndex = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Messages#setLastConsumedMessageIndexWithResult', {'channelSid': _channel.sid, 'lastConsumedMessageIndex': lastConsumedMessageIndex });
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -154,10 +133,7 @@ class Messages {
     try {
       return _lastConsumedMessageIndex = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Messages#advanceLastConsumedMessageIndexWithResult', {'channelSid': _channel.sid, 'lastConsumedMessageIndex': lastConsumedMessageIndex });
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -166,10 +142,7 @@ class Messages {
     try {
       return _lastConsumedMessageIndex = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Messages#setAllMessagesConsumedWithResult', {'channelSid': _channel.sid });
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -178,10 +151,7 @@ class Messages {
     try {
       return _lastConsumedMessageIndex = await TwilioUnofficialProgrammableChat._methodChannel.invokeMethod('Messages#setNoMessagesConsumedWithResult', {'channelSid': _channel.sid });
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
   //#endregion

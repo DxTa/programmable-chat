@@ -1,4 +1,4 @@
-# twilio_unofficial_programmable_chat
+# twilio_programmable_chat
 Integrate the Twilio Chat SDK with your Flutter app using this Unofficial Twilio Programmable Chat Flutter plugin.
 
 This package is currently work-in-progress and should not be used for production apps. We can't guarantee that the current API implementation will stay the same between versions, until we have reached v1.0.0.
@@ -7,7 +7,7 @@ This package is currently work-in-progress and should not be used for production
 If you have any question or problems, please join us on [Discord](https://discord.gg/42x46NH)
 
 ## FAQ
-Read the [Frequently Asked Questions](https://gitlab.com/twilio-flutter-unofficial/programmable-chat/blob/master/FAQ.md) first before creating a new issue.
+Read the [Frequently Asked Questions](https://gitlab.com/twilio-flutter/programmable-chat/blob/master/FAQ.md) first before creating a new issue.
 
 ## Supported platforms
 * Android (WIP)
@@ -23,7 +23,7 @@ First add it as a [dependency in your pubspec.yaml file](https://flutter.dev/doc
 For example:
 ```yaml
 dependencies:
-  twilio_unofficial_programmable_chat: '^0.1.0'
+  twilio_programmable_chat: '^0.1.0'
 ```
 
 ## Events table
@@ -53,7 +53,7 @@ Reference table of all the events the plugin supports and their native platform 
 | ChatClient | userUpdated                    | onUserUpdated                    | X           |
 
 # Example
-Check out our comprehensive [example](https://gitlab.com/twilio-flutter-unofficial/programmable-chat/tree/master/example) provided with this plugin.
+Check out our comprehensive [example](https://gitlab.com/twilio-flutter/programmable-chat/tree/master/example) provided with this plugin.
 
 # Development and Contributing
-Interested in contributing? We love merge requests! See the [Contribution](https://gitlab.com/twilio-flutter-unofficial/programmable-chat/blob/master/CONTRIBUTING.md) guidelines.
+Interested in contributing? We love merge requests! See the [Contribution](https://gitlab.com/twilio-flutter/programmable-chat/blob/master/CONTRIBUTING.md) guidelines.

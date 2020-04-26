@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:twilio_unofficial_programmable_chat_example/join/join_form.dart';
+import 'package:twilio_programmable_chat_example/join/join_form.dart';
 
 class JoinPage extends StatelessWidget {
   @override

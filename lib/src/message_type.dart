@@ -1,4 +1,4 @@
-part of twilio_unofficial_programmable_chat;
+part of twilio_programmable_chat;
 
 /// Represents the type of message.
 enum MessageType {
@@ -7,6 +7,6 @@ enum MessageType {
 
   /// [Message] is a media message.
   ///
-  /// [Message.getMedia] will return the associated media object.
+  /// [Message.media] will return the associated media object.
   MEDIA,
 }

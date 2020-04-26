@@ -1,4 +1,4 @@
-import 'package:twilio_unofficial_programmable_chat/twilio_unofficial_programmable_chat.dart';
+import 'package:twilio_programmable_chat/twilio_programmable_chat.dart';
 
 class JoinModel {
   final bool isLoading;

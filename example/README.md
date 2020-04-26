@@ -1,6 +1,6 @@
-# twilio_unofficial_programmable_chat_example
+# twilio_programmable_chat_example
 
-Demonstrates how to use the `twilio_unofficial_programmable_chat` plugin in a save manner as you would production like.
+Demonstrates how to use the `twilio_programmable_chat` plugin in a save manner as you would production like.
 
 ## Join the community
 If you have any question or problems, please join us on [Discord](https://discord.gg/42x46NH)
@@ -91,7 +91,7 @@ Below we will take you through this setup for each platform.
 1. Open your [firebase console](https://console.firebase.google.com/)
 2. Open the project you created before
 3. On this project overview page click the Android icon to add an Android app or if you do not see this option, click the `Add app` button
-4. Android package name: `unofficial.twilio.flutter.twilio_unofficial_programmable_chat_example`
+4. Android package name: `twilio.flutter.twilio_programmable_chat_example`
 5. App nickname: `Twilio Programmable Chat Example`
 6. Debug signing certificate SHA-1: leave empty
 7. Click `Register app`

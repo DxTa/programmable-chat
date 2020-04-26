@@ -1,4 +1,4 @@
-package unofficial.twilio.flutter.twilio_unofficial_programmable_chat_example
+package twilio.flutter.twilio_programmable_chat_example
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

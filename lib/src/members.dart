@@ -1,4 +1,4 @@
-part of twilio_unofficial_programmable_chat;
+part of twilio_programmable_chat;
 
 /// Provides access to channel members and allows to add/remove members.
 class Members {
@@ -52,10 +52,7 @@ class Members {
       final membersMap = Map<String, dynamic>.from(methodData);
       return _updateFromMap(membersMap);
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -71,10 +68,7 @@ class Members {
       final membersMap = Map<String, dynamic>.from(methodData);
       return _updateFromMap(membersMap);
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
 
@@ -90,10 +84,7 @@ class Members {
       final membersMap = Map<String, dynamic>.from(methodData);
       return _updateFromMap(membersMap);
     } on PlatformException catch (err) {
-      if (err.code == 'ERROR') {
-        rethrow;
-      }
-      throw ErrorInfo(int.parse(err.code), err.message, err.details as int);
+      throw TwilioUnofficialProgrammableChat._convertException(err);
     }
   }
   //#endregion
