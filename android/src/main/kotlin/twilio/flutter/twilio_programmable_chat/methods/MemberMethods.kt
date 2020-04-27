@@ -16,7 +16,7 @@ object MemberMethods {
     fun getUserDescriptor(call: MethodCall, result: MethodChannel.Result) {
         val channelSid = call.argument<String>("channelSid")
                 ?: return result.error("ERROR", "Missing 'channelSid'", null)
-        
+
         val memberSid = call.argument<String>("memberSid")
                 ?: return result.error("ERROR", "Missing 'memberSid'", null)
 
@@ -106,7 +106,7 @@ object MemberMethods {
                     if (member != null) {
                         try {
                             result.success(Mapper.jsonObjectToMap(member.attributes))
-                        } catch(err: JSONException) {
+                        } catch (err: JSONException) {
                             return result.error("JSONException", err.message, null)
                         }
                     } else {
@@ -118,7 +118,7 @@ object MemberMethods {
                     TwilioProgrammableChatPlugin.debug("MemberMethods.getAttributes => onError: $errorInfo")
                     result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
                 }
-            });
+            })
         } catch (err: IllegalArgumentException) {
             return result.error("IllegalArgumentException", err.message, null)
         }
@@ -144,9 +144,9 @@ object MemberMethods {
                             override fun onSuccess() {
                                 TwilioProgrammableChatPlugin.debug("MemberMethods.setAttributes  (Channel.setAttributes) => onSuccess")
                                 try {
-                                    result.success(Mapper.jsonObjectToMap(member.attributes));
-                                } catch(err: JSONException) {
-                                    return result.error("JSONException", err.message, null);
+                                    result.success(Mapper.jsonObjectToMap(member.attributes))
+                                } catch (err: JSONException) {
+                                    return result.error("JSONException", err.message, null)
                                 }
                             }
 
@@ -164,7 +164,7 @@ object MemberMethods {
                     TwilioProgrammableChatPlugin.debug("MemberMethods.setAttributes => onError: $errorInfo")
                     result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
                 }
-            });
+            })
         } catch (err: IllegalArgumentException) {
             return result.error("IllegalArgumentException", err.message, null)
         }

@@ -1,6 +1,7 @@
 part of twilio_programmable_chat;
 
 class MessageMedia {
+  //#region Private API properties
   final String _sid;
 
   final String _fileName;
@@ -8,7 +9,9 @@ class MessageMedia {
   final String _type;
 
   final int _size;
+  //#endregion
 
+  //#region Public API properties
   /// Get SID of media stream.
   String get sid {
     return _sid;
@@ -28,6 +31,7 @@ class MessageMedia {
   int get size {
     return _size;
   }
+  //#endregion
 
   MessageMedia(
     this._sid,
@@ -52,10 +56,12 @@ class MessageMedia {
     );
   }
 
+  //#region Public API methods
   /// Save media content stream that could be streamed or downloaded by client.
   ///
-  /// Provided stream could be any subclass of java.io.OutputStream, including ByteArrayOutputStream, so you could download media into memory for further processing.
-  Future<void> download() async {
-
+  /// Provided file could be an existing file and a none existing file.
+  Future<void> download(File output) async {
+//    output.writeAsBytes(bytes)
   }
+  //#endregion
 }

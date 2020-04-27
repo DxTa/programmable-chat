@@ -6,6 +6,8 @@ class TwilioProgrammableChat {
 
   static const EventChannel _chatChannel = EventChannel('twilio_programmable_chat/room');
 
+  static const EventChannel _mediaProgressChannel = EventChannel('twilio_programmable_chat/media_progress');
+
   static const EventChannel _loggingChannel = EventChannel('twilio_programmable_chat/logging');
 
   static StreamSubscription _loggingStream;

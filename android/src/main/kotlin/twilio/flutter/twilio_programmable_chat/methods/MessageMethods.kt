@@ -15,10 +15,10 @@ object MessageMethods {
     fun updateMessageBody(call: MethodCall, result: MethodChannel.Result) {
         val channelSid = call.argument<String>("channelSid")
                 ?: return result.error("ERROR", "Missing 'channelSid'", null)
-        
+
         val messageIndex = call.argument<Long>("messageIndex")
                 ?: return result.error("ERROR", "Missing 'messageIndex'", null)
-        
+
         val body = call.argument<String>("body")
                 ?: return result.error("ERROR", "Missing 'body'", null)
 
@@ -68,14 +68,14 @@ object MessageMethods {
             TwilioProgrammableChatPlugin.chatListener.chatClient?.channels?.getChannel(channelSid, object : CallbackListener<Channel>() {
                 override fun onSuccess(channel: Channel) {
                     TwilioProgrammableChatPlugin.debug("MessageMethods.getAttributes => onSuccess")
-                    
+
                     channel.messages.getMessageByIndex(messageIndex, object : CallbackListener<Message>() {
                         override fun onSuccess(message: Message) {
                             TwilioProgrammableChatPlugin.debug("MessageMethods.updateMessageBody (Messages.getMessageByIndex) => onSuccess")
 
                             try {
                                 result.success(Mapper.jsonObjectToMap(message.attributes))
-                            } catch(err: JSONException) {
+                            } catch (err: JSONException) {
                                 return result.error("JSONException", err.message, null)
                             }
                         }
@@ -91,7 +91,7 @@ object MessageMethods {
                     TwilioProgrammableChatPlugin.debug("MessageMethods.getAttributes => onError: $errorInfo")
                     result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
                 }
-            });
+            })
         } catch (err: IllegalArgumentException) {
             return result.error("IllegalArgumentException", err.message, null)
         }
@@ -111,7 +111,7 @@ object MessageMethods {
             TwilioProgrammableChatPlugin.chatListener.chatClient?.channels?.getChannel(channelSid, object : CallbackListener<Channel>() {
                 override fun onSuccess(channel: Channel) {
                     TwilioProgrammableChatPlugin.debug("MessageMethods.setAttributes => onSuccess")
-                    
+
                     channel.messages.getMessageByIndex(messageIndex, object : CallbackListener<Message>() {
                         override fun onSuccess(message: Message) {
                             TwilioProgrammableChatPlugin.debug("MessageMethods.updateMessageBody (Messages.getMessageByIndex) => onSuccess")
@@ -120,9 +120,9 @@ object MessageMethods {
                                 override fun onSuccess() {
                                     TwilioProgrammableChatPlugin.debug("MessageMethods.setAttributes  (Channel.setAttributes) => onSuccess")
                                     try {
-                                        result.success(Mapper.jsonObjectToMap(message.attributes));
-                                    } catch(err: JSONException) {
-                                        return result.error("JSONException", err.message, null);
+                                        result.success(Mapper.jsonObjectToMap(message.attributes))
+                                    } catch (err: JSONException) {
+                                        return result.error("JSONException", err.message, null)
                                     }
                                 }
 
@@ -133,7 +133,7 @@ object MessageMethods {
                             })
                             try {
                                 result.success(Mapper.jsonObjectToMap(message.attributes))
-                            } catch(err: JSONException) {
+                            } catch (err: JSONException) {
                                 return result.error("JSONException", err.message, null)
                             }
                         }
@@ -149,7 +149,7 @@ object MessageMethods {
                     TwilioProgrammableChatPlugin.debug("MessageMethods.setAttributes => onError: $errorInfo")
                     result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
                 }
-            });
+            })
         } catch (err: IllegalArgumentException) {
             return result.error("IllegalArgumentException", err.message, null)
         }

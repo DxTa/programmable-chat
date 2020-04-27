@@ -249,7 +249,7 @@ object ChannelMethods {
             return result.error("IllegalArgumentException", err.message, null)
         }
     }
-    
+
     fun getAttributes(call: MethodCall, result: MethodChannel.Result) {
         val channelSid = call.argument<String>("channelSid")
                 ?: return result.error("ERROR", "Missing 'channelSid'", null)
@@ -259,9 +259,9 @@ object ChannelMethods {
                 override fun onSuccess(channel: Channel) {
                     TwilioProgrammableChatPlugin.debug("ChannelMethods.getAttributes => onSuccess")
                     try {
-                        result.success(Mapper.jsonObjectToMap(channel.attributes));
-                    } catch(err: JSONException) {
-                        return result.error("JSONException", err.message, null);
+                        result.success(Mapper.jsonObjectToMap(channel.attributes))
+                    } catch (err: JSONException) {
+                        return result.error("JSONException", err.message, null)
                     }
                 }
 
@@ -269,7 +269,7 @@ object ChannelMethods {
                     TwilioProgrammableChatPlugin.debug("ChannelMethods.getAttributes => onError: $errorInfo")
                     result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
                 }
-            });
+            })
         } catch (err: IllegalArgumentException) {
             return result.error("IllegalArgumentException", err.message, null)
         }
@@ -281,7 +281,7 @@ object ChannelMethods {
 
         // Not erroring out because a nullable attributes is allowed to reset the Channel attributes.
         val attributes = call.argument<Map<String, Any>>("attributes")
-        
+
         try {
             TwilioProgrammableChatPlugin.chatListener.chatClient?.channels?.getChannel(channelSid, object : CallbackListener<Channel>() {
                 override fun onSuccess(channel: Channel) {
@@ -290,9 +290,9 @@ object ChannelMethods {
                         override fun onSuccess() {
                             TwilioProgrammableChatPlugin.debug("ChannelMethods.setAttributes  (Channel.setAttributes) => onSuccess")
                             try {
-                                result.success(Mapper.jsonObjectToMap(channel.attributes));
-                            } catch(err: JSONException) {
-                                return result.error("JSONException", err.message, null);
+                                result.success(Mapper.jsonObjectToMap(channel.attributes))
+                            } catch (err: JSONException) {
+                                return result.error("JSONException", err.message, null)
                             }
                         }
 
@@ -307,7 +307,7 @@ object ChannelMethods {
                     TwilioProgrammableChatPlugin.debug("ChannelMethods.setAttributes => onError: $errorInfo")
                     result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
                 }
-            });
+            })
         } catch (err: IllegalArgumentException) {
             return result.error("IllegalArgumentException", err.message, null)
         }
@@ -321,14 +321,14 @@ object ChannelMethods {
             TwilioProgrammableChatPlugin.chatListener.chatClient?.channels?.getChannel(channelSid, object : CallbackListener<Channel>() {
                 override fun onSuccess(channel: Channel) {
                     TwilioProgrammableChatPlugin.debug("ChannelMethods.getFriendlyName => onSuccess")
-                    result.success(channel.friendlyName);
+                    result.success(channel.friendlyName)
                 }
 
                 override fun onError(errorInfo: ErrorInfo) {
                     TwilioProgrammableChatPlugin.debug("ChannelMethods.getFriendlyName => onError: $errorInfo")
                     result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
                 }
-            });
+            })
         } catch (err: IllegalArgumentException) {
             return result.error("IllegalArgumentException", err.message, null)
         }
@@ -362,12 +362,12 @@ object ChannelMethods {
                     TwilioProgrammableChatPlugin.debug("ChannelMethods.setFriendlyName => onError: $errorInfo")
                     result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
                 }
-            });
+            })
         } catch (err: IllegalArgumentException) {
             return result.error("IllegalArgumentException", err.message, null)
         }
     }
-    
+
     fun getNotificationLevel(call: MethodCall, result: MethodChannel.Result) {
         val channelSid = call.argument<String>("channelSid")
                 ?: return result.error("ERROR", "Missing 'channelSid'", null)
@@ -376,14 +376,14 @@ object ChannelMethods {
             TwilioProgrammableChatPlugin.chatListener.chatClient?.channels?.getChannel(channelSid, object : CallbackListener<Channel>() {
                 override fun onSuccess(channel: Channel) {
                     TwilioProgrammableChatPlugin.debug("ChannelMethods.getNotificationLevel => onSuccess")
-                    result.success(channel.notificationLevel.toString());
+                    result.success(channel.notificationLevel.toString())
                 }
 
                 override fun onError(errorInfo: ErrorInfo) {
                     TwilioProgrammableChatPlugin.debug("ChannelMethods.getNotificationLevel => onError: $errorInfo")
                     result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
                 }
-            });
+            })
         } catch (err: IllegalArgumentException) {
             return result.error("IllegalArgumentException", err.message, null)
         }
@@ -423,7 +423,7 @@ object ChannelMethods {
                     TwilioProgrammableChatPlugin.debug("ChannelMethods.setAttributes => onError: $errorInfo")
                     result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
                 }
-            });
+            })
         } catch (err: IllegalArgumentException) {
             return result.error("IllegalArgumentException", err.message, null)
         }
@@ -437,14 +437,14 @@ object ChannelMethods {
             TwilioProgrammableChatPlugin.chatListener.chatClient?.channels?.getChannel(channelSid, object : CallbackListener<Channel>() {
                 override fun onSuccess(channel: Channel) {
                     TwilioProgrammableChatPlugin.debug("ChannelMethods.getUniqueName => onSuccess")
-                    result.success(channel.uniqueName);
+                    result.success(channel.uniqueName)
                 }
 
                 override fun onError(errorInfo: ErrorInfo) {
                     TwilioProgrammableChatPlugin.debug("ChannelMethods.getUniqueName => onError: $errorInfo")
                     result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
                 }
-            });
+            })
         } catch (err: IllegalArgumentException) {
             return result.error("IllegalArgumentException", err.message, null)
         }
@@ -478,7 +478,7 @@ object ChannelMethods {
                     TwilioProgrammableChatPlugin.debug("ChannelMethods.setUniqueName => onError: $errorInfo")
                     result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
                 }
-            });
+            })
         } catch (err: IllegalArgumentException) {
             return result.error("IllegalArgumentException", err.message, null)
         }

@@ -67,7 +67,7 @@ class Member {
   //#region Public API methods
   /// Return user descriptor for current member.
   Future<UserDescriptor> getUserDescriptor() async {
-    throw UnimplementedError("getUserDescriptor");
+    throw UnimplementedError('getUserDescriptor');
 //    try {
 //      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Member#getUserDescriptor', {'memberSid': _sid, 'channelSid': _channel.sid});
 //      final userDescriptorMap = Map<String, dynamic>.from(methodData);

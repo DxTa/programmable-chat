@@ -4,6 +4,7 @@ import com.twilio.chat.CallbackListener
 import com.twilio.chat.Channel
 import com.twilio.chat.ErrorInfo
 import com.twilio.chat.Message
+import com.twilio.chat.ProgressListener
 import com.twilio.chat.StatusListener
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -22,6 +23,9 @@ object MessagesMethods {
         if (options["body"] != null) {
             messageOptions.withBody(options["body"] as String)
         }
+        if (options["attributes"] != null) {
+            messageOptions.withAttributes(Mapper.mapToJSONObject(options["attributes"] as Map<String, Any>?));
+        }
         if (options["input"] != null) {
             val input = options["input"] as String
             val mimeType = options["mimeType"] as String?
@@ -30,6 +34,33 @@ object MessagesMethods {
             messageOptions.withMedia(FileInputStream(input), mimeType)
             if (options["filename"] != null) {
                 messageOptions.withMediaFileName(options["filename"] as String)
+            }
+
+            if (options["mediaProgressListenerId"] != null) {
+                messageOptions.withMediaProgressListener(object : ProgressListener() {
+                    override fun onStarted() {
+                        TwilioProgrammableChatPlugin.mediaProgresSink?.success({
+                            "mediaProgressListenerId" to options["mediaProgressListenerId"]
+                            "name" to "started"
+                        })
+                    }
+
+                    override fun onProgress(bytes: Long) {
+                        TwilioProgrammableChatPlugin.mediaProgresSink?.success({
+                            "mediaProgressListenerId" to options["mediaProgressListenerId"]
+                            "name" to "progress"
+                            "data" to bytes
+                        })
+                    }
+
+                    override fun onCompleted(mediaSid: String) {
+                        TwilioProgrammableChatPlugin.mediaProgresSink?.success({
+                            "mediaProgressListenerId" to options["mediaProgressListenerId"]
+                            "name" to "completed"
+                            "data" to mediaSid
+                        })
+                    }
+                });
             }
         }
 
@@ -56,7 +87,7 @@ object MessagesMethods {
             }
         })
     }
-    
+
     fun removeMessage(call: MethodCall, result: MethodChannel.Result) {
         val channelSid = call.argument<String>("channelSid")
                 ?: return result.error("ERROR", "Missing 'channelSid'", null)

@@ -18,7 +18,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import twilio.flutter.twilio_programmable_chat.listeners.ChannelListener
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 object Mapper {
     fun jsonObjectToMap(jsonObject: JSONObject): Map<String, Any?> {
@@ -28,13 +28,13 @@ object Mapper {
                 result[it] = null
             } else if (jsonObject[it] is JSONObject) {
                 result[it] = jsonObjectToMap(jsonObject[it] as JSONObject)
-            } else if(jsonObject[it] is JSONArray) {
+            } else if (jsonObject[it] is JSONArray) {
                 result[it] = jsonArrayToList(jsonObject[it] as JSONArray)
             } else {
                 result[it] = jsonObject[it]
             }
         }
-        return result;
+        return result
     }
 
     fun jsonArrayToList(jsonArray: JSONArray): List<Any?> {
@@ -44,13 +44,13 @@ object Mapper {
                 result[i] = null
             } else if (jsonArray[i] is JSONObject) {
                 result[i] = jsonObjectToMap(jsonArray[i] as JSONObject)
-            } else if(jsonArray[i] is JSONArray) {
+            } else if (jsonArray[i] is JSONArray) {
                 result[i] = jsonArrayToList(jsonArray[i] as JSONArray)
             } else {
                 result[i] = jsonArray[i]
             }
         }
-        return result;
+        return result
     }
 
     fun mapToJSONObject(map: Map<String, Any>?): JSONObject? {
@@ -63,7 +63,7 @@ object Mapper {
                 result.put(it, null)
             } else if (map[it] is Map<*, *>) {
                 result.put(it, mapToJSONObject(map[it] as Map<String, Any>))
-            } else if(map[it] is List<*>) {
+            } else if (map[it] is List<*>) {
                 result.put(it, listToJSONArray(map[it] as List<Any>))
             } else {
                 result.put(it, map[it])
@@ -77,7 +77,7 @@ object Mapper {
         list.forEach {
             if (it is Map<*, *>) {
                 result.put(mapToJSONObject(it as Map<String, Any>))
-            } else if(it is List<*>) {
+            } else if (it is List<*>) {
                 result.put(listToJSONArray(it as List<Any>))
             } else {
                 result.put(it)
@@ -201,7 +201,7 @@ object Mapper {
                 "size" to media.size
         )
     }
-    
+
     fun membersToMap(members: Members, partOfChannel: Channel): Map<String, Any?> {
         val membersListMap = members.membersList.map { memberToMap(it, partOfChannel) }
         return mapOf(

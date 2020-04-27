@@ -17,6 +17,8 @@ class TwilioProgrammableChatPlugin : FlutterPlugin {
 
     private lateinit var chatChannel: EventChannel
 
+    private lateinit var mediaProgressChannel: EventChannel
+
     private lateinit var loggingChannel: EventChannel
 
     // This static function is optional and equivalent to onAttachedToEngine. It supports the old
@@ -40,6 +42,8 @@ class TwilioProgrammableChatPlugin : FlutterPlugin {
 
         @JvmStatic
         val LOG_TAG = "Twilio_PChat"
+
+        var mediaProgresSink: EventChannel.EventSink? = null
 
         var loggingSink: EventChannel.EventSink? = null
 
@@ -80,6 +84,19 @@ class TwilioProgrammableChatPlugin : FlutterPlugin {
             override fun onCancel(arguments: Any) {
                 debug("TwilioProgrammableChatPlugin.onAttachedToEngine => Chat eventChannel detached")
                 chatListener.events = null
+            }
+        })
+
+        mediaProgressChannel = EventChannel(messenger, "twilio_programmable_chat/media_progress")
+        mediaProgressChannel.setStreamHandler(object : EventChannel.StreamHandler {
+            override fun onListen(arguments: Any?, events: EventChannel.EventSink) {
+                debug("TwilioProgrammableChatPlugin.onAttachedToEngine => MediaProgress eventChannel attached")
+                mediaProgresSink = events;
+            }
+
+            override fun onCancel(arguments: Any) {
+                debug("TwilioProgrammableChatPlugin.onAttachedToEngine => MediaProgress eventChannel detached")
+                mediaProgresSink = null
             }
         })
 
