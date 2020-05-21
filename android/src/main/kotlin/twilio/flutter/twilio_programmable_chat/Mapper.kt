@@ -112,7 +112,7 @@ object Mapper {
         )
     }
 
-    fun channelToMap(channel: Channel?, compareChannel: Channel? = null): Map<String, Any>? {
+    fun channelToMap(channel: Channel?, compareChannel: Channel? = null): Map<String, Any?>? {
         if (channel == null || compareChannel != null && channel.sid == compareChannel.sid) {
             return null
         }
@@ -169,7 +169,8 @@ object Mapper {
         )
     }
 
-    private fun messagesToMap(messages: Messages): Map<String, Any> {
+    private fun messagesToMap(messages: Messages?): Map<String, Any>? {
+        if (messages == null) return null
         return mapOf(
                 "lastConsumedMessageIndex" to messages.lastConsumedMessageIndex
         )
@@ -202,7 +203,8 @@ object Mapper {
         )
     }
 
-    fun membersToMap(members: Members, partOfChannel: Channel): Map<String, Any?> {
+    fun membersToMap(members: Members?, partOfChannel: Channel): Map<String, Any?>? {
+        if (members == null) return null
         val membersListMap = members.membersList.map { memberToMap(it, partOfChannel) }
         return mapOf(
                 "channel" to channelToMap(members.channel, partOfChannel),
@@ -249,7 +251,7 @@ object Mapper {
         )
     }
 
-    fun channelDescriptorToMap(channelDescriptor: ChannelDescriptor): Map<String, Any> {
+    fun channelDescriptorToMap(channelDescriptor: ChannelDescriptor): Map<String, Any?> {
         return mapOf(
                 "sid" to channelDescriptor.sid,
                 "friendlyName" to channelDescriptor.friendlyName,
@@ -275,7 +277,8 @@ object Mapper {
         )
     }
 
-    private fun dateToString(date: Date): String {
+    private fun dateToString(date: Date?): String? {
+        if (date == null) return null
         val dateFormat = SimpleDateFormat("yyyy-mm-dd hh:mm:ss")
         return dateFormat.format(date)
     }

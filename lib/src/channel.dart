@@ -197,7 +197,6 @@ class Channel {
   Channel(this._sid, this._createdBy, this._dateCreated, this._type)
       : assert(_sid != null),
         assert(_createdBy != null),
-        assert(_dateCreated != null),
         assert(_type != null) {
     onMessageAdded = _onMessageAddedCtrl.stream;
     onMessageUpdated = _onMessageUpdatedCtrl.stream;
@@ -218,7 +217,7 @@ class Channel {
     var channel = Channel(
       map['sid'],
       map['createdBy'],
-      DateTime.parse(map['dateCreated']),
+      map['dateCreated'] != null ? DateTime.parse(map['dateCreated']) : null,
       EnumToString.fromString(ChannelType.values, map['type']),
     );
     channel._updateFromMap(map);
@@ -434,17 +433,21 @@ class Channel {
   void _updateFromMap(Map<String, dynamic> map) {
     _synchronizationStatus = EnumToString.fromString(ChannelSynchronizationStatus.values, map['synchronizationStatus']);
 
-    final messagesMap = Map<String, dynamic>.from(map['messages']);
-    _messages ??= Messages._fromMap(messagesMap, this);
-    _messages._updateFromMap(messagesMap);
+    if (map['messages'] != null) {
+      final messagesMap = Map<String, dynamic>.from(map['messages']);
+      _messages ??= Messages._fromMap(messagesMap, this);
+      _messages._updateFromMap(messagesMap);
+    }
 
     _status = EnumToString.fromString(ChannelStatus.values, map['status']);
 
-    final membersMap = Map<String, dynamic>.from(map['members']);
-    _members ??= Members._fromMap(membersMap, this);
-    _members._updateFromMap(membersMap);
+    if (map['members'] != null) {
+      final membersMap = Map<String, dynamic>.from(map['members']);
+      _members ??= Members._fromMap(membersMap, this);
+      _members._updateFromMap(membersMap);
+    }
 
-    _dateUpdated = map['dateUpdated'];
+    _dateUpdated = map['dateUpdated'] != null ? DateTime.parse(map['dateUpdated']) : null;
     _lastMessageDate = map['lastMessageDate'];
     _lastMessageIndex = map['lastMessageIndex'];
   }
