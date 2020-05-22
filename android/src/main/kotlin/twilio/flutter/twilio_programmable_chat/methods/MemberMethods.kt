@@ -1,11 +1,6 @@
 package twilio.flutter.twilio_programmable_chat.methods
 
-import com.twilio.chat.CallbackListener
-import com.twilio.chat.Channel
-import com.twilio.chat.ErrorInfo
-import com.twilio.chat.StatusListener
-import com.twilio.chat.User
-import com.twilio.chat.UserDescriptor
+import com.twilio.chat.*
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONException
@@ -105,7 +100,7 @@ object MemberMethods {
                     val member = channel.members.membersList.find { it.sid == memberSid }
                     if (member != null) {
                         try {
-                            result.success(Mapper.jsonObjectToMap(member.attributes))
+                            result.success(Mapper.attributesToMap(member.attributes))
                         } catch (err: JSONException) {
                             return result.error("JSONException", err.message, null)
                         }
@@ -140,11 +135,11 @@ object MemberMethods {
                     TwilioProgrammableChatPlugin.debug("MemberMethods.setAttributes => onSuccess")
                     val member = channel.members.membersList.find { it.sid == memberSid }
                     if (member != null) {
-                        member.setAttributes(Mapper.mapToJSONObject(attributes), object : StatusListener() {
+                        member.setAttributes(Mapper.mapToAttributes(attributes), object : StatusListener() {
                             override fun onSuccess() {
                                 TwilioProgrammableChatPlugin.debug("MemberMethods.setAttributes  (Channel.setAttributes) => onSuccess")
                                 try {
-                                    result.success(Mapper.jsonObjectToMap(member.attributes))
+                                    result.success(Mapper.attributesToMap(member.attributes))
                                 } catch (err: JSONException) {
                                     return result.error("JSONException", err.message, null)
                                 }

@@ -448,7 +448,7 @@ class Channel {
     }
 
     _dateUpdated = map['dateUpdated'] != null ? DateTime.parse(map['dateUpdated']) : null;
-    _lastMessageDate = map['lastMessageDate'];
+    _lastMessageDate = map['lastMessageDate'] != null ? DateTime.parse(map['lastMessageDate']) : null;
     _lastMessageIndex = map['lastMessageIndex'];
   }
 

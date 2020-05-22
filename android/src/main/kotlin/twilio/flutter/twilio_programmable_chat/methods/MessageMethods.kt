@@ -1,10 +1,6 @@
 package twilio.flutter.twilio_programmable_chat.methods
 
-import com.twilio.chat.CallbackListener
-import com.twilio.chat.Channel
-import com.twilio.chat.ErrorInfo
-import com.twilio.chat.Message
-import com.twilio.chat.StatusListener
+import com.twilio.chat.*
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONException
@@ -74,7 +70,7 @@ object MessageMethods {
                             TwilioProgrammableChatPlugin.debug("MessageMethods.updateMessageBody (Messages.getMessageByIndex) => onSuccess")
 
                             try {
-                                result.success(Mapper.jsonObjectToMap(message.attributes))
+                                result.success(Mapper.attributesToMap(message.attributes))
                             } catch (err: JSONException) {
                                 return result.error("JSONException", err.message, null)
                             }
@@ -115,12 +111,11 @@ object MessageMethods {
                     channel.messages.getMessageByIndex(messageIndex, object : CallbackListener<Message>() {
                         override fun onSuccess(message: Message) {
                             TwilioProgrammableChatPlugin.debug("MessageMethods.updateMessageBody (Messages.getMessageByIndex) => onSuccess")
-
-                            message.setAttributes(Mapper.mapToJSONObject(attributes), object : StatusListener() {
+                            message.setAttributes(Mapper.mapToAttributes(attributes), object : StatusListener() {
                                 override fun onSuccess() {
                                     TwilioProgrammableChatPlugin.debug("MessageMethods.setAttributes  (Channel.setAttributes) => onSuccess")
                                     try {
-                                        result.success(Mapper.jsonObjectToMap(message.attributes))
+                                        result.success(Mapper.attributesToMap(message.attributes))
                                     } catch (err: JSONException) {
                                         return result.error("JSONException", err.message, null)
                                     }
@@ -132,7 +127,7 @@ object MessageMethods {
                                 }
                             })
                             try {
-                                result.success(Mapper.jsonObjectToMap(message.attributes))
+                                result.success(Mapper.attributesToMap(message.attributes))
                             } catch (err: JSONException) {
                                 return result.error("JSONException", err.message, null)
                             }

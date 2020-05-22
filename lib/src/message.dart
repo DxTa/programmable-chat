@@ -124,7 +124,8 @@ class Message {
         assert(_messageIndex != null),
         assert(_type != null),
         assert(_hasMedia != null),
-        assert(_hasMedia == true && _media != null);
+        assert((_hasMedia == true && _media != null) ||
+            (_hasMedia == false && _media == null));
 
   /// Construct from a map.
   factory Message._fromMap(Map<String, dynamic> map, Messages messages) {
@@ -133,9 +134,9 @@ class Message {
       map['author'],
       DateTime.parse(map['dateCreated']),
       map['channelSid'],
-      Channel._fromMap(map['channel']),
+      Channel._fromMap(Map<String, dynamic>.from(map['channel'].cast<String, dynamic>())),
       map['memberSid'],
-      Member._fromMap(map['member']),
+      Member._fromMap(map['member'].cast<String, dynamic>()),
       messages,
       map['messageIndex'],
       EnumToString.fromString(MessageType.values, map['type']),

@@ -1,9 +1,6 @@
 package twilio.flutter.twilio_programmable_chat.methods
 
-import com.twilio.chat.CallbackListener
-import com.twilio.chat.Channel
-import com.twilio.chat.ErrorInfo
-import com.twilio.chat.StatusListener
+import com.twilio.chat.*
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONException
@@ -259,7 +256,7 @@ object ChannelMethods {
                 override fun onSuccess(channel: Channel) {
                     TwilioProgrammableChatPlugin.debug("ChannelMethods.getAttributes => onSuccess")
                     try {
-                        result.success(Mapper.jsonObjectToMap(channel.attributes))
+                        result.success(Mapper.attributesToMap(channel.attributes))
                     } catch (err: JSONException) {
                         return result.error("JSONException", err.message, null)
                     }
@@ -286,11 +283,11 @@ object ChannelMethods {
             TwilioProgrammableChatPlugin.chatListener.chatClient?.channels?.getChannel(channelSid, object : CallbackListener<Channel>() {
                 override fun onSuccess(channel: Channel) {
                     TwilioProgrammableChatPlugin.debug("ChannelMethods.setAttributes => onSuccess")
-                    channel.setAttributes(Mapper.mapToJSONObject(attributes), object : StatusListener() {
+                    channel.setAttributes(Mapper.mapToAttributes(attributes), object : StatusListener() {
                         override fun onSuccess() {
                             TwilioProgrammableChatPlugin.debug("ChannelMethods.setAttributes  (Channel.setAttributes) => onSuccess")
                             try {
-                                result.success(Mapper.jsonObjectToMap(channel.attributes))
+                                result.success(Mapper.attributesToMap(channel.attributes))
                             } catch (err: JSONException) {
                                 return result.error("JSONException", err.message, null)
                             }

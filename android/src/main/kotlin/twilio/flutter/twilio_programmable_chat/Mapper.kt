@@ -1,18 +1,6 @@
 package twilio.flutter.twilio_programmable_chat
 
-import com.twilio.chat.Channel
-import com.twilio.chat.ChannelDescriptor
-import com.twilio.chat.Channels
-import com.twilio.chat.ChatClient
-import com.twilio.chat.ErrorInfo
-import com.twilio.chat.Member
-import com.twilio.chat.Members
-import com.twilio.chat.Message
-import com.twilio.chat.Messages
-import com.twilio.chat.Paginator
-import com.twilio.chat.User
-import com.twilio.chat.UserDescriptor
-import com.twilio.chat.Users
+import com.twilio.chat.*
 import io.flutter.plugin.common.EventChannel
 import org.json.JSONArray
 import org.json.JSONObject
@@ -72,6 +60,12 @@ object Mapper {
         return result
     }
 
+    fun mapToAttributes(map: Map<String, Any>?): Attributes? {
+        if (map == null) return null
+        val attrObject = mapToJSONObject(map)
+        if (attrObject != null) return Attributes(attrObject) else return null
+    }
+
     fun listToJSONArray(list: List<Any>): JSONArray {
         val result = JSONArray()
         list.forEach {
@@ -87,7 +81,6 @@ object Mapper {
     }
 
     fun chatClientToMap(chatClient: ChatClient): Map<String, Any> {
-        chatClient.channels
         return mapOf(
                 "properties" to propertiesToMap(chatClient.properties),
                 "channels" to channelsToMap(chatClient.channels),
@@ -95,6 +88,13 @@ object Mapper {
                 "connectionState" to chatClient.connectionState.toString(),
                 "users" to usersToMap(chatClient.users),
                 "isReachabilityEnabled" to chatClient.isReachabilityEnabled
+        )
+    }
+
+    fun attributesToMap(attributes: Attributes): Map<String, Any> {
+        return mapOf(
+                "type" to attributes.type.toString(),
+                "data" to attributes.toString()
         )
     }
 
@@ -145,7 +145,7 @@ object Mapper {
                 "dateCreated" to dateToString(channel.dateCreatedAsDate),
                 "createdBy" to channel.createdBy,
                 "dateUpdated" to dateToString(channel.dateUpdatedAsDate),
-                "lastMessageDate" to channel.lastMessageDate,
+                "lastMessageDate" to dateToString(channel.lastMessageDate),
                 "lastMessageIndex" to channel.lastMessageIndex
         )
     }
@@ -194,7 +194,8 @@ object Mapper {
         )
     }
 
-    private fun mediaToMap(media: Message.Media): Map<String, Any> {
+    private fun mediaToMap(media: Message.Media?): Map<String, Any>? {
+        if (media == null) return null
         return mapOf(
                 "sid" to media.sid,
                 "fileName" to media.fileName,
@@ -244,7 +245,7 @@ object Mapper {
     fun userDescriptorToMap(userDescriptor: UserDescriptor): Map<String, Any> {
         return mapOf(
                 "friendlyName" to userDescriptor.friendlyName,
-                "attributes" to jsonObjectToMap(userDescriptor.attributes),
+                 "attributes" to attributesToMap(userDescriptor.attributes),
                 "identity" to userDescriptor.identity,
                 "isOnline" to userDescriptor.isOnline,
                 "isNotifiable" to userDescriptor.isNotifiable
@@ -255,7 +256,7 @@ object Mapper {
         return mapOf(
                 "sid" to channelDescriptor.sid,
                 "friendlyName" to channelDescriptor.friendlyName,
-                "attributes" to jsonObjectToMap(channelDescriptor.attributes),
+                 "attributes" to attributesToMap(channelDescriptor.attributes),
                 "uniqueName" to channelDescriptor.uniqueName,
                 "dateUpdated" to dateToString(channelDescriptor.dateUpdated),
                 "dateCreated" to dateToString(channelDescriptor.dateCreated),
@@ -279,7 +280,7 @@ object Mapper {
 
     private fun dateToString(date: Date?): String? {
         if (date == null) return null
-        val dateFormat = SimpleDateFormat("yyyy-mm-dd hh:mm:ss")
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
         return dateFormat.format(date)
     }
 }
