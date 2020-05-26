@@ -3,15 +3,17 @@ part of twilio_programmable_chat;
 /// Provides access to channel members and allows to add/remove members.
 class Members {
   //#region Private API properties
-  final Channel _channel;
+  final String _channelSid;
 
   final List<Member> _membersList = [];
   //#endregion
 
   //#region Public API properties
   /// Return channel this member list belongs to.
-  Channel get channel {
-    return _channel;
+  Future<Channel> get channel async {
+    final channelData = await TwilioProgrammableChat._methodChannel.invokeMethod('Members#getChannel', {'channelSid': _channelSid});
+    final channelMap = Map<String, dynamic>.from(channelData);
+    return Channel._fromMap(channelMap);
   }
 
   /// Obtain an array of members of this channel.
@@ -20,11 +22,11 @@ class Members {
   }
   //#endregion
 
-  Members(this._channel) : assert(_channel != null);
+  Members(this._channelSid) : assert(_channelSid != null);
 
   /// Construct from a map.
-  factory Members._fromMap(Map<String, dynamic> map, Channel channel) {
-    var members = Members(channel);
+  factory Members._fromMap(Map<String, dynamic> map) {
+    var members = Members(map['channelSid']);
     members._updateFromMap(map);
     return members;
   }
@@ -48,7 +50,7 @@ class Members {
   /// If the member is already present in the channel roster an error will be returned.
   Future<void> addByIdentity(String identity) async {
     try {
-      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Members#addByIdentity', {'identity': identity, 'channelSid': _channel.sid});
+      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Members#addByIdentity', {'identity': identity, 'channelSid': _channelSid});
       final membersMap = Map<String, dynamic>.from(methodData);
       return _updateFromMap(membersMap);
     } on PlatformException catch (err) {
@@ -64,7 +66,7 @@ class Members {
   /// Invite specified username to this channel.
   Future<void> inviteByIdentity(String identity) async {
     try {
-      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Members#removeByIdentity', {'identity': identity, 'channelSid': _channel.sid});
+      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Members#removeByIdentity', {'identity': identity, 'channelSid': _channelSid});
       final membersMap = Map<String, dynamic>.from(methodData);
       return _updateFromMap(membersMap);
     } on PlatformException catch (err) {
@@ -80,7 +82,7 @@ class Members {
   /// Remove specified username from this channel.
   Future<void> removeByIdentity(String identity) async {
     try {
-      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Members#removeByIdentity', {'identity': identity, 'channelSid': _channel.sid});
+      final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Members#removeByIdentity', {'identity': identity, 'channelSid': _channelSid});
       final membersMap = Map<String, dynamic>.from(methodData);
       return _updateFromMap(membersMap);
     } on PlatformException catch (err) {
@@ -96,7 +98,7 @@ class Members {
       for (final memberMap in membersList) {
         final member = _membersList.firstWhere(
           (m) => m._sid == memberMap['sid'],
-          orElse: () => Member._fromMap(memberMap, channel: _channel),
+          orElse: () => Member._fromMap(memberMap),
         );
         if (!_membersList.contains(member)) {
           _membersList.add(member);

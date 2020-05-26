@@ -443,7 +443,7 @@ class Channel {
 
     if (map['members'] != null) {
       final membersMap = Map<String, dynamic>.from(map['members']);
-      _members ??= Members._fromMap(membersMap, this);
+      _members ??= Members._fromMap(membersMap);
       _members._updateFromMap(membersMap);
     }
 

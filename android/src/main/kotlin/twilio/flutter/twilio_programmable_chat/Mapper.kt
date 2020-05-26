@@ -180,10 +180,9 @@ object Mapper {
         return mapOf(
                 "sid" to message.sid,
                 "author" to message.author,
-                "dateCreated" to dateToString(message.dateCreatedAsDate),
+                "dateCreated" to message.dateCreated,
                 "messageBody" to message.messageBody,
                 "channelSid" to message.channelSid,
-                "channel" to channelToMap(message.channel),
                 "memberSid" to message.memberSid,
                 "member" to memberToMap(message.member),
                 "messageIndex" to message.messageIndex,
@@ -208,7 +207,7 @@ object Mapper {
         if (members == null) return null
         val membersListMap = members.membersList.map { memberToMap(it, partOfChannel) }
         return mapOf(
-                "channel" to channelToMap(members.channel, partOfChannel),
+                "channelSid" to members.channel.sid,
                 "membersList" to membersListMap
         )
     }
@@ -218,7 +217,7 @@ object Mapper {
                 "sid" to member.sid,
                 "lastConsumedMessageIndex" to member.lastConsumedMessageIndex,
                 "lastConsumptionTimestamp" to member.lastConsumptionTimestamp,
-                "channel" to channelToMap(member.channel, partOfChannel),
+                "channelSid" to member.channel.sid,
                 "identity" to member.identity,
                 "type" to member.type.toString()
         )

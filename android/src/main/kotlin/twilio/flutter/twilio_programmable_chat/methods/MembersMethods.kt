@@ -10,6 +10,24 @@ import twilio.flutter.twilio_programmable_chat.Mapper
 import twilio.flutter.twilio_programmable_chat.TwilioProgrammableChatPlugin
 
 object MembersMethods {
+    fun getChannel(call: MethodCall, result: MethodChannel.Result) {
+        val channelSid = call.argument<String>("channelSid")
+            ?: return result.error("ERROR", "Missing 'channelSid'", null)
+
+        TwilioProgrammableChatPlugin.chatListener.chatClient?.channels?.getChannel(channelSid, object : CallbackListener<Channel>() {
+            override fun onSuccess(channel: Channel) {
+                TwilioProgrammableChatPlugin.debug("MembersMethods.getChannel => onSuccess")
+                result.success(Mapper.channelToMap(channel))
+            }
+
+            override fun onError(errorInfo: ErrorInfo) {
+                TwilioProgrammableChatPlugin.debug("MembersMethods.getChannel => onError: $errorInfo")
+                result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
+            }
+        })
+    }
+
+
     fun addByIdentity(call: MethodCall, result: MethodChannel.Result) {
         val identity = call.argument<String>("identity")
                 ?: return result.error("ERROR", "Missing 'identity'", null)

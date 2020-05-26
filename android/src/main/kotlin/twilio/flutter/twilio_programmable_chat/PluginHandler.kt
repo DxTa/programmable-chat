@@ -80,15 +80,18 @@ class PluginHandler(private val applicationContext: Context) : MethodCallHandler
             "Channels#getUserChannelsList" -> ChannelsMethods.getUserChannelsList(call, result)
             "Channels#getMembersByIdentity" -> ChannelsMethods.getMembersByIdentity(call, result)
 
+            "Member#getChannel" -> MemberMethods.getChannel(call, result)
             "Member#getUserDescriptor" -> MemberMethods.getUserDescriptor(call, result)
             "Member#getAndSubscribeUser" -> MemberMethods.getAndSubscribeUser(call, result)
             "Member#getAttributes" -> MemberMethods.getAttributes(call, result)
             "Member#setAttributes" -> MemberMethods.setAttributes(call, result)
 
+            "Members#getChannel" -> MembersMethods.getChannel(call, result)
             "Members#addByIdentity" -> MembersMethods.addByIdentity(call, result)
             "Members#inviteByIdentity" -> MembersMethods.inviteByIdentity(call, result)
             "Members#removeByIdentity" -> MembersMethods.removeByIdentity(call, result)
 
+            "Message#getChannel" -> MessageMethods.getChannel(call, result)
             "Message#updateMessageBody" -> MessageMethods.updateMessageBody(call, result)
             "Message#getAttributes" -> MessageMethods.getAttributes(call, result)
             "Message#setAttributes" -> MessageMethods.setAttributes(call, result)
