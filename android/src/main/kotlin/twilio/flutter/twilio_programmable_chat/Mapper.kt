@@ -189,7 +189,8 @@ object Mapper {
                 // TODO doesnt work "attributes" to message.attributes,
                 "type" to message.type.toString(),
                 "hasMedia" to message.hasMedia(),
-                "media" to mediaToMap(message.media)
+                "media" to mediaToMap(message.media),
+                "attributes" to attributesToMap(message.attributes)
         )
     }
 

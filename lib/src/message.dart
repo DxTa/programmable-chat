@@ -25,6 +25,8 @@ class Message {
   final bool _hasMedia;
 
   final MessageMedia _media;
+
+  final Attributes _attributes;
   //#endregion
 
   //#region Public API properties
@@ -98,6 +100,11 @@ class Message {
   MessageMedia get media {
     return _media;
   }
+
+  /// Get attributes map
+  Attributes get attributes {
+    return _attributes;
+  }
   //#endregion
 
   Message(
@@ -105,7 +112,6 @@ class Message {
     this._author,
     this._dateCreated,
     this._channelSid,
-//    this._channel,
     this._memberSid,
     this._member,
     this._messages,
@@ -113,16 +119,17 @@ class Message {
     this._type,
     this._hasMedia,
     this._media,
+    this._attributes,
   )   : assert(_sid != null),
         assert(_author != null),
         assert(_dateCreated != null),
         assert(_channelSid != null),
-//        assert(_channel != null),
         assert(_memberSid != null),
         assert(_member != null),
         assert(_messages != null),
         assert(_messageIndex != null),
         assert(_type != null),
+        assert(_attributes != null),
         assert(_hasMedia != null),
         assert((_hasMedia == true && _media != null) || (_hasMedia == false && _media == null));
 
@@ -141,6 +148,7 @@ class Message {
       EnumToString.fromString(MessageType.values, map['type']),
       map['hasMedia'],
       MessageMedia._fromMap(map['media']),
+      Attributes.fromMap(map['attributes'].cast<String, dynamic>()),
     );
     message._updateFromMap(map);
     return message;

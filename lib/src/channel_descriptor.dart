@@ -16,7 +16,7 @@ class ChannelDescriptor {
 
   String _uniqueName;
 
-  Map<String, dynamic> _attributes;
+  Attributes _attributes;
 
   final ChannelStatus _status;
 
@@ -50,8 +50,8 @@ class ChannelDescriptor {
   }
 
   /// Get channel attributes.
-  Map<String, dynamic> get attributes {
-    return {..._attributes};
+  Attributes get attributes {
+    return _attributes;
   }
 
   /// Get the current user's participation status on this channel.
@@ -130,7 +130,7 @@ class ChannelDescriptor {
     assert(_uniqueName != null);
     _friendlyName = map['friendlyName'];
     assert(_friendlyName != null);
-    _attributes = Map<String, dynamic>.from(map['attributes']);
+    _attributes = Attributes.fromMap(map['attributes'].cast<String, dynamic>());
     _dateUpdated = DateTime.parse(map['dateUpdated']);
     assert(_dateUpdated != null);
     _membersCount = map['membersCount'];
