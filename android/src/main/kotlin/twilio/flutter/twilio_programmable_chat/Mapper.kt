@@ -15,11 +15,11 @@ import com.twilio.chat.User
 import com.twilio.chat.UserDescriptor
 import com.twilio.chat.Users
 import io.flutter.plugin.common.EventChannel
+import java.text.SimpleDateFormat
+import java.util.Date
 import org.json.JSONArray
 import org.json.JSONObject
 import twilio.flutter.twilio_programmable_chat.listeners.ChannelListener
-import java.text.SimpleDateFormat
-import java.util.Date
 
 object Mapper {
     fun jsonObjectToMap(jsonObject: JSONObject): Map<String, Any?> {

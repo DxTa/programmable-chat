@@ -1,13 +1,13 @@
 package twilio.flutter.twilio_programmable_chat.listeners
 
 import com.twilio.chat.Channel
+import com.twilio.chat.ChannelListener as TwilioChannelListener
 import com.twilio.chat.ErrorInfo
 import com.twilio.chat.Member
 import com.twilio.chat.Message
 import io.flutter.plugin.common.EventChannel
 import twilio.flutter.twilio_programmable_chat.Mapper
 import twilio.flutter.twilio_programmable_chat.TwilioProgrammableChatPlugin
-import com.twilio.chat.ChannelListener as TwilioChannelListener
 
 class ChannelListener(private val events: EventChannel.EventSink) : TwilioChannelListener {
     override fun onMessageAdded(message: Message) {

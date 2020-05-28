@@ -8,9 +8,9 @@ import com.twilio.chat.ProgressListener
 import com.twilio.chat.StatusListener
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+import java.io.FileInputStream
 import twilio.flutter.twilio_programmable_chat.Mapper
 import twilio.flutter.twilio_programmable_chat.TwilioProgrammableChatPlugin
-import java.io.FileInputStream
 
 object MessagesMethods {
     fun sendMessage(call: MethodCall, result: MethodChannel.Result) {
