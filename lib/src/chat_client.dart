@@ -245,6 +245,7 @@ class ChatClient {
   /// It will dispose() the client after shutdown, so it could not be reused.
   Future<void> shutdown() async {
     try {
+      await _chatStream.cancel();
       return await TwilioProgrammableChat._methodChannel.invokeMethod('ChatClient#shutdown', null);
     } on PlatformException catch (err) {
       throw TwilioProgrammableChat._convertException(err);

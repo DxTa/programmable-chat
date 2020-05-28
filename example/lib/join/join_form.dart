@@ -81,7 +81,7 @@ class _JoinFormState extends State<JoinForm> {
             onPressed: chatModel.canSubmit && !chatModel.isLoading ? () => _submit() : null,
             child: const Text('JOIN'),
             color: Theme.of(context).appBarTheme?.color ?? Theme.of(context).primaryColor,
-            textColor: Theme.of(context).appBarTheme?.textTheme?.title?.color ?? Colors.white,
+            textColor: Theme.of(context).appBarTheme?.textTheme?.headline6?.color ?? Colors.white,
             disabledColor: Colors.grey.shade300,
           );
   }
