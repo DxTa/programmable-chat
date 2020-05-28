@@ -1,6 +1,19 @@
 package twilio.flutter.twilio_programmable_chat
 
-import com.twilio.chat.*
+import com.twilio.chat.Attributes
+import com.twilio.chat.Channel
+import com.twilio.chat.ChannelDescriptor
+import com.twilio.chat.Channels
+import com.twilio.chat.ChatClient
+import com.twilio.chat.ErrorInfo
+import com.twilio.chat.Member
+import com.twilio.chat.Members
+import com.twilio.chat.Message
+import com.twilio.chat.Messages
+import com.twilio.chat.Paginator
+import com.twilio.chat.User
+import com.twilio.chat.UserDescriptor
+import com.twilio.chat.Users
 import io.flutter.plugin.common.EventChannel
 import org.json.JSONArray
 import org.json.JSONObject
@@ -246,7 +259,7 @@ object Mapper {
     fun userDescriptorToMap(userDescriptor: UserDescriptor): Map<String, Any> {
         return mapOf(
                 "friendlyName" to userDescriptor.friendlyName,
-                 "attributes" to attributesToMap(userDescriptor.attributes),
+                "attributes" to attributesToMap(userDescriptor.attributes),
                 "identity" to userDescriptor.identity,
                 "isOnline" to userDescriptor.isOnline,
                 "isNotifiable" to userDescriptor.isNotifiable
@@ -257,7 +270,7 @@ object Mapper {
         return mapOf(
                 "sid" to channelDescriptor.sid,
                 "friendlyName" to channelDescriptor.friendlyName,
-                 "attributes" to attributesToMap(channelDescriptor.attributes),
+                "attributes" to attributesToMap(channelDescriptor.attributes),
                 "uniqueName" to channelDescriptor.uniqueName,
                 "dateUpdated" to dateToString(channelDescriptor.dateUpdated),
                 "dateCreated" to dateToString(channelDescriptor.dateCreated),

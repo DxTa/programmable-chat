@@ -27,7 +27,6 @@ object MembersMethods {
         })
     }
 
-
     fun addByIdentity(call: MethodCall, result: MethodChannel.Result) {
         val identity = call.argument<String>("identity")
                 ?: return result.error("ERROR", "Missing 'identity'", null)
