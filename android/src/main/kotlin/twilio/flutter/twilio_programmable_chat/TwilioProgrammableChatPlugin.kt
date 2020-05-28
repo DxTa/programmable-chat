@@ -91,7 +91,7 @@ class TwilioProgrammableChatPlugin : FlutterPlugin {
         mediaProgressChannel.setStreamHandler(object : EventChannel.StreamHandler {
             override fun onListen(arguments: Any?, events: EventChannel.EventSink) {
                 debug("TwilioProgrammableChatPlugin.onAttachedToEngine => MediaProgress eventChannel attached")
-                mediaProgresSink = events;
+                mediaProgresSink = events
             }
 
             override fun onCancel(arguments: Any) {

@@ -42,6 +42,8 @@ class Channel {
 
   final ChannelType _type;
 
+  final Attributes _attributes;
+
   Messages _messages;
 
   ChannelStatus _status;
@@ -123,6 +125,11 @@ class Channel {
   int get lastMessageIndex {
     return _lastMessageIndex;
   }
+
+  /// Get attributes map
+  Attributes get attributes {
+    return _attributes;
+  }
   //#endregion
 
   //#region Message events
@@ -194,11 +201,16 @@ class Channel {
   Stream<Channel> onSynchronizationChanged;
   //#endregion
 
-  Channel(this._sid, this._createdBy, this._dateCreated, this._type)
-      : assert(_sid != null),
+  Channel(
+    this._sid,
+    this._createdBy,
+    this._dateCreated,
+    this._type,
+    this._attributes,
+  )   : assert(_sid != null),
         assert(_createdBy != null),
-        assert(_dateCreated != null),
-        assert(_type != null) {
+        assert(_type != null),
+        assert(_attributes != null) {
     onMessageAdded = _onMessageAddedCtrl.stream;
     onMessageUpdated = _onMessageUpdatedCtrl.stream;
     onMessageDeleted = _onMessageDeletedCtrl.stream;
@@ -218,8 +230,9 @@ class Channel {
     var channel = Channel(
       map['sid'],
       map['createdBy'],
-      DateTime.parse(map['dateCreated']),
+      map['dateCreated'] != null ? DateTime.parse(map['dateCreated']) : null,
       EnumToString.fromString(ChannelType.values, map['type']),
+      Attributes.fromMap(map['attributes'].cast<String, dynamic>()),
     );
     channel._updateFromMap(map);
     return channel;
@@ -336,17 +349,6 @@ class Channel {
     }
   }
 
-  /// Get custom attributes associated with the [Channel].
-  ///
-  /// Attributes are stored as a JSON format object, of arbitrary internal structure. Channel attributes are limited in size to 32Kb.
-  Future<Map<String, dynamic>> getAttributes() async {
-    try {
-      return Map<String, dynamic>.from(await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#getAttributes', {'channelSid': _sid}));
-    } on PlatformException catch (err) {
-      throw TwilioProgrammableChat._convertException(err);
-    }
-  }
-
   /// Set attributes associated with this channel.
   ///
   /// Attributes are stored as a JSON format object, of arbitrary internal structure. Channel attributes are limited in size to 32Kb.
@@ -434,18 +436,22 @@ class Channel {
   void _updateFromMap(Map<String, dynamic> map) {
     _synchronizationStatus = EnumToString.fromString(ChannelSynchronizationStatus.values, map['synchronizationStatus']);
 
-    final messagesMap = Map<String, dynamic>.from(map['messages']);
-    _messages ??= Messages._fromMap(messagesMap, this);
-    _messages._updateFromMap(messagesMap);
+    if (map['messages'] != null) {
+      final messagesMap = Map<String, dynamic>.from(map['messages']);
+      _messages ??= Messages._fromMap(messagesMap, this);
+      _messages._updateFromMap(messagesMap);
+    }
 
     _status = EnumToString.fromString(ChannelStatus.values, map['status']);
 
-    final membersMap = Map<String, dynamic>.from(map['members']);
-    _members ??= Members._fromMap(membersMap, this);
-    _members._updateFromMap(membersMap);
+    if (map['members'] != null) {
+      final membersMap = Map<String, dynamic>.from(map['members']);
+      _members ??= Members._fromMap(membersMap);
+      _members._updateFromMap(membersMap);
+    }
 
-    _dateUpdated = map['dateUpdated'];
-    _lastMessageDate = map['lastMessageDate'];
+    _dateUpdated = map['dateUpdated'] != null ? DateTime.parse(map['dateUpdated']) : null;
+    _lastMessageDate = map['lastMessageDate'] != null ? DateTime.parse(map['lastMessageDate']) : null;
     _lastMessageIndex = map['lastMessageIndex'];
   }
 

@@ -8,9 +8,9 @@ import com.twilio.chat.ProgressListener
 import com.twilio.chat.StatusListener
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+import java.io.FileInputStream
 import twilio.flutter.twilio_programmable_chat.Mapper
 import twilio.flutter.twilio_programmable_chat.TwilioProgrammableChatPlugin
-import java.io.FileInputStream
 
 object MessagesMethods {
     fun sendMessage(call: MethodCall, result: MethodChannel.Result) {
@@ -24,7 +24,7 @@ object MessagesMethods {
             messageOptions.withBody(options["body"] as String)
         }
         if (options["attributes"] != null) {
-            messageOptions.withAttributes(Mapper.mapToJSONObject(options["attributes"] as Map<String, Any>?));
+            messageOptions.withAttributes(Mapper.mapToAttributes(options["attributes"] as Map<String, Any>?))
         }
         if (options["input"] != null) {
             val input = options["input"] as String
@@ -60,7 +60,7 @@ object MessagesMethods {
                             "data" to mediaSid
                         })
                     }
-                });
+                })
             }
         }
 
@@ -163,7 +163,7 @@ object MessagesMethods {
     }
 
     fun getMessagesAfter(call: MethodCall, result: MethodChannel.Result) {
-        val index = call.argument<Long>("index")
+        val index = call.argument<Int>("index")?.toLong()
                 ?: return result.error("ERROR", "Missing 'index'", null)
         val count = call.argument<Int>("count")
                 ?: return result.error("ERROR", "Missing 'count'", null)

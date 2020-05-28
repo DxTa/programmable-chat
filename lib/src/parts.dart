@@ -1,11 +1,13 @@
 library twilio_programmable_chat;
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/services.dart';
 
+part 'attributes.dart';
 part 'channel.dart';
 part 'channel_descriptor.dart';
 part 'channel_status.dart';

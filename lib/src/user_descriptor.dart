@@ -9,7 +9,7 @@ class UserDescriptor {
 
   final String _friendlyName;
 
-  final Map<String, dynamic> _attributes;
+  final Attributes _attributes;
 
   final String _identity;
 
@@ -23,8 +23,8 @@ class UserDescriptor {
   }
 
   /// Get user attributes.
-  Map<String, dynamic> get attributes {
-    return {..._attributes};
+  Attributes get attributes {
+    return _attributes;
   }
 
   /// Get user identity.
@@ -54,7 +54,7 @@ class UserDescriptor {
   factory UserDescriptor._fromMap(Map<String, dynamic> map, Users users) {
     return UserDescriptor(
       map['friendlyName'],
-      Map<String, dynamic>.from(map['attributes']),
+      Attributes.fromMap(map['attributes'].cast<String, dynamic>()),
       map['identity'],
       map['isOnline'],
       map['isNotifiable'],
