@@ -65,7 +65,6 @@ class PluginHandler(private val applicationContext: Context) : MethodCallHandler
             "Channel#getMessagesCount" -> ChannelMethods.getMessagesCount(call, result)
             "Channel#getUnconsumedMessagesCount" -> ChannelMethods.getUnconsumedMessagesCount(call, result)
             "Channel#getMembersCount" -> ChannelMethods.getMembersCount(call, result)
-            "Channel#getAttributes" -> ChannelMethods.getAttributes(call, result)
             "Channel#setAttributes" -> ChannelMethods.setAttributes(call, result)
             "Channel#getFriendlyName" -> ChannelMethods.getFriendlyName(call, result)
             "Channel#setFriendlyName" -> ChannelMethods.setFriendlyName(call, result)
@@ -83,7 +82,6 @@ class PluginHandler(private val applicationContext: Context) : MethodCallHandler
             "Member#getChannel" -> MemberMethods.getChannel(call, result)
             "Member#getUserDescriptor" -> MemberMethods.getUserDescriptor(call, result)
             "Member#getAndSubscribeUser" -> MemberMethods.getAndSubscribeUser(call, result)
-            "Member#getAttributes" -> MemberMethods.getAttributes(call, result)
             "Member#setAttributes" -> MemberMethods.setAttributes(call, result)
 
             "Members#getChannel" -> MembersMethods.getChannel(call, result)
@@ -93,7 +91,6 @@ class PluginHandler(private val applicationContext: Context) : MethodCallHandler
 
             "Message#getChannel" -> MessageMethods.getChannel(call, result)
             "Message#updateMessageBody" -> MessageMethods.updateMessageBody(call, result)
-            "Message#getAttributes" -> MessageMethods.getAttributes(call, result)
             "Message#setAttributes" -> MessageMethods.setAttributes(call, result)
 
             "Messages#sendMessage" -> MessagesMethods.sendMessage(call, result)

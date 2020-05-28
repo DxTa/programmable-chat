@@ -139,6 +139,7 @@ object Mapper {
                 "sid" to channel.sid,
                 "type" to channel.type.toString(),
                 "messages" to messagesToMap(channel.messages),
+                "attributes" to attributesToMap(channel.attributes),
                 "status" to channel.status.toString(),
                 "members" to membersToMap(channel.members, channel),
                 "synchronizationStatus" to channel.synchronizationStatus.toString(),
@@ -161,7 +162,7 @@ object Mapper {
     fun userToMap(user: User): Map<String, Any> {
         return mapOf(
                 "friendlyName" to user.friendlyName,
-                // TODO(WLFN): This crashes it "attributes" to user.attributes,
+                "attributes" to attributesToMap(user.attributes),
                 "identity" to user.identity,
                 "isOnline" to user.isOnline,
                 "isNotifiable" to user.isNotifiable,
@@ -186,7 +187,6 @@ object Mapper {
                 "memberSid" to message.memberSid,
                 "member" to memberToMap(message.member),
                 "messageIndex" to message.messageIndex,
-                // TODO doesnt work "attributes" to message.attributes,
                 "type" to message.type.toString(),
                 "hasMedia" to message.hasMedia(),
                 "media" to mediaToMap(message.media),
@@ -220,7 +220,8 @@ object Mapper {
                 "lastConsumptionTimestamp" to member.lastConsumptionTimestamp,
                 "channelSid" to member.channel.sid,
                 "identity" to member.identity,
-                "type" to member.type.toString()
+                "type" to member.type.toString(),
+                "attributes" to attributesToMap(member.attributes)
         )
     }
 

@@ -140,7 +140,6 @@ class Message {
       map['author'],
       DateTime.parse(map['dateCreated']),
       map['channelSid'],
-//      Channel._fromMap(Map<String, dynamic>.from(map['channel'].cast<String, dynamic>())),
       map['memberSid'],
       Member._fromMap(map['member'].cast<String, dynamic>()),
       messages,
@@ -161,15 +160,6 @@ class Message {
       _messageBody = await TwilioProgrammableChat._methodChannel.invokeMethod('Message#updateMessageBody', {'channelSid': _channelSid, 'messageIndex': _messageIndex, 'body': body});
     } on PlatformException catch (err) {
       throw throw TwilioProgrammableChat._convertException(err);
-    }
-  }
-
-  /// Retrieve attributes associated with this message.
-  Future<Map<String, dynamic>> getAttributes() async {
-    try {
-      return Map<String, dynamic>.from(await TwilioProgrammableChat._methodChannel.invokeMethod('Message#getAttributes', {'channelSid': _sid, 'messageIndex': _messageIndex}));
-    } on PlatformException catch (err) {
-      throw TwilioProgrammableChat._convertException(err);
     }
   }
 

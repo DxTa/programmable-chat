@@ -5,6 +5,8 @@ class Member {
   //#region Private API properties
   final String _sid;
 
+  final Attributes _attributes;
+
   int _lastConsumedMessageIndex;
 
   String _lastConsumptionTimestamp;
@@ -49,12 +51,18 @@ class Member {
   MemberType get type {
     return _type;
   }
+
+  /// Get attributes map
+  Attributes get attributes {
+    return _attributes;
+  }
   //#endregion
 
-  Member(this._sid, this._type, this._channelSid)
+  Member(this._sid, this._type, this._channelSid, this._attributes)
       : assert(_sid != null),
         assert(_type != null),
-        assert(_channelSid != null);
+        assert(_channelSid != null),
+        assert(_attributes != null);
 
   /// Construct from a map.
   factory Member._fromMap(Map<String, dynamic> map) {
@@ -62,6 +70,7 @@ class Member {
       map['sid'],
       EnumToString.fromString(MemberType.values, map['type']),
       map['channelSid'],
+      Attributes.fromMap(map['attributes'].cast<String, dynamic>()),
     );
     member._updateFromMap(map);
     return member;
@@ -86,15 +95,6 @@ class Member {
       final methodData = await TwilioProgrammableChat._methodChannel.invokeMethod('Member#getAndSubscribeUser', {'memberSid': _sid, 'channelSid': _channelSid});
       final userMap = Map<String, dynamic>.from(methodData);
       return User._fromMap(userMap);
-    } on PlatformException catch (err) {
-      throw TwilioProgrammableChat._convertException(err);
-    }
-  }
-
-  /// Return custom attributes associated with this member.
-  Future<Map<String, dynamic>> getAttributes() async {
-    try {
-      return Map<String, dynamic>.from(await TwilioProgrammableChat._methodChannel.invokeMethod('Member#getAttributes', {'memberSid': _sid, 'channelSid': _channelSid}));
     } on PlatformException catch (err) {
       throw TwilioProgrammableChat._convertException(err);
     }

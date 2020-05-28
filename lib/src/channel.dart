@@ -42,6 +42,8 @@ class Channel {
 
   final ChannelType _type;
 
+  final Attributes _attributes;
+
   Messages _messages;
 
   ChannelStatus _status;
@@ -123,6 +125,11 @@ class Channel {
   int get lastMessageIndex {
     return _lastMessageIndex;
   }
+
+  /// Get attributes map
+  Attributes get attributes {
+    return _attributes;
+  }
   //#endregion
 
   //#region Message events
@@ -194,10 +201,16 @@ class Channel {
   Stream<Channel> onSynchronizationChanged;
   //#endregion
 
-  Channel(this._sid, this._createdBy, this._dateCreated, this._type)
-      : assert(_sid != null),
+  Channel(
+    this._sid,
+    this._createdBy,
+    this._dateCreated,
+    this._type,
+    this._attributes,
+  )   : assert(_sid != null),
         assert(_createdBy != null),
-        assert(_type != null) {
+        assert(_type != null),
+        assert(_attributes != null) {
     onMessageAdded = _onMessageAddedCtrl.stream;
     onMessageUpdated = _onMessageUpdatedCtrl.stream;
     onMessageDeleted = _onMessageDeletedCtrl.stream;
@@ -219,6 +232,7 @@ class Channel {
       map['createdBy'],
       map['dateCreated'] != null ? DateTime.parse(map['dateCreated']) : null,
       EnumToString.fromString(ChannelType.values, map['type']),
+      Attributes.fromMap(map['attributes'].cast<String, dynamic>()),
     );
     channel._updateFromMap(map);
     return channel;
@@ -330,17 +344,6 @@ class Channel {
   Future<int> getMembersCount() async {
     try {
       return await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#getMembersCount', {'channelSid': _sid});
-    } on PlatformException catch (err) {
-      throw TwilioProgrammableChat._convertException(err);
-    }
-  }
-
-  /// Get custom attributes associated with the [Channel].
-  ///
-  /// Attributes are stored as a JSON format object, of arbitrary internal structure. Channel attributes are limited in size to 32Kb.
-  Future<Map<String, dynamic>> getAttributes() async {
-    try {
-      return Map<String, dynamic>.from(await TwilioProgrammableChat._methodChannel.invokeMethod('Channel#getAttributes', {'channelSid': _sid}));
     } on PlatformException catch (err) {
       throw TwilioProgrammableChat._convertException(err);
     }

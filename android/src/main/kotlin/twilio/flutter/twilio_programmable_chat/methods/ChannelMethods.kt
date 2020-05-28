@@ -247,31 +247,6 @@ object ChannelMethods {
         }
     }
 
-    fun getAttributes(call: MethodCall, result: MethodChannel.Result) {
-        val channelSid = call.argument<String>("channelSid")
-                ?: return result.error("ERROR", "Missing 'channelSid'", null)
-
-        try {
-            TwilioProgrammableChatPlugin.chatListener.chatClient?.channels?.getChannel(channelSid, object : CallbackListener<Channel>() {
-                override fun onSuccess(channel: Channel) {
-                    TwilioProgrammableChatPlugin.debug("ChannelMethods.getAttributes => onSuccess")
-                    try {
-                        result.success(Mapper.attributesToMap(channel.attributes))
-                    } catch (err: JSONException) {
-                        return result.error("JSONException", err.message, null)
-                    }
-                }
-
-                override fun onError(errorInfo: ErrorInfo) {
-                    TwilioProgrammableChatPlugin.debug("ChannelMethods.getAttributes => onError: $errorInfo")
-                    result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
-                }
-            })
-        } catch (err: IllegalArgumentException) {
-            return result.error("IllegalArgumentException", err.message, null)
-        }
-    }
-
     fun setAttributes(call: MethodCall, result: MethodChannel.Result) {
         val channelSid = call.argument<String>("channelSid")
                 ?: return result.error("ERROR", "Missing 'channelSid'", null)

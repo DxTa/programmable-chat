@@ -70,46 +70,6 @@ object MessageMethods {
         })
     }
 
-    fun getAttributes(call: MethodCall, result: MethodChannel.Result) {
-        val channelSid = call.argument<String>("channelSid")
-                ?: return result.error("ERROR", "Missing 'channelSid'", null)
-
-        val messageIndex = call.argument<Long>("messageIndex")
-                ?: return result.error("ERROR", "Missing 'messageIndex'", null)
-
-        try {
-            TwilioProgrammableChatPlugin.chatListener.chatClient?.channels?.getChannel(channelSid, object : CallbackListener<Channel>() {
-                override fun onSuccess(channel: Channel) {
-                    TwilioProgrammableChatPlugin.debug("MessageMethods.getAttributes => onSuccess")
-
-                    channel.messages.getMessageByIndex(messageIndex, object : CallbackListener<Message>() {
-                        override fun onSuccess(message: Message) {
-                            TwilioProgrammableChatPlugin.debug("MessageMethods.updateMessageBody (Messages.getMessageByIndex) => onSuccess")
-
-                            try {
-                                result.success(Mapper.attributesToMap(message.attributes))
-                            } catch (err: JSONException) {
-                                return result.error("JSONException", err.message, null)
-                            }
-                        }
-
-                        override fun onError(errorInfo: ErrorInfo) {
-                            TwilioProgrammableChatPlugin.debug("MessageMethods.updateMessageBody (Messages.getMessageByIndex) => onError: $errorInfo")
-                            result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
-                        }
-                    })
-                }
-
-                override fun onError(errorInfo: ErrorInfo) {
-                    TwilioProgrammableChatPlugin.debug("MessageMethods.getAttributes => onError: $errorInfo")
-                    result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
-                }
-            })
-        } catch (err: IllegalArgumentException) {
-            return result.error("IllegalArgumentException", err.message, null)
-        }
-    }
-
     fun setAttributes(call: MethodCall, result: MethodChannel.Result) {
         val channelSid = call.argument<String>("channelSid")
                 ?: return result.error("ERROR", "Missing 'channelSid'", null)
