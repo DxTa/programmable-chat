@@ -1,4 +1,4 @@
-## 0.1.1
+## 0.1.0+1
 
 * Fix dart implementation of Message::setAttributes
 
