@@ -26,6 +26,9 @@ object ChatClientMethods {
 
     fun shutdown(call: MethodCall, result: MethodChannel.Result) {
         return try {
+            // clear all cache on shutdown it is called
+            TwilioProgrammableChatPlugin.channelChannels.clear()
+            TwilioProgrammableChatPlugin.channelListeners.clear()
             TwilioProgrammableChatPlugin.chatListener.chatClient?.shutdown()
             result.success(null)
         } catch (err: Exception) {

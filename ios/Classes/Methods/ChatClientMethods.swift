@@ -27,6 +27,9 @@ public class ChatClientMethods {
     }
 
     public static func shutdown(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+        // clear all cache on shutdown it is called
+        SwiftTwilioProgrammableChatPlugin.channelChannels.removeAll()
+        SwiftTwilioProgrammableChatPlugin.channelListeners.removeAll()
         SwiftTwilioProgrammableChatPlugin.chatListener?.chatClient?.shutdown()
         result(nil)
     }
