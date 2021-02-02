@@ -1,3 +1,9 @@
+## 0.1.1+4
+
+* Updated android dependencies
+* Updated target version and min sdk version
+* Fixed Integer to Long conversion on Android
+
 ## 0.1.1+3
 
 * Provided a default value of "" for `message.memberSid` when sending to the Dart layer from Swift.
