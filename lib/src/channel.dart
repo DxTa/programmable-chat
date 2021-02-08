@@ -446,16 +446,16 @@ class Channel {
       throw TwilioProgrammableChat._convertException(err);
     }
   }
+  //#endregion
 
-  /// Safely remove cached channel stream data before deleting this channel
+  /// Safely dispose of this channel.
   ///
-  /// Cancels the EventChannel listener and removes the cached reference to this channel
-  Future<void> dispose() async {
+  /// Cancels the [StreamSubscription] and removes the cached reference of this channel.
+  Future<void> _dispose() async {
     await _channelStreamSubscriptions[_sid].cancel();
     _channelStreamSubscriptions.remove(_sid);
     _channelStreams.remove(_sid);
   }
-  //#endregion
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {

@@ -104,17 +104,17 @@ class Channels {
       throw TwilioProgrammableChat._convertException(err);
     }
   }
+  //#endregion
 
-  /// Cleanly shuts down the all active channels when you are done using them (e.g. on chatClient shutdown)
+  /// Cleanly shuts down all the active channels.
   ///
-  /// Each cached channel reference is dispose()'d and removed from the cache
-  static Future<void> shutdown() async {
+  /// Each cached channel reference will be disposed and removed from the cache.
+  static Future<void> _shutdown() async {
     _channelsMap.forEach((key, channel) async {
-      await channel.dispose();
+      await channel._dispose();
       _channelsMap.remove(key);
     });
   }
-  //#endregion
 
   /// Update properties from a map.
   void _updateFromMap(Map<String, dynamic> map) {
