@@ -7,7 +7,7 @@ issue_tracker: https://gitlab.com/twilio-flutter/programmable-chat/issues
 
 environment:
   sdk: ">=2.5.0 <3.0.0"
-  flutter: ^1.17.0
+  flutter: '>=1.17.0'
 
 dependencies:
   flutter:
