@@ -18,12 +18,12 @@ class JoinForm extends StatefulWidget {
     final backendService = Provider.of<BackendService>(context, listen: false);
     return Provider<JoinBloc>(
       create: (BuildContext context) => JoinBloc(backendService: backendService),
+      dispose: (BuildContext context, JoinBloc joinBloc) => joinBloc.dispose(),
       child: Consumer<JoinBloc>(
         builder: (BuildContext context, JoinBloc joinBloc, _) => JoinForm(
           joinBloc: joinBloc,
         ),
       ),
-      dispose: (BuildContext context, JoinBloc joinBloc) => joinBloc.dispose(),
     );
   }
 
@@ -93,7 +93,6 @@ class _JoinFormState extends State<JoinForm> {
         ? const Center(child: CircularProgressIndicator())
         : TextButton(
             onPressed: chatModel.canSubmit && !chatModel.isLoading ? _submit : null,
-            child: const Text('JOIN'),
             style: ButtonStyle(
               foregroundColor: MaterialStateProperty.resolveWith<Color>((states) {
                 return Theme.of(context).appBarTheme?.textTheme?.headline6?.color ?? Colors.white;
@@ -106,6 +105,7 @@ class _JoinFormState extends State<JoinForm> {
                 }
               }),
             ),
+            child: const Text('JOIN'),
           );
   }
 

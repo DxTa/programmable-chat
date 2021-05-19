@@ -21,12 +21,12 @@ class ChatPage extends StatefulWidget {
         myIdentity: joinModel.identity,
         chatClient: joinModel.chatClient,
       ),
+      dispose: (BuildContext context, ChatBloc chatBloc) => chatBloc.dispose(),
       child: Consumer<ChatBloc>(
         builder: (BuildContext context, ChatBloc chatBloc, _) => ChatPage(
           chatBloc: chatBloc,
         ),
       ),
-      dispose: (BuildContext context, ChatBloc chatBloc) => chatBloc.dispose(),
     );
   }
 
@@ -68,8 +68,8 @@ class _ChatPageState extends State<ChatPage> {
         ),
         body: _channelList(),
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
           onPressed: _showAddChannelDialog,
+          child: Icon(Icons.add),
         ),
       ),
     );
@@ -223,12 +223,12 @@ class _ChatPageState extends State<ChatPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       TextButton(
-                        child: Text('Cancel'),
                         onPressed: () => Navigator.of(context).pop(null),
+                        child: Text('Cancel'),
                       ),
                       ElevatedButton(
-                        child: Text('Update'),
                         onPressed: () => Navigator.of(context).pop(_controller.value.text),
+                        child: Text('Update'),
                       ),
                     ],
                   )
