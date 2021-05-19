@@ -285,11 +285,11 @@ class _ChannelPageState extends State<ChannelPage> {
               title: Text('You created this channel'),
               content: Text('If you leave this channel, it will be deleted since you created it.'),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text('Cancel'),
                   onPressed: () => Navigator.of(context).pop(false),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text('Leave'),
                   onPressed: () => Navigator.of(context).pop(true),
                 ),

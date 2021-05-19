@@ -222,11 +222,11 @@ class _ChatPageState extends State<ChatPage> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      FlatButton(
+                      TextButton(
                         child: Text('Cancel'),
                         onPressed: () => Navigator.of(context).pop(null),
                       ),
-                      RaisedButton(
+                      ElevatedButton(
                         child: Text('Update'),
                         onPressed: () => Navigator.of(context).pop(_controller.value.text),
                       ),
