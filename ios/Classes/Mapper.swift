@@ -188,7 +188,7 @@ public class Mapper {
         return [
             "sid": message.sid,
             "author": message.author,
-            "dateCreated": message.timestamp,
+            "dateCreated": message.dateCreated,
             "messageBody": message.body,
             "channelSid": channelSid,
             "memberSid": message.memberSid ?? "",

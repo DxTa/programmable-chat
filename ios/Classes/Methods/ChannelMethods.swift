@@ -156,10 +156,10 @@ public class ChannelMethods {
         SwiftTwilioProgrammableChatPlugin.chatListener?.chatClient?.channelsList()?.channel(withSidOrUniqueName: channelSid, completion: { (result: TCHResult, channel: TCHChannel?) in
             if result.isSuccessful(), let channel = channel {
                 SwiftTwilioProgrammableChatPlugin.debug("ChannelMethods.getUnconsumedMessagesCount => onSuccess")
-                channel.getUnconsumedMessagesCount(completion: { (result: TCHResult, count: UInt) in
+                channel.getUnconsumedMessagesCount(completion: { (result: TCHResult, count: NSNumber?) in
                     if result.isSuccessful() {
-                        SwiftTwilioProgrammableChatPlugin.debug("ChannelMethods.getUnconsumedMessagesCount (Channel.getUnconsumedMessagesCount) => onSuccess: \(count)")
-                        flutterResult(count)
+                        SwiftTwilioProgrammableChatPlugin.debug("ChannelMethod0s.getUnconsumedMessagesCount (Channel.getUnconsumedMessagesCount) => onSuccess: \(count ?? 0)")
+                        flutterResult(count?.uintValue ?? 0)
                     } else {
                         SwiftTwilioProgrammableChatPlugin.debug("ChannelMethods.getUnconsumedMessagesCount (Channel.getUnconsumedMessagesCount) => onError: \(String(describing: result.error))")
                         flutterResult(FlutterError(code: "ERROR", message: "ChannelMethods.getUnconsumedMessagesCount => Error retrieving unconsumed message count " +
