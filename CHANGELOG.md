@@ -1,5 +1,12 @@
 ## 0.1.1+8
 
+* `getContentTemporaryUrl` function added in `MessageMedia`.
+* Deprecated `download` function in `MessageMedia`.
+* **iOS** TwilioChatClient update to 5.0
+* **Android** com.twilio:chat-android update to 7.0.+
+
+## 0.1.1+8
+
 * Removed non-null assertions on `friendlyName` and `dateUpdated` in `ChannelDescriptor`.
 
 ## 0.1.1+7
