@@ -1,17 +1,12 @@
 package twilio.flutter.twilio_programmable_chat.methods
 
-import com.twilio.chat.CallbackListener
-import com.twilio.chat.Channel
-import com.twilio.chat.ErrorInfo
-import com.twilio.chat.Message
-import com.twilio.chat.ProgressListener
-import com.twilio.chat.StatusListener
+import com.twilio.chat.*
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import java.io.File
 import org.json.JSONException
 import twilio.flutter.twilio_programmable_chat.Mapper
 import twilio.flutter.twilio_programmable_chat.TwilioProgrammableChatPlugin
+import java.io.File
 
 object MessageMethods {
     fun getChannel(call: MethodCall, result: MethodChannel.Result) {
@@ -192,5 +187,46 @@ object MessageMethods {
                 }
             })
         }
+    }
+
+    fun getContentTemporaryUrl(call: MethodCall, result: MethodChannel.Result) {
+        val channelSid = call.argument<String>("channelSid")
+                ?: return result.error("ERROR", "Missing 'channelSid'", null)
+
+        val messageIndex = call.argument<Int>("messageIndex")?.toLong()
+                ?: return result.error("ERROR", "Missing 'messageIndex'", null)
+
+        TwilioProgrammableChatPlugin.debug("Getting content temporary url for message $messageIndex")
+        TwilioProgrammableChatPlugin.chatClient?.channels?.getChannel(channelSid, object : CallbackListener<Channel>() {
+            override fun onSuccess(channel: Channel) {
+                TwilioProgrammableChatPlugin.debug("MessageMethods.getContentTemporaryUrl (Messages.getChannel) => onSuccess")
+                channel.messages.getMessageByIndex(messageIndex, object : CallbackListener<Message>() {
+                    override fun onSuccess(message: Message) {
+                        TwilioProgrammableChatPlugin.debug("MessageMethods.getContentTemporaryUrl (Messages.getMessageByIndex) => onSuccess")
+                        message.media.getContentTemporaryUrl(object : CallbackListener<String>() {
+                            override fun onSuccess(url: String) {
+                                TwilioProgrammableChatPlugin.debug("MessageMethods.getContentTemporaryUrl (Message.Media.getContentTemporaryUrl) => onSuccess")
+                                result.success(url)
+                            }
+
+                            override fun onError(errorInfo: ErrorInfo) {
+                                TwilioProgrammableChatPlugin.debug("MessageMethods.getMedia (Message.Media.download) => onError: $errorInfo")
+                                result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
+                            }
+                        })
+                    }
+
+                    override fun onError(errorInfo: ErrorInfo) {
+                        TwilioProgrammableChatPlugin.debug("MessageMethods.updateMessageBody (Messages.getMessageByIndex) => onError: $errorInfo")
+                        result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
+                    }
+                })
+            }
+
+            override fun onError(errorInfo: ErrorInfo) {
+                TwilioProgrammableChatPlugin.debug("MessageMethods.getMedia => onError: $errorInfo")
+                result.error("${errorInfo.code}", errorInfo.message, errorInfo.status)
+            }
+        })
     }
 }
