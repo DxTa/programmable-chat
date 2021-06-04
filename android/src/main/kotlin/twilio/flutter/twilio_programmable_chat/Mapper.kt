@@ -1,24 +1,12 @@
 package twilio.flutter.twilio_programmable_chat
 
-import com.twilio.chat.Attributes
-import com.twilio.chat.Channel
-import com.twilio.chat.ChannelDescriptor
-import com.twilio.chat.Channels
-import com.twilio.chat.ChatClient
-import com.twilio.chat.ErrorInfo
-import com.twilio.chat.Member
-import com.twilio.chat.Message
-import com.twilio.chat.Messages
-import com.twilio.chat.Paginator
-import com.twilio.chat.User
-import com.twilio.chat.UserDescriptor
-import com.twilio.chat.Users
+import com.twilio.chat.*
 import io.flutter.plugin.common.EventChannel
-import java.text.SimpleDateFormat
-import java.util.Date
 import org.json.JSONArray
 import org.json.JSONObject
 import twilio.flutter.twilio_programmable_chat.listeners.ChannelListener
+import java.text.SimpleDateFormat
+import java.util.*
 
 object Mapper {
     fun jsonObjectToMap(jsonObject: JSONObject): Map<String, Any?> {
@@ -188,7 +176,7 @@ object Mapper {
                 "dateCreated" to message.dateCreated,
                 "messageBody" to message.messageBody,
                 "channelSid" to message.channelSid,
-                "memberSid" to message.memberSid,
+                "memberSid" to (message.memberSid ?: ""),
                 "member" to memberToMap(message.member),
                 "messageIndex" to message.messageIndex,
                 "type" to message.type.toString(),
@@ -213,7 +201,7 @@ object Mapper {
     fun membersListToMap(members: List<Member>): Map<String, List<Map<String, Any?>?>> {
         val membersListMap = members.map { memberToMap(it) }
         return mapOf(
-            "membersList" to membersListMap
+                "membersList" to membersListMap
         )
     }
 
