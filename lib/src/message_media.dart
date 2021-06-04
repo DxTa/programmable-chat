@@ -75,17 +75,14 @@ class MessageMedia {
     });
   }
 
-  //#endregion
-
-  //#region Public API methods
   /// Request media download temporary link.
   /// This URL is impermanent, it expires in several minutes. If the link became invalid (expired), need to re-request the new one. It is user's responsibility to timely download media data by this link..
-  ///
   Future<String> getContentTemporaryUrl() async {
     return await TwilioProgrammableChat._methodChannel.invokeMethod('Message#getContentTemporaryUrl', {
       'channelSid': _channelSid,
       'messageIndex': _messageIndex,
     });
   }
-//#endregion
+
+  //#endregion
 }

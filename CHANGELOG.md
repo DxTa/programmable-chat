@@ -2,8 +2,8 @@
 
 * `getContentTemporaryUrl` function added in `MessageMedia`.
 * Deprecated `download` function in `MessageMedia`.
-* **iOS** TwilioChatClient update to 5.0
-* **Android** com.twilio:chat-android update to 7.0.+
+* **iOS** SDK updated to 5.0
+* **Android** SDK updated to 7.0.+
 
 ## 0.1.1+8
 

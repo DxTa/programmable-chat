@@ -158,7 +158,7 @@ public class ChannelMethods {
                 SwiftTwilioProgrammableChatPlugin.debug("ChannelMethods.getUnconsumedMessagesCount => onSuccess")
                 channel.getUnconsumedMessagesCount(completion: { (result: TCHResult, count: NSNumber?) in
                     if result.isSuccessful() {
-                        SwiftTwilioProgrammableChatPlugin.debug("ChannelMethod0s.getUnconsumedMessagesCount (Channel.getUnconsumedMessagesCount) => onSuccess: \(count ?? 0)")
+                        SwiftTwilioProgrammableChatPlugin.debug("ChannelMethods.getUnconsumedMessagesCount (Channel.getUnconsumedMessagesCount) => onSuccess: \(count ?? 0)")
                         flutterResult(count?.uintValue ?? 0)
                     } else {
                         SwiftTwilioProgrammableChatPlugin.debug("ChannelMethods.getUnconsumedMessagesCount (Channel.getUnconsumedMessagesCount) => onError: \(String(describing: result.error))")
