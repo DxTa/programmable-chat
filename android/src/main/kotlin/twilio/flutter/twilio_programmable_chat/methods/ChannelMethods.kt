@@ -196,10 +196,10 @@ object ChannelMethods {
             TwilioProgrammableChatPlugin.chatClient?.channels?.getChannel(channelSid, object : CallbackListener<Channel>() {
                 override fun onSuccess(channel: Channel) {
                     TwilioProgrammableChatPlugin.debug("ChannelMethods.getUnconsumedMessagesCount => onSuccess")
-                    channel.getUnconsumedMessagesCount(object : CallbackListener<Long>() {
-                        override fun onSuccess(unconsumedMessageCount: Long) {
+                    channel.getUnconsumedMessagesCount(object : CallbackListener<Long?>() {
+                        override fun onSuccess(unconsumedMessageCount: Long?) {
                             TwilioProgrammableChatPlugin.debug("ChannelMethods.getUnconsumedMessagesCount (Channel.getUnconsumedMessagesCount) => onSuccess: $unconsumedMessageCount")
-                            result.success(unconsumedMessageCount)
+                            result.success(unconsumedMessageCount ?: 0)
                         }
 
                         override fun onError(errorInfo: ErrorInfo) {
