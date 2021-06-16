@@ -7,7 +7,7 @@ import 'package:twilio_programmable_chat_example/members/members_bloc.dart';
 class MembersPage extends StatefulWidget {
   final MembersBloc membersBloc;
 
-  MembersPage({this.membersBloc});
+  MembersPage({required this.membersBloc});
 
   @override
   State<StatefulWidget> createState() => MembersPageState();
@@ -54,19 +54,19 @@ class MembersPageState extends State<MembersPage> {
       stream: widget.membersBloc.membersStream,
       initialData: MemberData(),
       builder: (BuildContext context, AsyncSnapshot<MemberData> snapshot) {
-        var memberData = snapshot.data;
+        final memberData = snapshot.data ?? MemberData();
         return ListView.builder(
           itemCount: memberData.members.length,
           itemBuilder: (BuildContext context, int index) {
-            var member = memberData.members[index];
-            var userDescriptor = memberData.userDescriptors[member.sid];
+            final member = memberData.members[index];
+            final userDescriptor = memberData.userDescriptors[member.sid];
             return Row(
               children: <Widget>[
                 Icon(
                   userDescriptor?.isOnline ?? false ? Icons.person : Icons.perm_identity,
                   color: userDescriptor?.isOnline ?? false ? Colors.green : Colors.grey,
                 ),
-                Text(member.identity)
+                Text(member.identity ?? '')
               ],
             );
           },
