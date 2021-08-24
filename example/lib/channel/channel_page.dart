@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:twilio_programmable_chat/twilio_programmable_chat.dart';
 import 'package:twilio_programmable_chat_example/channel/channel_bloc.dart';
 import 'package:twilio_programmable_chat_example/channel/channel_model.dart';
@@ -216,7 +213,16 @@ class _ChannelPageState extends State<ChannelPage> {
                               height: 220,
                               width: 220,
                               child: Center(
-                                child: _showImage(data.file),
+                                child: FutureBuilder<String>(
+                                  future: snapshot.data!.message.media!.getContentTemporaryUrl(),
+                                  builder: (_, snapshot) => snapshot.data == null
+                                      ? SizedBox()
+                                      : Image.network(
+                                          snapshot.data!,
+                                          height: 200,
+                                          width: 200,
+                                        ),
+                                ),
                               ),
                             );
                           }
@@ -241,18 +247,6 @@ class _ChannelPageState extends State<ChannelPage> {
   bool doesNameExist(Message message) {
     final uJson = message.attributes.getJSONObject();
     return message.attributes.type == AttributesType.OBJECT && uJson != null && uJson.containsKey('name');
-  }
-
-  Widget _showImage(File? file) {
-    final uFile = file;
-    if (uFile == null) {
-      return Text('file variable is null.');
-    }
-    return Image.file(
-      uFile,
-      height: 200,
-      width: 200,
-    );
   }
 
   String _formatMessageCreationTime(Message message) {

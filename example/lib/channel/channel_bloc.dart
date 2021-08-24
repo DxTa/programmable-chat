@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime_type/mime_type.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:twilio_programmable_chat/twilio_programmable_chat.dart';
 import 'package:twilio_programmable_chat_example/channel/channel_model.dart';
@@ -69,9 +68,6 @@ class ChannelBloc {
     }));
     _subscriptions.add(uChannel.onMessageAdded.listen((Message message) {
       _messageSubject.add(_messageSubject.value.addMessage(message));
-      if (message.hasMedia) {
-        _getImage(message);
-      }
     }));
     _subscriptions.add(uChannel.onTypingStarted.listen((TypingEvent event) {
       _typingSubject.add(event.member.identity);
@@ -85,7 +81,6 @@ class ChannelBloc {
     final friendlyName = await channel.getFriendlyName();
     final messageCount = await channel.getMessagesCount();
     final messages = await channel.messages.getLastMessages(messageCount);
-    messages.where((message) => message.hasMedia).forEach(_getImage);
     _messageSubject.add(_messageSubject.value.copyWith(
       friendlyName: friendlyName,
       messages: messages,
@@ -130,29 +125,6 @@ class ChannelBloc {
       await uChannel.leave();
       return uChannel.destroy();
     }
-  }
-
-  Future _getImage(Message message) async {
-    final uMessageMedia = message.media;
-    if (uMessageMedia == null) {
-      return;
-    }
-    final subject = BehaviorSubject<MediaModel>();
-    subject.add(MediaModel(isLoading: true, message: message));
-    mediaSubjects[message.sid] = subject;
-
-    if (tempDirPath == null) {
-      final tempDir = await getTemporaryDirectory();
-      tempDirPath = tempDir.path;
-    }
-    final uFileName = uMessageMedia.fileName;
-    final path = '$tempDirPath/'
-        '${(uFileName != null && uFileName.isNotEmpty) ? uFileName : uMessageMedia.sid}.'
-        '${extensionFromMime(uMessageMedia.type)}';
-    final outputFile = File(path);
-
-    await uMessageMedia.download(outputFile);
-    subject.add(subject.value.copyWith(isLoading: false, file: outputFile));
   }
 
   Future dispose() async {
