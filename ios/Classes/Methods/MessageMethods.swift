@@ -157,7 +157,7 @@ public class MessageMethods {
             if result.isSuccessful(), let channel = channel {
                 channel.messages?.message(withIndex: messageIndex, completion: { (result: TCHResult, message: TCHMessage?) in
                     if result.isSuccessful(), let message = message {
-                        message.getMediaContentTemporaryUrl { (result, mediaContentUrl) in
+                        message.getMediaContentTemporaryUrl { (_, mediaContentUrl) in
                             guard let mediaContentUrl = mediaContentUrl else {
                                 flutterResult(FlutterError(code: "ERROR", message: "Error retrieving message with index '\(messageIndex)'", details: nil))
                                 return
