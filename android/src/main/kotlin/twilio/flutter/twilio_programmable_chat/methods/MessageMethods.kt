@@ -1,6 +1,5 @@
 package twilio.flutter.twilio_programmable_chat.methods
 
-
 import com.twilio.chat.CallbackListener
 import com.twilio.chat.Channel
 import com.twilio.chat.ErrorInfo

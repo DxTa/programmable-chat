@@ -1,6 +1,5 @@
 package twilio.flutter.twilio_programmable_chat
 
-
 import com.twilio.chat.Attributes
 import com.twilio.chat.Channel
 import com.twilio.chat.ChannelDescriptor
