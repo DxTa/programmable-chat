@@ -58,7 +58,7 @@ class MessageMedia {
   ///
   /// Provided file could be an existing file and a none existing file.
   @Deprecated(
-    'Deprecated. For effective downloading use getContentTemporaryUrl method to get temporary direct link and download media by URL.',
+    'Use getContentTemporaryUrl to get a direct link to the media file',
   )
   Future<bool?> download(File? output) async {
     if (output == null) {
