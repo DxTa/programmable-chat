@@ -4,13 +4,13 @@ class MessageMedia {
   //#region Private API properties
   final String _sid;
 
-  final String _fileName;
+  final String? _fileName;
 
   final String _type;
 
   final int _size;
 
-  final String _channelSid;
+  final String? _channelSid;
 
   final int _messageIndex;
 
@@ -23,7 +23,7 @@ class MessageMedia {
   }
 
   /// Get file name of media stream.
-  String get fileName {
+  String? get fileName {
     return _fileName;
   }
 
@@ -46,16 +46,10 @@ class MessageMedia {
     this._size,
     this._channelSid,
     this._messageIndex,
-  )   : assert(_sid != null),
-        assert(_type != null),
-        assert(_size != null),
-        assert(_messageIndex != null);
+  );
 
   /// Construct from a map.
   factory MessageMedia._fromMap(Map<String, dynamic> map) {
-    if (map == null) {
-      return null;
-    }
     return MessageMedia(map['sid'], map['fileName'], map['type'], map['size'], map['channelSid'], map['messageIndex']);
   }
 
@@ -66,8 +60,10 @@ class MessageMedia {
   @Deprecated(
     'Deprecated. For effective downloading use getContentTemporaryUrl method to get temporary direct link and download media by URL.',
   )
-  Future<bool> download(File output) async {
-    assert(output != null);
+  Future<bool?> download(File? output) async {
+    if (output == null) {
+      return null;
+    }
     return await TwilioProgrammableChat._methodChannel.invokeMethod('Message#getMedia', {
       'channelSid': _channelSid,
       'messageIndex': _messageIndex,
