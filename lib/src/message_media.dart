@@ -13,6 +13,7 @@ class MessageMedia {
   final String? _channelSid;
 
   final int _messageIndex;
+
   //#endregion
 
   //#region Public API properties
@@ -35,6 +36,7 @@ class MessageMedia {
   int get size {
     return _size;
   }
+
   //#endregion
 
   MessageMedia(
@@ -55,6 +57,9 @@ class MessageMedia {
   /// Save media content stream that could be streamed or downloaded by client.
   ///
   /// Provided file could be an existing file and a none existing file.
+  @Deprecated(
+    'Use getContentTemporaryUrl to get a direct link to the media file',
+  )
   Future<bool?> download(File? output) async {
     if (output == null) {
       return null;
@@ -65,5 +70,15 @@ class MessageMedia {
       'filePath': output.path,
     });
   }
+
+  /// Request media download temporary link.
+  /// This URL is impermanent, it expires in several minutes. If the link became invalid (expired), need to re-request the new one. It is user's responsibility to timely download media data by this link..
+  Future<String> getContentTemporaryUrl() async {
+    return await TwilioProgrammableChat._methodChannel.invokeMethod('Message#getContentTemporaryUrl', {
+      'channelSid': _channelSid,
+      'messageIndex': _messageIndex,
+    });
+  }
+
   //#endregion
 }

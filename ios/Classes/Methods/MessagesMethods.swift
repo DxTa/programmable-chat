@@ -276,10 +276,10 @@ public class MessagesMethods {
 
         SwiftTwilioProgrammableChatPlugin.chatListener?.chatClient?.channelsList()?.channel(withSidOrUniqueName: channelSid, completion: { (result: TCHResult, channel: TCHChannel?) in
             if result.isSuccessful(), let channel = channel, let messages = channel.messages {
-                messages.setNoMessagesConsumedWithCompletion({ (result: TCHResult, count: UInt) in
+                messages.setNoMessagesConsumedWithCompletion({ (result: TCHResult, count: NSNumber?) in
                     if result.isSuccessful() {
                         SwiftTwilioProgrammableChatPlugin.debug("MessagesMethods.setNoMessagesConsumedWithResult (Messages.setNoMessagesConsumed) => onSuccess")
-                        flutterResult(count)
+                        flutterResult(count?.uintValue ?? 0)
                     } else {
                         SwiftTwilioProgrammableChatPlugin.debug("MessagesMethods.setNoMessagesConsumedWithResult (Messages.setNoMessagesConsumed) => onError: \(String(describing: result.error))")
                         flutterResult(FlutterError(code: "ERROR", message: "Error setting no messages consumed for channel (sid: \(channelSid))", details: nil))

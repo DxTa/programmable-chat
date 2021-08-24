@@ -96,6 +96,8 @@ public class PluginHandler {
             MessageMethods.setAttributes(call, result: result)
         case "Message#getMedia":
             MessageMethods.getMedia(call, result: result)
+        case "Message#getContentTemporaryUrl":
+            MessageMethods.getContentTemporaryUrl(call, result: result)
 
         case "Messages#sendMessage":
             MessagesMethods.sendMessage(call, result: result)

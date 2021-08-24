@@ -15,13 +15,8 @@ public class MembersMethods {
         let flutterResult = result
         SwiftTwilioProgrammableChatPlugin.chatListener?.chatClient?.channelsList()?.channel(withSidOrUniqueName: channelSid, completion: { (result: TCHResult, channel: TCHChannel?) in
             if result.isSuccessful(), let channel = channel {
-                channel.members?.members(completion: { (result: TCHResult, paginator: TCHMemberPaginator?) in
-                    if result.isSuccessful(), let paginator = paginator {
-                        return accumulateMembersListPages(accumulatedMembersList: [], paginator: paginator, channelSid: channelSid, result: flutterResult)
-                    } else {
-                        flutterResult(FlutterError(code: "ERROR", message: "Error retrieving membersList for channel '\(channelSid)'", details: nil))
-                    }
-                })
+                let membersList = channel.members?.membersList()
+                flutterResult(Mapper.membersListToDict(membersList ?? [], channelSid: channelSid))
             } else {
                 flutterResult(FlutterError(code: "ERROR", message: "Error retrieving channel with sid '\(channelSid)'", details: nil))
             }

@@ -73,6 +73,7 @@ class PluginHandler(private val applicationContext: Context) : MethodCallHandler
             "Message#updateMessageBody" -> MessageMethods.updateMessageBody(call, result)
             "Message#setAttributes" -> MessageMethods.setAttributes(call, result)
             "Message#getMedia" -> MessageMethods.getMedia(call, result)
+            "Message#getContentTemporaryUrl" -> MessageMethods.getContentTemporaryUrl(call, result)
 
             "Messages#sendMessage" -> MessagesMethods.sendMessage(call, result)
             "Messages#removeMessage" -> MessagesMethods.removeMessage(call, result)

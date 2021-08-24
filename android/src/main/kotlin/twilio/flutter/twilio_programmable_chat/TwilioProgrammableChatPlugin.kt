@@ -101,7 +101,7 @@ class TwilioProgrammableChatPlugin : FlutterPlugin {
             override fun onListen(arguments: Any?, events: EventChannel.EventSink) {
                 debug("TwilioProgrammableChatPlugin.onAttachedToEngine => Chat eventChannel attached")
                 chatListener?.events = events
-                chatClient?.setListener(chatListener)
+                chatClient?.addListener(chatListener!!)
             }
 
             override fun onCancel(arguments: Any?) {

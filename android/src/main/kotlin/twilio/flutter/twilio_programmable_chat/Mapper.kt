@@ -175,7 +175,7 @@ object Mapper {
                 "dateCreated" to message.dateCreated,
                 "messageBody" to message.messageBody,
                 "channelSid" to message.channelSid,
-                "memberSid" to message.memberSid,
+                "memberSid" to (message.memberSid ?: ""),
                 "member" to memberToMap(message.member),
                 "messageIndex" to message.messageIndex,
                 "type" to message.type.toString(),
@@ -200,7 +200,7 @@ object Mapper {
     fun membersListToMap(members: List<Member>): Map<String, List<Map<String, Any?>?>> {
         val membersListMap = members.map { memberToMap(it) }
         return mapOf(
-            "membersList" to membersListMap
+                "membersList" to membersListMap
         )
     }
 

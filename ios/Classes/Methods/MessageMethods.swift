@@ -97,10 +97,10 @@ public class MessageMethods {
 
     public static func getMedia(_ call: FlutterMethodCall, result flutterResult: @escaping FlutterResult) {
         guard let arguments = call.arguments as? [String: Any?],
-            let channelSid = arguments["channelSid"] as? String,
-            let messageIndex = arguments["messageIndex"] as? NSNumber,
-            let path = arguments["filePath"] as? String else {
-                return flutterResult(FlutterError(code: "MISSING_PARAMS", message: "Missing parameters", details: nil))
+              let channelSid = arguments["channelSid"] as? String,
+              let messageIndex = arguments["messageIndex"] as? NSNumber,
+              let path = arguments["filePath"] as? String else {
+            return flutterResult(FlutterError(code: "MISSING_PARAMS", message: "Missing parameters", details: nil))
         }
 
         let manager = FileManager.default
@@ -144,5 +144,33 @@ public class MessageMethods {
                 }
             })
         }
+    }
+
+    public static func getContentTemporaryUrl(_ call: FlutterMethodCall, result flutterResult: @escaping FlutterResult) {
+        guard let arguments = call.arguments as? [String: Any?],
+              let channelSid = arguments["channelSid"] as? String,
+              let messageIndex = arguments["messageIndex"] as? NSNumber else {
+            return flutterResult(FlutterError(code: "MISSING_PARAMS", message: "Missing parameters", details: nil))
+        }
+
+        SwiftTwilioProgrammableChatPlugin.chatListener?.chatClient?.channelsList()?.channel(withSidOrUniqueName: channelSid, completion: { (result: TCHResult, channel: TCHChannel?) in
+            if result.isSuccessful(), let channel = channel {
+                channel.messages?.message(withIndex: messageIndex, completion: { (result: TCHResult, message: TCHMessage?) in
+                    if result.isSuccessful(), let message = message {
+                        message.getMediaContentTemporaryUrl { (_, mediaContentUrl) in
+                            guard let mediaContentUrl = mediaContentUrl else {
+                                flutterResult(FlutterError(code: "ERROR", message: "Error retrieving message with index '\(messageIndex)'", details: nil))
+                                return
+                            }
+                            flutterResult(mediaContentUrl)
+                        }
+                    } else {
+                        flutterResult(FlutterError(code: "ERROR", message: "Error retrieving message with index '\(messageIndex)'", details: nil))
+                    }
+                })
+            } else {
+                flutterResult(FlutterError(code: "ERROR", message: "Error retrieving channel with sid '\(channelSid)'", details: nil))
+            }
+        })
     }
 }

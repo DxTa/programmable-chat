@@ -1,3 +1,10 @@
+## 0.2.1
+
+* `getContentTemporaryUrl` function added in `MessageMedia`.
+* Deprecated `download` function in `MessageMedia`.
+* **iOS** SDK updated to 5.0
+* **Android** SDK updated to 7.0.+
+
 ## 0.2.0
 
 * **BREAKING CHANGE**: Added null safety support.
